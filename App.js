@@ -8,6 +8,8 @@ export default function App() {
       <Text>Open up App.js to start working on your app!</Text>
       <Text>Test1</Text>
       <Text>Yodf</Text>
+      <Text>Yodf1</Text>
+
       <StatusBar style="auto" />
     </View>
   );
