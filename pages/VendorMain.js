@@ -36,6 +36,7 @@ import AppLoading from "expo-app-loading";
 import HeaderTabsVendor from "../components/vendor/HeaderTabsVendor";
 import Reservations from "../components/vendor/Reservations";
 import BottomTabsVendor from "../components/vendor/BottomTabsVendor";
+import ManageFood from "../components/vendor/ManageFood";
 
 export default function VendorMain() {
   let [fontsLoaded] = useFonts({
@@ -82,34 +83,104 @@ export default function VendorMain() {
             />
           </View>
         </View>
-        <View style={{ flex: 7 }}>
-          <ScrollView showsVerticalScrollIndicator={false}>
-            <Reservations />
-          </ScrollView>
-        </View>
-        {/* Confirm Order Button */}
-        <View
-          style={{ flex: 1, alignItems: "center", justifyContent: "center" }}
-        >
-          <TouchableOpacity
-            style={{
-              backgroundColor: "#4EB574",
-              paddingVertical: 13,
-              paddingHorizontal: 70,
-              borderRadius: 30,
-            }}
-          >
-            <Text
+        {activeTab === "Reservation" ? (
+          <View style={{ flex: 1 }}>
+            <View style={{ flex: 7 }}>
+              <ScrollView showsVerticalScrollIndicator={false}>
+                <Reservations />
+              </ScrollView>
+            </View>
+            <View
               style={{
-                fontSize: 18,
-                fontFamily: "Merriweather_400Regular",
-                color: "white",
+                flex: 1,
+                alignItems: "center",
+                justifyContent: "center",
               }}
             >
-              Confirm Order
+              <TouchableOpacity
+                style={{
+                  backgroundColor: "#4EB574",
+                  paddingVertical: 13,
+                  paddingHorizontal: 70,
+                  borderRadius: 30,
+                }}
+              >
+                <Text
+                  style={{
+                    fontSize: 18,
+                    fontFamily: "Merriweather_400Regular",
+                    color: "white",
+                  }}
+                >
+                  Confirm Order
+                </Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        ) : (
+          <View style={{ flex: 1 }}>
+            <Text
+              style={{
+                fontSize: 20,
+                fontFamily: "Merriweather_700Bold",
+                margin: 20,
+              }}
+            >
+              Current stock
             </Text>
-          </TouchableOpacity>
-        </View>
+            <View style={{ flex: 6 }}>
+              <ScrollView showsVerticalScrollIndicator={false}>
+                <ManageFood />
+              </ScrollView>
+            </View>
+            <View
+              style={{
+                flex: 4,
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+            >
+              <TouchableOpacity
+                style={{
+                  backgroundColor: "#4EB574",
+                  paddingVertical: 13,
+                  paddingHorizontal: 55,
+                  borderRadius: 30,
+                  margin: 10
+                }}
+              >
+                <Text
+                  style={{
+                    fontSize: 18,
+                    fontFamily: "Merriweather_400Regular",
+                    color: "white",
+                  }}
+                >
+                  Update Food Quantity
+                </Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={{
+                  backgroundColor: "#4EB574",
+                  paddingVertical: 13,
+                  paddingHorizontal: 70,
+                  borderRadius: 30,
+                  margin: 10
+                }}
+              >
+                <Text
+                  style={{
+                    fontSize: 18,
+                    fontFamily: "Merriweather_400Regular",
+                    color: "white",
+                  }}
+                >
+                  Add new food type
+                </Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        )}
 
         <BottomTabsVendor />
       </View>

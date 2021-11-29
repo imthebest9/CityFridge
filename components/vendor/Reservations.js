@@ -62,8 +62,6 @@ const items = [
     food: "sardin x4, bread x3",
     time: "11m ago",
   },
-  
-  
 ];
 
 export default function Reservations() {
