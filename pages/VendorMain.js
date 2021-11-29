@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { View, Text, StyleSheet } from "react-native";
 import {
   useFonts,
@@ -11,7 +11,8 @@ import {
   Merriweather_900Black,
   Merriweather_900Black_Italic,
 } from "@expo-google-fonts/merriweather";
-import AppLoading  from "expo-app-loading";
+import AppLoading from "expo-app-loading";
+import HeaderTabsVendor from "../components/vendor/HeaderTabsVendor";
 
 export default function VendorMain() {
   let [fontsLoaded] = useFonts({
@@ -24,6 +25,7 @@ export default function VendorMain() {
     Merriweather_900Black,
     Merriweather_900Black_Italic,
   });
+  const [activeTab, setActiveTab] = useState("Reservation");
   if (!fontsLoaded) {
     return <AppLoading />;
   } else {
@@ -37,6 +39,9 @@ export default function VendorMain() {
         >
           Your Store
         </Text>
+        <View style={{ backgroundColor: "white", padding: 15 }}>
+          <HeaderTabsVendor activeTab={activeTab} setActiveTab={setActiveTab} />
+        </View>
       </View>
     );
   }
@@ -47,6 +52,6 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
     alignItems: "center",
     justifyContent: "center",
-    paddingTop: 30,
+    paddingTop: 40,
   },
 });
