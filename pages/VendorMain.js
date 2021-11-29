@@ -11,7 +11,7 @@ import {
   Merriweather_900Black,
   Merriweather_900Black_Italic,
 } from "@expo-google-fonts/merriweather";
-import { AppLoading } from "expo-app-loading";
+import AppLoading  from "expo-app-loading";
 
 export default function VendorMain() {
   let [fontsLoaded] = useFonts({
@@ -32,7 +32,7 @@ export default function VendorMain() {
         <Text
           style={{
             fontSize: 24,
-            // fontFamily: "Merriweather_900Black",
+            fontFamily: "Merriweather_900Black",
           }}
         >
           Your Store
