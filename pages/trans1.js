@@ -4,7 +4,7 @@ import { View, Text } from 'react-native'
 export default function trans1() {
     return (
         <View>
-            <Text>hh</Text>
+            <Text>hellooo</Text>
         </View>
     )
 }
