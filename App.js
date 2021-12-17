@@ -1,11 +1,12 @@
 import { StatusBar } from "expo-status-bar";
 import React from "react";
 import { StyleSheet, Text, View } from "react-native";
+import VendorConfirmOrder from "./pages/VendorConfirmOrder";
 import VendorMain from "./pages/VendorMain";
 import VendorUpdateFoodQty from "./pages/VendorUpdateFoodQty";
 
 export default function App() {
-  return <VendorUpdateFoodQty />;
+  return <VendorConfirmOrder />;
 }
 
 const styles = StyleSheet.create({
