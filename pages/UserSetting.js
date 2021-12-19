@@ -5,22 +5,21 @@ import {
     Text,
     Image,
     TouchableOpacity,
+    TextInput,
     StyleSheet,
     Dimensions
     } from 'react-native'
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import SwitchSelector from '../components/SwitchSelector';
-import { useFocusEffect, useIsFocused } from '@react-navigation/native';
+//import ImagePicker from 'react-native-image-crop-picker';
 
-export default function UserProfile() {
+export default function UserProfile({navigation}) {
     const [name, setName] = useState(null);
     const [username, setUsername] = useState(null);
     const [email, setEmail] = useState(null);
     const [mobile, setMobile] = useState(null);
+    const [password, setPassword] = useState(null);
     const [location, setLocation] = useState(null);
     const [address, setAddress] = useState(null);
-    const [isVendor, setIsVendor] = useState(false);
-    const [selectedOption, setSelectedOption] = useState(1);
     var user;
 
     const width = Dimensions.get('screen').width;
@@ -39,20 +38,19 @@ export default function UserProfile() {
           width: componentWidth
         },
         textInput: {
-          flexDirection: 'row',
-          backgroundColor: '#f6f6f6',
+          backgroundColor: 'white',
           borderRadius: 5,
-          padding: 5,
-          margin: 5,
+          padding: 7,
           width: '100%',
           color: '#000',
           fontSize: 16,
+          flexShrink: 1
         },
         button:{
           backgroundColor: '#4EB574',
           borderRadius: 50,
           padding: 10,
-          margin: 10,
+          marginVertical: 10,
           width: '100%'
         },
         buttonText: {
@@ -91,6 +89,7 @@ export default function UserProfile() {
         nameFont:{
             color: '#116530',
             fontSize: 20,
+            margin: 5
         },
         locationFont:{
             color: '#000',
@@ -102,13 +101,12 @@ export default function UserProfile() {
             paddingHorizontal: 10,
             paddingVertical: 5,
             borderRadius: 5,
-            alignItems: 'flex-start',
-            width: componentWidth
+            alignItems: 'flex-start'
         },
         infoRowContainer:{
             flexDirection: 'row',
             marginVertical: 5,
-            flexShrink: 1
+            alignItems: 'center'
         },
         infoTitleFont:{
             color: '#116530',
@@ -116,8 +114,7 @@ export default function UserProfile() {
         },
         infoBodyFont:{
             color: 'black',
-            fontStyle: 'italic',
-            flexShrink: 1
+            fontStyle: 'italic'
         },
         contributionContainer:{
             width: 250,
@@ -196,9 +193,9 @@ export default function UserProfile() {
                         setName(user.name);
                         setMobile(user.mobile);
                         setEmail(user.email);
+                        setPassword(user.password);
                         setLocation(user.location);
                         setAddress(user.address);
-                        setIsVendor(user.isVendor);
                     }
                 }
             )
@@ -207,123 +204,110 @@ export default function UserProfile() {
         }
     }
 
+    const onUpdateData = async() => {
+        try{
+            user = {
+                name: name,
+                email: email,
+                mobile: mobile,
+                location: location,
+                address: address,
+                password: password,
+            }
+            await AsyncStorage.mergeItem('UserData', JSON.stringify(user));
+        } catch (error){
+            alert(error);
+        }
+        alert('Saved!');
+    }
+    const onDelete = async() => {
+        try{
+            await AsyncStorage.clear();
+            navigation.navigate('Sign In');
+        } catch (error) {
+            alert(error);
+        }
+    }
+
     useEffect(() => {
         getData();
-    }, [useIsFocused()])
+    }, [])
 
     return (
         <View style={styles.container}>
             <View style={styles.header}>
-                <View style={styles.profilePicFrame}>
+                <TouchableOpacity style={styles.profilePicFrame}
+                /*onPress={()=>{
+                    ImagePicker.openPicker({
+                        width: 300,
+                        height: 400,
+                        cropping: true
+                      }).then(image => {
+                        console.log(image);
+                      });
+                }}*/
+                >
                     <Image
                     source={require('../assets/logo.png')}
                     style={styles.profilePic}
                     resizeMode='contain'
                     />
-                </View>
+                </TouchableOpacity>
             </View>
-            {
-                (selectedOption==1) ?
-                (<View style={styles.profileContainer}>
-                <Text style={styles.nameFont}>
-                    {name}
-                </Text>
-                <Text style={styles.locationFont}>
-                    {location}
-                </Text>
+            <ScrollView contentContainerStyle={{width: componentWidth}}>
                 <View style={styles.infoContainer}>
                     <View style={styles.infoRowContainer}>
-                        <Text style={styles.infoTitleFont}>Address</Text> 
-                        <Text style={styles.infoBodyFont}>{address}</Text>
+                        <Text style={styles.infoTitleFont}>Name</Text>
+                        <TextInput style={styles.textInput}
+                        defaultValue={name}
+                        onChangeText={(input)=>setName(input)}
+                        />
+                    </View>
+                    <View style={styles.infoRowContainer}>
+                        <Text style={styles.infoTitleFont}>Email</Text>
+                        <TextInput style={styles.textInput}
+                            defaultValue={email}
+                            onChangeText={(input)=>setEmail(input)}
+                            />
                     </View>
                     <View style={styles.infoRowContainer}>
                         <Text style={styles.infoTitleFont}>Contact Number</Text> 
-                        <Text style={styles.infoBodyFont}>{mobile}</Text>
+                        <TextInput style={styles.textInput}
+                            defaultValue={mobile}
+                            onChangeText={(input)=>setMobile(input)}
+                            keyboardType='numeric'
+                            />
                     </View>
                     <View style={styles.infoRowContainer}>
-                        <Text style={styles.infoTitleFont}>Email</Text> 
-                        <Text style={styles.infoBodyFont}>{email}</Text>
+                        <Text style={styles.infoTitleFont}>Location</Text>
+                        <TextInput style={styles.textInput}
+                            defaultValue={location}
+                            onChangeText={(input)=>setLocation(input)}
+                            />
+                    </View>
+                    <View style={styles.infoRowContainer}>
+                        <Text style={styles.infoTitleFont}>Address</Text>
+                        <TextInput style={styles.textInput}
+                            defaultValue={address}
+                            onChangeText={(input)=>setAddress(input)}
+                            />
+                    </View>
+                    <View style={styles.infoRowContainer}>
+                        <Text style={styles.infoTitleFont}>Password</Text>
+                        <TextInput style={styles.textInput}
+                            defaultValue={password}
+                            onChangeText={(input)=>setPassword(input)}
+                            secureTextEntry={true}
+                            />
                     </View>
                 </View>
-                <View style={styles.contributionContainer}>
-                    <View style={styles.contributionTitleContainer}>
-                        <Text style={styles.contributionTitleFont}>
-                            Total Contribution
-                        </Text>
-                    </View>
-                    <View style={styles.contributionInfoContainer}>
-                        <Text style={styles.contributionInfoFont}>
-                            15 kg
-                        </Text>
-                        <Text style={styles.contributionInfoBodyFont}>
-                            of foods have been saved
-                        </Text>
-                    </View>
-                </View>
-            </View>) :
-            (<View style={styles.profileContainer}>
-                <ScrollView>
-                    <View style={styles.historyRowContainer}>
-                        <View style={styles.historyDateContainer}>
-                            <Text style={styles.historyTitleFont}>
-                                NOV
-                            </Text>
-                            <Text style={styles.historyTitleFont}>
-                                13
-                            </Text>
-                        </View>
-                        <View style={styles.historyContainer}>
-                            <Text style={styles.historyTitleFont}>
-                                Uncle Potato Store
-                            </Text>
-                            <Text style={styles.historyBodyFont}>
-                                Big Big Potato x 1
-                            </Text>
-                            <Text style={styles.historyBodyFont}>
-                                Sweet Potato Chips x 1
-                            </Text>
-                        </View>
-                        <Text style={styles.historyPriceFont}>
-                            RM 5.80
-                        </Text>
-                    </View>
-                    <View style={styles.historyRowContainer}>
-                        <View style={styles.historyDateContainer}>
-                            <Text style={styles.historyTitleFont}>
-                                NOV
-                            </Text>
-                            <Text style={styles.historyTitleFont}>
-                                13
-                            </Text>
-                        </View>
-                        <View style={styles.historyContainer}>
-                            <Text style={styles.historyTitleFont}>
-                                Uncle Potato Store
-                            </Text>
-                            <Text style={styles.historyBodyFont}>
-                                Big Big Potato x 1
-                            </Text>
-                            <Text style={styles.historyBodyFont}>
-                                Sweet Potato Chips x 1
-                            </Text>
-                        </View>
-                        <Text style={styles.historyPriceFont}>
-                            RM 5.80
-                        </Text>
-                    </View>
-                </ScrollView>
-            </View>)
-            }
-            <View style={styles.footer}>
-                <SwitchSelector
-                    selectionOption={1}
-                    optionLeft={'Profile'}
-                    optionRight={'History'}
-                    onSelectSwitch={option=>{
-                        setSelectedOption(option)
-                        }
-                    }/>
-            </View>
+                <TouchableOpacity style={styles.button}
+                onPress={onUpdateData}>
+                    <Text style={styles.buttonText}>
+                    Save
+                    </Text>
+                </TouchableOpacity>
+            </ScrollView>
         </View>
     )
 }

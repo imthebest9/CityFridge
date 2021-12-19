@@ -5,6 +5,7 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import SignIn from "./pages/SignIn";
 import SignUp from "./pages/SignUp";
+import UserSetting from "./pages/UserSetting";
 import UserProfile from "./pages/UserProfile";
 import VendorMain from "./pages/VendorMain";
 import VendorConfirmOrder from "./pages/VendorConfirmOrder";
@@ -79,7 +80,7 @@ export default function Navigation() {
           <Stack.Screen
             name="Sign In"
             component={SignIn}
-            initialParams={{ styles }}
+            initialParams={{ styles}}
             options={({ navigation }) => ({
               headerRight: () => (
                 <TouchableOpacity
@@ -89,7 +90,7 @@ export default function Navigation() {
                     Sign Up
                   </Text>
                 </TouchableOpacity>
-              ),
+              )
             })}
           />
           <Stack.Screen
@@ -98,20 +99,25 @@ export default function Navigation() {
             initialParams={{ styles, componentWidth }}
           />
           <Stack.Screen
-            name="Profile"
+            name='Profile'
             component={UserProfile}
-            options={({ navigation }) => ({
+            options={({navigation, route}) => ({
+              headerLeft: () => (
+                <TouchableOpacity onPress={()=>navigation.navigate('Setting')}>
+                  <Text style={[styles.buttonText, {margin:10}]}>Settings</Text>
+                </TouchableOpacity>),
               headerRight: () => (
-                <TouchableOpacity
-                  onPress={() => navigation.navigate("Sign In")}
-                >
-                  <Text style={[styles.buttonText, { margin: 10 }]}>
-                    Sign Out
-                  </Text>
-                </TouchableOpacity>
-              ),
-            })}
-          />
+                <TouchableOpacity onPress={()=>navigation.navigate('Sign In')}>
+                  <Text style={[styles.buttonText, {margin:10}]}>Sign Out</Text>
+                </TouchableOpacity>),
+              title: route.params.username
+              })
+            }
+            />
+            <Stack.Screen
+            name='Setting'
+            component={UserSetting}
+            />
           <Stack.Screen name="Your Store" component={VendorMain} />
           <Stack.Screen name="Confirm Order" component={VendorConfirmOrder} />
           <Stack.Screen

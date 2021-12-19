@@ -34,10 +34,9 @@ export default function SignUp({navigation, route}) {
                     location: location,
                     address: address,
                     isVendor: isVendor,
-                    isLoggedIn: true
                 }
                 await AsyncStorage.setItem('UserData', JSON.stringify(user));
-                navigation.navigate('Profile');
+                navigation.navigate('Profile', {username: username});
             } catch (error){
                 alert(error);
             }
