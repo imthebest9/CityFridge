@@ -38,7 +38,7 @@ export default function VendorConfirmOrder() {
             <Text
               style={{
                 fontSize: 18,
-                //   fontFamily: "Merriweather_400Regular",
+                fontFamily: "Merriweather_400Regular",
                 color: "white",
               }}
             >
