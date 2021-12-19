@@ -122,7 +122,7 @@ export default function VendorNewFoodType() {
             <Text
               style={{
                 fontSize: 18,
-                //   fontFamily: "Merriweather_400Regular",
+                fontFamily: "Merriweather_400Regular",
                 color: "white",
               }}
             >
@@ -145,5 +145,6 @@ const styles = StyleSheet.create({
     width: 300,
     padding: 10,
     fontSize: 16,
+    fontFamily: "MerriweatherSans_400Regular"
   },
 });
