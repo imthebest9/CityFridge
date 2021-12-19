@@ -57,7 +57,7 @@ export default function VendorUpdateFoodQty() {
   } else {
     return (
       <View style={{ backgroundColor: "#fff", paddingTop: 40, flex: 1 }}>
-        <View style={{ flexDirection: "row" }}>
+        {/* <View style={{ flexDirection: "row" }}>
           <View style={{ flex: 1 }}>
             <TouchableOpacity>
               <Text
@@ -81,8 +81,8 @@ export default function VendorUpdateFoodQty() {
           <View style={{ flex: 1 }}>
             <Text></Text>
           </View>
-        </View>
-        <View style={{ marginTop: 30, marginLeft: 10 }}>
+        </View> */}
+        {/* <View style={{ marginTop: 30, marginLeft: 10 }}>
           <Text
             style={{
               fontSize: 20,
@@ -92,7 +92,7 @@ export default function VendorUpdateFoodQty() {
           >
             Update Food Quality
           </Text>
-        </View>
+        </View> */}
         <View style={{ flex: 2, marginTop: 20 }}>
           <ScrollView showsVerticalScrollIndicator={false}>
             <FoodQuantityUpdate />

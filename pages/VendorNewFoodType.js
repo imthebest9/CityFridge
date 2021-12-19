@@ -38,7 +38,7 @@ export default function VendorNewFoodType() {
 
   return (
     <View style={{ backgroundColor: "#fff", paddingTop: 40, flex: 1 }}>
-      <View style={{ flexDirection: "row" }}>
+      {/* <View style={{ flexDirection: "row" }}>
         <View style={{ flex: 1 }}>
           <TouchableOpacity>
             <Text
@@ -60,9 +60,9 @@ export default function VendorNewFoodType() {
         <View style={{ flex: 1 }}>
           <Text></Text>
         </View>
-      </View>
+      </View> */}
       <ScrollView>
-        <View style={{ marginTop: 30, marginLeft: 10 }}>
+        {/* <View style={{ marginTop: 30, marginLeft: 10 }}>
           <Text
             style={{
               fontSize: 20,
@@ -73,7 +73,7 @@ export default function VendorNewFoodType() {
           >
             Add New Food Type
           </Text>
-        </View>
+        </View> */}
         <TextInput placeholder="Food Name" style={styles.input} />
         <TextInput
           placeholder="Food Quantity"

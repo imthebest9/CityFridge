@@ -5,9 +5,6 @@ import BottomTabsVendor from "../components/vendor/BottomTabsVendor";
 export default function VendorConfirmOrder() {
   return (
     <View style={{ backgroundColor: "#fff", paddingTop: 40, flex: 1 }}>
-      <View style={{ alignItems: "center" }}>
-        <Text style={{ fontSize: 24 }}>Confirm Order</Text>
-      </View>
       <View style={{ alignItems: "center", flex: 1, justifyContent: "center" }}>
         <Text style={{ fontSize: 14, marginHorizontal: 30 }}>
           Please enter the verification code provided by the customer.

@@ -38,7 +38,7 @@ import Reservations from "../components/vendor/Reservations";
 import BottomTabsVendor from "../components/vendor/BottomTabsVendor";
 import ManageFood from "../components/vendor/ManageFood";
 
-export default function VendorMain() {
+export default function VendorMain({ navigation }) {
   let [fontsLoaded] = useFonts({
     Merriweather_300Light,
     Merriweather_300Light_Italic,
@@ -68,15 +68,17 @@ export default function VendorMain() {
     return (
       <View style={styles.header}>
         <View style={{ alignItems: "center", justifyContent: "center" }}>
-          <Text
+          {/* <Text
             style={{
               fontSize: 24,
               fontFamily: "Merriweather_900Black",
             }}
           >
             Your Store
-          </Text>
-          <View style={{ backgroundColor: "white", padding: 15 }}>
+          </Text> */}
+          <View
+            style={{ backgroundColor: "white", padding: 15, marginTop: -30 }}
+          >
             <HeaderTabsVendor
               activeTab={activeTab}
               setActiveTab={setActiveTab}
@@ -104,6 +106,7 @@ export default function VendorMain() {
                   paddingHorizontal: 70,
                   borderRadius: 30,
                 }}
+                onPress={() => navigation.navigate("Confirm Order")}
               >
                 <Text
                   style={{
@@ -146,8 +149,9 @@ export default function VendorMain() {
                   paddingVertical: 13,
                   paddingHorizontal: 55,
                   borderRadius: 30,
-                  margin: 10
+                  margin: 10,
                 }}
+                onPress={() => navigation.navigate("Update Food Quantity")}
               >
                 <Text
                   style={{
@@ -165,8 +169,9 @@ export default function VendorMain() {
                   paddingVertical: 13,
                   paddingHorizontal: 70,
                   borderRadius: 30,
-                  margin: 10
+                  margin: 10,
                 }}
+                onPress={() => navigation.navigate("Add New Food Type")}
               >
                 <Text
                   style={{

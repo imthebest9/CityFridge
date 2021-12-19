@@ -45,7 +45,7 @@ const SignIn = ({navigation, route}) => {
     }
 
     if(isLoggedIn){
-        navigation.navigate('Profile');
+        navigation.navigate('Your Store');
     }
 
     return (
