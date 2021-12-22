@@ -20,6 +20,7 @@ const SignIn = ({navigation, route}) => {
                     user = JSON.parse(value);
                     setUsername(user.username);
                     setPassword(user.password);
+                    //navigation.navigate('Profile', {username: username});
                 }
             }
         )

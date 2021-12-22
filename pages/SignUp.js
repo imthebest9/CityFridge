@@ -10,7 +10,7 @@ import SwitchSelector from '../components/SwitchSelector';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function SignUp({navigation, route}) {
-    const {styles, componentWidth} = route.params;
+    const {styles} = route.params;
     const [name, setName] = useState(null);
     const [username, setUsername] = useState(null);
     const [email, setEmail] = useState(null);
@@ -56,14 +56,14 @@ export default function SignUp({navigation, route}) {
         </View>
         <ScrollView contentContainerStyle={{alignItems:'center'}}>
             {isVendor ? (
-                <View style={{alignItems:'center', width: componentWidth}}>
+                <View style={styles.form}>
                     <TextInput style={styles.textInput}
                     placeholder='Business Name'
                     onChangeText={(input)=>setName(input)}
                     />
                 </View>
                 ) : (
-                <View style={{alignItems:'center', width: componentWidth}}>
+                <View style={styles.form}>
                     <TextInput style={styles.textInput}
                     placeholder='Name'
                     onChangeText={(input)=>setName(input)}
