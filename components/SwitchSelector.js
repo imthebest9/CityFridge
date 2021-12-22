@@ -1,8 +1,9 @@
-
 import React, {useState} from 'react';
-
 import {StyleSheet, Text, View, TouchableOpacity, Dimensions} from 'react-native';
-
+import {
+  useFonts,
+  Merriweather_400Regular
+} from "@expo-google-fonts/merriweather";
 /*
 To implement the selector in your screen:
 import SwitchSelector from '../components/SwitchSelector';
@@ -21,6 +22,7 @@ const SwitchSelector = ({
   optionRight,
   onSelectSwitch,
   }) => {
+  useFonts({Merriweather_400Regular});
   const [getSelectionOption, setSelectionOption] = useState(selectionOption);
 
   const updatedSwitchData = val => {
@@ -81,6 +83,7 @@ export const styles = (selectionColor, getSelectionOption, selectionOption) => S
     },
     text: {
         color: getSelectionOption == selectionOption ? 'white' : selectionColor,
-        fontSize: 16
+        fontSize: 16,
+        fontFamily: 'Merriweather_400Regular'
     }
   });
