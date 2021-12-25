@@ -73,9 +73,9 @@ export default function FoodQuantityUpdate() {
               style={{
                 marginRight: 30,
                 fontFamily: "MerriweatherSans_400Regular",
-                fontSize: 16,
               }}
-            >
+                 fontSize: 16,
+           >
               {item.quantity}
             </Text> */}
             <NumericInput value={parseInt(item.quantity)} containerStyle={{marginRight: 30, width: 150, height: 60}} />
