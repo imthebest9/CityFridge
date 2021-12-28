@@ -38,6 +38,7 @@ import {
   MerriweatherSans_800ExtraBold_Italic,
 } from "@expo-google-fonts/merriweather-sans";
 import AppLoading from "expo-app-loading";
+import StorePage from "./pages/StorePage";
 
 const Stack = createStackNavigator();
 
@@ -76,7 +77,7 @@ export default function Navigation() {
             headerStyle: { backgroundColor: "#116530", elevation: 0 },
             headerTitleStyle: { fontSize: 24, fontFamily:"Merriweather_700Bold" }
           }}
-          initialRouteName="Sign In"
+          initialRouteName="Kingsbay Hypermarket"  // testing
         >
           <Stack.Screen
             name="Sign In"
@@ -142,6 +143,10 @@ export default function Navigation() {
           <Stack.Screen
             name="Add New Food Type"
             component={VendorNewFoodType}
+          />
+          <Stack.Screen
+            name="Kingsbay Hypermarket"
+            component={StorePage}
           />
         </Stack.Navigator>
       </NavigationContainer>
