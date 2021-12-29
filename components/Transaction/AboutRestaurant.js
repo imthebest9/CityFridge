@@ -10,7 +10,7 @@ const yelpRestaurantInfo = {
 
 const {name, image, rating, kilogram}= yelpRestaurantInfo;
 // const formattedCategories = categories.map((cat)=> cat.title).join(" • ");
-const description = `Rating: ${rating}  Total Saved: ${kilogram} kg`; 
+const description = `Rating: ${rating}⭐ Total Saved: ${kilogram} kg`; 
 
 export default function AboutRestaurant() {
   return (
