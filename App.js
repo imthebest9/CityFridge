@@ -10,7 +10,6 @@ import SignUp from "./pages/SignUp";
 import Tviewcart from "./pages/Tviewcart";
 
 export default function App() {
-  //  return <Navigation />
   //  return <Taddcart />;
     return <Navigation/>;
   // return < VendorMain/>;
