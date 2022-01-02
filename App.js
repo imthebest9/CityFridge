@@ -12,7 +12,7 @@ import Tviewcart from "./pages/Tviewcart";
 export default function App() {
   //  return <Navigation />
   //  return <Taddcart />;
-    return <Tviewcart/>;
+    return <Navigation/>;
   // return < VendorMain/>;
   //return <VendorNewFoodType/>;
   //  return <VendorUpdateFoodQty/>;

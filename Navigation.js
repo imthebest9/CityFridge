@@ -77,7 +77,7 @@ export default function Navigation() {
             headerStyle: { backgroundColor: "#116530", elevation: 0 },
             headerTitleStyle: { fontSize: 24, fontFamily:"Merriweather_700Bold" }
           }}
-          initialRouteName="Kingsbay Hypermarket"  // testing
+          initialRouteName="Your Store"  // testing
         >
           <Stack.Screen
             name="Sign In"
