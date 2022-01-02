@@ -68,6 +68,7 @@ const styles = StyleSheet.create({
 });
 
 export default function AboutFood() {
+
   const dispatch = useDispatch();
   const selectItem = (item) =>
     dispatch({
@@ -85,6 +86,7 @@ export default function AboutFood() {
                 <BouncyCheckbox
                   iconStyle={{ borderColor: "lightgray", borderRadius: 6 }}
                   fillColor="#4EB574"
+                  onPress={()=> selectItem(food)}
                 />
               }
               <FoodInfo food={food} />

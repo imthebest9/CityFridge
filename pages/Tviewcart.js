@@ -1,6 +1,6 @@
 import React from "react";
 import { View, Text } from "react-native";
-import VpickupTime from "../components/Transaction/VpickupTime";
+import VpickupTime from "../components/Transaction/GenerateTac";
 import VreserveButton from "../components/Transaction/VreserveButton";
 import BottomTabsVendor from "../components/vendor/BottomTabsVendor";
 
@@ -8,7 +8,7 @@ export default function Tviewcart() {
   // const{title, price} = item;
 
   return (
-    <View style={{flex:1}}>
+    <View style={{ flex: 1 }}>
       <Text
         style={{
           backgroundColor: "#4EB574",
@@ -33,7 +33,7 @@ export default function Tviewcart() {
 
       <View
         style={{
-          flex:1,
+          flex: 1,
           flexDirection: "row",
           justifyContent: "space-between",
           padding: 20,
@@ -43,10 +43,9 @@ export default function Tviewcart() {
       >
         <Text style={{ fontWeight: "600", fontSize: 16 }}>Apple</Text>
         <Text style={{ opacity: 0.7, fontSize: 16 }}>RM 10.00</Text>
-        
       </View>
-      <VpickupTime />
       <VreserveButton />
+      
       <BottomTabsVendor />
     </View>
   );
