@@ -6,45 +6,29 @@ import {
     Image,
     TouchableOpacity
     } from 'react-native'
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import SwitchSelector from '../components/SwitchSelector';
-import {useIsFocused } from '@react-navigation/native';
+import SwitchSelector from '../components/SwitchSelector'
+import { StackActions, useIsFocused } from '@react-navigation/native';
+import { auth, database } from "../firebase"
+import { doc, getDoc } from "firebase/firestore"
 
 export default function UserProfile({navigation, route}) {
-    const {styles} = route.params;
-    const [name, setName] = useState(null);
-    const [username, setUsername] = useState(null);
-    const [email, setEmail] = useState(null);
-    const [mobile, setMobile] = useState(null);
-    const [location, setLocation] = useState(null);
-    const [address, setAddress] = useState(null);
-    const [isVendor, setIsVendor] = useState(false);
-    const [selectedOption, setSelectedOption] = useState(1);
-    var user;
+    const {styles} = route.params
+    const [data, setData] = useState([])
+    const [selectedOption, setSelectedOption] = useState(1)
 
-    const getData = async() => {
-        try{
-            await AsyncStorage.getItem('UserData').then(
-                value => {
-                    if (value != null){
-                        user = JSON.parse(value);
-                        setUsername(user.username);
-                        setName(user.name);
-                        setMobile(user.mobile);
-                        setEmail(user.email);
-                        setLocation(user.location);
-                        setAddress(user.address);
-                        setIsVendor(user.isVendor);
-                    }
-                }
-            )
-        } catch (error) {
-            alert(error);
+    const user = auth.currentUser
+
+    useEffect(()=>{
+        if(user){
+            getDoc(doc(database, "users", user.uid)).then((docSnap)=>{
+                setData(docSnap.data())
+            });
         }
-    }
-
-    useEffect(() => {
-        getData();
+        else{
+            navigation.dispatch(
+                StackActions.replace('Sign In')
+            );
+        }
     }, [useIsFocused()])
 
     return (
@@ -62,23 +46,23 @@ export default function UserProfile({navigation, route}) {
                 (selectedOption==1) ?
                 (<View style={styles.profileContainer}>
                 <Text style={styles.nameFont}>
-                    {name}
+                    {data['name']}
                 </Text>
                 <Text style={styles.locationFont}>
-                    {location}
+                    {data['location']}
                 </Text>
                 <View style={styles.infoContainer}>
                     <View style={styles.infoRowContainer}>
                         <Text style={styles.infoTitleFont}>Address</Text> 
-                        <Text style={styles.infoBodyFont}>{address}</Text>
+                        <Text style={styles.infoBodyFont}>{data['address']}</Text>
                     </View>
                     <View style={styles.infoRowContainer}>
                         <Text style={styles.infoTitleFont}>Contact Number</Text> 
-                        <Text style={styles.infoBodyFont}>{mobile}</Text>
+                        <Text style={styles.infoBodyFont}>{data['mobile']}</Text>
                     </View>
                     <View style={styles.infoRowContainer}>
                         <Text style={styles.infoTitleFont}>Email</Text> 
-                        <Text style={styles.infoBodyFont}>{email}</Text>
+                        <Text style={styles.infoBodyFont}>{data['email']}</Text>
                     </View>
                 </View>
                 <View style={styles.contributionContainer}>
@@ -89,7 +73,7 @@ export default function UserProfile({navigation, route}) {
                     </View>
                     <View style={styles.contributionInfoContainer}>
                         <Text style={styles.contributionInfoFont}>
-                            15 kg
+                            {data['contribution']} kg
                         </Text>
                         <Text style={styles.contributionInfoBodyFont}>
                             of foods have been saved
