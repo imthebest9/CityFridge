@@ -1,7 +1,7 @@
 import React from 'react'
 import { View, Text } from 'react-native'
 
-export default function PickupTime() {
+export default function VpickupTime() {
     return (
         <View>
             <Text>

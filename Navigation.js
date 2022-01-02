@@ -3,6 +3,36 @@ import { StyleSheet, Text, TouchableOpacity, Dimensions } from "react-native";
 
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
+import Taddcart from "./pages/Taddcart";
+import Tviewcart from "./pages/Tviewcart";
+
+import { Provider as ReduxProvider } from "react-redux";
+import configureStore from "./redux/store";
+// import configureStore from "./redux/reducers/store";
+
+
+const store = configureStore();
+
+export default function Navigation() {
+  const Stack = createStackNavigator();
+
+  const screenOptions = {
+    headerShown: false,
+  };
+
+  return (
+    <ReduxProvider store={store}>
+      <NavigationContainer>
+        <Stack.Navigator initialRouteName="Taddcart" screenOptions={screenOptions}>
+          <Stack.Screen name="Taddcart" component={Taddcart} />
+          <Stack.Screen name="Tviewcart" component={Tviewcart} />
+        </Stack.Navigator>
+      </NavigationContainer>
+    </ReduxProvider>
+  );
+}
+
+/*
 import SignIn from "./pages/SignIn";
 import SignUp from "./pages/SignUp";
 import UserSetting from "./pages/UserSetting";
@@ -177,4 +207,4 @@ const styles = StyleSheet.create({
     margin: 20,
     height: width * 0.3,
   },
-});
+});*/
