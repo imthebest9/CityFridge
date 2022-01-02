@@ -5,7 +5,7 @@ const items = [
   {
     userid: "userno1",
     food: "sardin x2, bread x3",
-    time: "8m ago",
+    time: "4/1/2022 7:15:30 AM",
   },
   {
     userid: "userno2",

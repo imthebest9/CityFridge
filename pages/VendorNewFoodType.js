@@ -11,11 +11,17 @@ import {
 } from "react-native";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import BottomTabsVendor from "../components/vendor/BottomTabsVendor";
+import { db } from "../firebase";
+import { addDoc, collection, doc, setDoc } from "firebase/firestore";
 
 export default function VendorNewFoodType() {
   const [date, setDate] = useState(new Date(1598051730000));
   const [mode, setMode] = useState("date");
   const [show, setShow] = useState(false);
+  const [name, setName] = useState(null);
+  const [quantity, setQuantity] = useState(null);
+  const [price, setPrice] = useState(null);
+  const [weight, setWeight] = useState(null);
 
   const onChange = (event, selectedDate) => {
     const currentDate = selectedDate || date;
@@ -36,59 +42,42 @@ export default function VendorNewFoodType() {
     showMode("time");
   };
 
+  const onSave = async ()=> {
+    await setDoc(doc(db, "foods", name), {
+      name: name,
+      quantity: quantity,
+      price: price,
+      weight: weight,
+      date: date,
+    });
+    console.log("saved")
+  };
+
   return (
     <View style={{ backgroundColor: "#fff", paddingTop: 40, flex: 1 }}>
-      {/* <View style={{ flexDirection: "row" }}>
-        <View style={{ flex: 1 }}>
-          <TouchableOpacity>
-            <Text
-              style={{
-                fontSize: 18,
-                // fontFamily: "Merriweather_400Regular",
-                color: "#349F5C",
-                marginLeft: 25,
-                marginTop: 5,
-              }}
-            >
-              Back
-            </Text>
-          </TouchableOpacity>
-        </View>
-        <View style={{ flex: 1, alignItems: "center" }}>
-          <Text style={{ fontSize: 24 }}>Your store</Text>
-        </View>
-        <View style={{ flex: 1 }}>
-          <Text></Text>
-        </View>
-      </View> */}
       <ScrollView>
-        {/* <View style={{ marginTop: 30, marginLeft: 10 }}>
-          <Text
-            style={{
-              fontSize: 20,
-              //   fontFamily: "Merriweather_700Bold",
-              marginLeft: 20,
-              marginBottom: 10,
-            }}
-          >
-            Add New Food Type
-          </Text>
-        </View> */}
-        <TextInput placeholder="Food Name" style={styles.input} />
+        <TextInput
+          placeholder="Food Name"
+          style={styles.input}
+          onChangeText={(input) => setName(input)}
+        />
         <TextInput
           placeholder="Food Quantity"
           keyboardType="numeric"
           style={styles.input}
+          onChangeText={(input) => setQuantity(input)}
         />
         <TextInput
           placeholder="Food Price"
           keyboardType="numeric"
           style={styles.input}
+          onChangeText={(input) => setPrice(input)}
         />
         <TextInput
           placeholder="Food Weight (in kg)"
           keyboardType="numeric"
           style={styles.input}
+          onChangeText={(input) => setWeight(input)}
         />
         <View>
           <View style={{ marginTop: 10, marginLeft: 25, marginRight: 140 }}>
@@ -118,6 +107,7 @@ export default function VendorNewFoodType() {
               borderRadius: 30,
               margin: 10,
             }}
+            onPress={onSave}
           >
             <Text
               style={{
@@ -145,6 +135,6 @@ const styles = StyleSheet.create({
     width: 300,
     padding: 10,
     fontSize: 16,
-    fontFamily: "MerriweatherSans_400Regular"
+    fontFamily: "MerriweatherSans_400Regular",
   },
 });
