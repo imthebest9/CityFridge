@@ -1,39 +1,38 @@
-import React, {useState} from 'react';
+import React, {useState} from 'react'
 import {
     View,
     Image,
     Text,
     TouchableOpacity,
-    TextInput} from 'react-native';
-import { StackActions } from '@react-navigation/native';
-import { auth } from "../firebase";
-import { onAuthStateChanged, signInWithEmailAndPassword } from "firebase/auth";
+    TextInput,
+    StyleSheet,
+    Dimensions,
+    Keyboard
+    } from 'react-native'
+import { StackActions } from '@react-navigation/native'
+import { auth, database } from "../firebase"
+import { signInWithEmailAndPassword } from "firebase/auth"
+import { doc, getDoc } from "firebase/firestore"
+import AsyncStorage from '@react-native-async-storage/async-storage'
 
-const SignIn = ({navigation, route}) => {
-    const {styles} = route.params;
+export default ({navigation}) => {
     const [email, setEmail] = useState(null);
-    const [password, setPassword] = useState(null);    
+    const [password, setPassword] = useState(null);
 
-    onAuthStateChanged(auth, (user) => {
-        if (user && user.emailVerified) {
-            navigation.dispatch(
-                StackActions.replace('Profile', {
-                    username: user.displayName,
-                })
-            );
+    auth.onAuthStateChanged((user)=>{
+        if(user && user.emailVerified){
+            storeProfile(user.uid, user.displayName)
         }
-    });
+    })
 
     const onSignIn = () => {
+        Keyboard.dismiss()
         signInWithEmailAndPassword(auth, email, password)
         .then((userCredential) => {
             const user = userCredential.user;
-            if(user.emailVerified)
-            navigation.dispatch(
-                StackActions.replace('Profile', {
-                    username: user.displayName
-                })
-            );
+            if(user.emailVerified){
+                storeProfile(user.uid, user.displayName)
+            }
             else{
                 alert("Please verify your email")
             }
@@ -41,6 +40,22 @@ const SignIn = ({navigation, route}) => {
         .catch((error) => {
             alert(error.message);
         });
+    }
+
+    const storeProfile = (id, username) => {
+        getDoc(doc(database, "customers", id)).then((docSnap)=>{
+            if(docSnap.exists()){
+                AsyncStorage.setItem("profile", "customers")
+            }
+            else{
+                AsyncStorage.setItem("profile", "vendors")
+            }
+        });
+        navigation.dispatch(
+            StackActions.replace('Profile', {
+                username: username
+            })
+        );
     }
 
     return (
@@ -72,4 +87,46 @@ const SignIn = ({navigation, route}) => {
       );
 }
 
-export default SignIn;
+const width = Dimensions.get("screen").width;
+const componentWidth = width * 0.8;
+
+export const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: 'white',
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
+  form: {
+    flex: 1,
+    alignItems: "center",
+    width: componentWidth,
+  },
+  textInput: {
+    backgroundColor: "#f6f6f6",
+    borderRadius: 5,
+    padding: 10,
+    margin: 7,
+    width: "100%",
+    color: "#000",
+    fontSize: 16,
+    fontFamily: "MerriweatherSans_400Regular"
+  },
+  button: {
+    backgroundColor: "#4EB574",
+    borderRadius: 50,
+    padding: 10,
+    marginVertical: 10,
+    width: "100%",
+  },
+  buttonText: {
+    color: "#fff",
+    fontSize: 16,
+    textAlign: "center",
+    fontFamily: "Merriweather_400Regular"
+  },
+  logo: {
+    margin: 20,
+    height: width * 0.3,
+  }
+});

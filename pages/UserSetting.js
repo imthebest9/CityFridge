@@ -9,27 +9,46 @@ import {
     } from 'react-native'
     import SwitchSelector from '../components/SwitchSelector';
 //import ImagePicker from 'react-native-image-crop-picker';
+import { styles } from './UserProfile'
 import { auth, database } from "../firebase";
-import { updateEmail, updatePassword, reauthenticateWithCredential, EmailAuthProvider  } from "firebase/auth";
-import { doc, getDoc, setDoc } from "firebase/firestore"; 
+import { updateEmail, updatePassword, reauthenticateWithCredential, sendSignInLinkToEmail , EmailAuthProvider  } from "firebase/auth";
+import { doc, getDoc, setDoc } from "firebase/firestore";
+import AsyncStorage from '@react-native-async-storage/async-storage'
 
-export default function UserProfile({navigation, route}) {
-    const {styles, componentWidth} = route.params
+export default ()=>{
+    const [data, setData] = useState([])
     const [name, setName] = useState('')
     const [email, setEmail] = useState('')
-    const [mobile, setMobile] = useState('')
+    const [contact, setContact] = useState('')
     const [password, setPassword] = useState('')
     const [newPassword, setNewPassword] = useState('')
     const [confirmPassword, setConfirmPassword] = useState('')
     const [location, setLocation] = useState('')
     const [address, setAddress] = useState('')
     const [selectedOption, setSelectedOption] = useState(1)
-    const user = auth.currentUser
+    const [user, setUser] = useState()
+    const [profile, setProfile] = useState('')
+
+    useEffect(()=>{
+        auth.onAuthStateChanged((currentUser)=>{
+            if(currentUser){
+                setUser(currentUser)
+                AsyncStorage.getItem('profile').then(profile=>{
+                    setProfile(profile)
+                    getDoc(doc(database, profile, user.uid)).then((snapshot)=>{
+                        setData(snapshot.data())
+                    })
+                })
+            }
+        })
+    }, [profile==''])
+
+    
 
     const onValidatieProfile = () => {
         if(!name)
         alert('Please enter your name')
-        else if(!mobile)
+        else if(!contact)
         alert('Please enter your mobile number')
         else if(!location)
         alert('Please enter your location')
@@ -41,9 +60,9 @@ export default function UserProfile({navigation, route}) {
 
     const onUpdateProfile = () => {
         if(onValidatieProfile()){
-            setDoc(doc(database, "users", user.uid), {
+            setDoc(doc(database, profile, user.uid), {
                 name: name,
-                mobile: mobile,
+                contact: contact,
                 location: location,
                 address: address
               }, { merge: true });
@@ -54,14 +73,15 @@ export default function UserProfile({navigation, route}) {
     const onUpdateAccount = () => {
         if(!password && !newPassword && !confirmPassword){
             if(email!=user.email){
-                updateEmail(user, email).then(()=>{
-                    setDoc(doc(database, "users", user.uid), {
+                
+                /*updateEmail(user, email).then(()=>{
+                    setDoc(doc(database, profile, user.uid), {
                     email: email
                     }, { merge: true });
                     alert('Email updated')
                 }).catch((error)=>{
                     alert(error.message)
-                })
+                })*/
             }
         }
         else{
@@ -85,7 +105,7 @@ export default function UserProfile({navigation, route}) {
                     updatePassword(user, password).then(()=>{
                         if(email!=user.email){
                             updateEmail(user, email).then(()=>{
-                                setDoc(doc(database, "users", user.uid), {
+                                setDoc(doc(database, profile, user.uid), {
                                 email: email
                                 }, { merge: true });
                                 alert('Email updated')
@@ -103,17 +123,6 @@ export default function UserProfile({navigation, route}) {
             }
         }
     }
-
-    useEffect(() => {
-        getDoc(doc(database, "users", user.uid)).then((docSnap)=>{
-            const data = docSnap.data()
-            setName(data['name'])
-            setMobile(data['mobile'])
-            setLocation(data['location'])
-            setAddress(data['address'])
-            setEmail(user.email)
-        });
-    }, [])
 
     return (
         <View style={styles.container}>
@@ -143,36 +152,36 @@ export default function UserProfile({navigation, route}) {
                 onSelectSwitch={option=>{
                     setSelectedOption(option)
                 }}/>
-            <ScrollView contentContainerStyle={{width: componentWidth}}>
+            <ScrollView contentContainerStyle={styles.form}>
                 {
                     (selectedOption==1) ? (
                     <View style={styles.infoContainer}>
                         <View style={styles.infoRowContainer}>
                             <Text style={styles.infoTitleFont}>Name</Text>
                             <TextInput style={styles.settingTextInput}
-                            defaultValue={name}
+                            defaultValue={data["name"]}
                             onChangeText={(input)=>setName(input.trim())}
                             />
                         </View>
                         <View style={styles.infoRowContainer}>
                             <Text style={styles.infoTitleFont}>Contact Number</Text> 
                             <TextInput style={styles.settingTextInput}
-                                defaultValue={mobile}
-                                onChangeText={(input)=>setMobile(input.trim())}
+                                defaultValue={data["contact"]}
+                                onChangeText={(input)=>setContact(input.trim())}
                                 keyboardType='numeric'
                                 />
                         </View>
                         <View style={styles.infoRowContainer}>
                             <Text style={styles.infoTitleFont}>Location</Text>
                             <TextInput style={styles.settingTextInput}
-                                defaultValue={location}
+                                defaultValue={data["location"]}
                                 onChangeText={(input)=>setLocation(input.trim())}
                                 />
                         </View>
                         <View style={styles.infoRowContainer}>
                             <Text style={styles.infoTitleFont}>Address</Text>
                             <TextInput style={styles.settingTextInput}
-                                defaultValue={address}
+                                defaultValue={data["address"]}
                                 onChangeText={(input)=>setAddress(input.trim())}
                                 />
                         </View>
@@ -182,7 +191,7 @@ export default function UserProfile({navigation, route}) {
                         <View style={styles.infoRowContainer}>
                             <Text style={styles.infoTitleFont}>Email</Text>
                             <TextInput style={styles.settingTextInput}
-                                defaultValue={email}
+                                defaultValue={data["email"]}
                                 onChangeText={(input)=>setEmail(input.trim())}
                                 />
                         </View>

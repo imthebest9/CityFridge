@@ -7,17 +7,17 @@ import {
     TextInput
     } from 'react-native';
 import SwitchSelector from '../components/SwitchSelector';
+import { styles } from './SignIn'
 import { StackActions } from '@react-navigation/native';
 import { auth, database } from "../firebase";
 import { createUserWithEmailAndPassword, updateProfile, sendEmailVerification } from "firebase/auth";
 import { doc, setDoc } from "firebase/firestore"; 
 
-export default function SignUp({navigation, route}) {
-    const {styles} = route.params;
+export default ({navigation})=>{
     const [name, setName] = useState('');
     const [username, setUsername] = useState('');
     const [email, setEmail] = useState('');
-    const [mobile, setMobile] = useState('');
+    const [contact, setContact] = useState('');
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
     const [location, setLocation] = useState('');
@@ -29,11 +29,11 @@ export default function SignUp({navigation, route}) {
         alert('Please enter your name')
         else if(!username)
         alert('Please enter your username')
-        else if(!username.match(/^[a-z0-9_\.]*$/))
+        else if(!username.match(/^[a-zA-Z0-9_\.]*$/))
         alert('Username must must contain lowecase letters, numbers, periods(.), or underscores(_) only.')
         else if(!email)
         alert('Please enter your email address')
-        else if(!mobile)
+        else if(!contact)
         alert('Please enter your mobile number')
         else if(!password)
         alert('Please enter your password')
@@ -57,19 +57,27 @@ export default function SignUp({navigation, route}) {
                 if(isVendor){
                     setDoc(doc(database, "vendors", user.uid), {
                         name: name,
-                        username: username
+                        username: username,
+                        contact: contact,
+                        email: email,
+                        location: location,
+                        address: address,
+                        isVendor: isVendor,
+                        contribution: parseFloat(0)
                       });
                 }
-                setDoc(doc(database, "users", user.uid), {
-                    name: name,
-                    username: username,
-                    mobile: mobile,
-                    email: email,
-                    location: location,
-                    address: address,
-                    isVendor: isVendor,
-                    contribution: 0
-                  });
+                else{
+                    setDoc(doc(database, "customers", user.uid), {
+                        name: name,
+                        username: username,
+                        contact: contact,
+                        email: email,
+                        location: location,
+                        address: address,
+                        isVendor: isVendor,
+                        contribution: parseFloat(0)
+                      });
+                }
                 updateProfile(user, {
                     displayName: username
                   }).then(() => {
@@ -128,8 +136,8 @@ export default function SignUp({navigation, route}) {
                 onChangeText={(input)=>setEmail(input.trim())}
                 />
                 <TextInput style={styles.textInput}
-                placeholder='Mobile Number'
-                onChangeText={(input)=>setMobile(input.trim())}
+                placeholder='Contact Number'
+                onChangeText={(input)=>setContact(input.trim())}
                 keyboardType='numeric'
                 />
                 <TextInput style={styles.textInput}
