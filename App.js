@@ -18,7 +18,7 @@ export default function App() {
   // return < VendorMain/>;
   //return <VendorNewFoodType/>;
   //  return <VendorUpdateFoodQty/>;
-  //  return <SearchStorePage/>;
+  return <SearchStorePage/>;
   //return <SignIn/>;
-  return <SignUp/>;
+  //return <SignUp/>;
 }

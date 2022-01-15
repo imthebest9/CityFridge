@@ -17,7 +17,7 @@ export default class App extends React.Component {
                 // platform={'false'}
                 lightTheme
                 // placeholderTextColor='#000000'
-                placeholder="search" onChangeText={this.updateSearch} value={search}
+                placeholder="   Search" onChangeText={this.updateSearch} value={search}
                 containerStyle={{backgroundColor: 'white'}}
                 inputStyle={{backgroundColor: 'white'}}          
             />
