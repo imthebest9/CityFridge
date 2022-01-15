@@ -17,8 +17,8 @@ export default ({route})=>{
         var totalWeight = 0
         var totalPrice = 0
         var foodList = []
-        for (var foodID in data["food"]){
-            const quantity = data["food"][foodID]
+        for (var foodID in data["foods"]){
+            const quantity = data["foods"][foodID]
             const foodData = (await getDoc(doc(database, "foods", foodID))).data()
             const weight = Math.round(foodData["weight"]*quantity*100)/100
             totalWeight += weight

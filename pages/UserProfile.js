@@ -1,10 +1,10 @@
 import React, {useState, useEffect} from 'react'
 import {
     View,
-    ScrollView,
     TouchableOpacity,
     Text,
     Image,
+    FlatList,
     Dimensions,
     StyleSheet
     } from 'react-native'
@@ -17,7 +17,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage'
 export default ({navigation})=>{
     const [data, setData] = useState([])
     const [history, setHistory] = useState([])
-    const [list, setList] = useState([])
+    const [historyList, setHistoryList] = useState([])
     const [selectedOption, setSelectedOption] = useState(1)
 
     useEffect(()=>{
@@ -39,17 +39,17 @@ export default ({navigation})=>{
     }, [useIsFocused()])
 
     const pushHistory = ()=>{
-        var historyList = []
+        var list = []
         const reservations = history["reservations"]
         for(var i = reservations.length-1; i>=0; i--){
-            reservationDetail(reservations[i]).then(reservation=>{
-                historyList.push(reservation)
-                setList(historyList)
+            reservationDetail(reservations[i], i).then(reservation=>{
+                list.push(reservation)
+                setHistoryList(list)
             })
         }
     }
 
-    const reservationDetail = async(reservationID)=>{
+    const reservationDetail = async(reservationID, key)=>{
         const reservationData = (await getDoc(doc(database, "reservations", reservationID))).data()
         const reservationDate = reservationData["date"].toDate()
         const date = reservationDate.toDateString().split(" ")
@@ -63,41 +63,22 @@ export default ({navigation})=>{
         time += " AM"
 
         var foodList = ""
-        for (var foodID in reservationData["food"]){
+        for (var foodID in reservationData["foods"]){
             const foodData = (await getDoc(doc(database, "foods", foodID))).data()
-            foodList += foodData["name"] + " x " + reservationData["food"][foodID] + "\n"
+            foodList += foodData["name"] + " x " + reservationData["foods"][foodID] + "\n"
         }
-        foodList = foodList.trim()
-        return(
-            <TouchableOpacity style={styles.historyRowContainer}
-            onPress={() => {navigation.navigate('History', {
-                data: reservationData,
-                date: date,
-                day: reservationDate.getDay(),
-                time: time,
-                isVendor: data["isVendor"]
-                })}}>
-                <View style={styles.historyDateContainer}>
-                    <Text style={styles.historyTitleFont}>
-                        {date[1]}
-                    </Text>
-                    <Text style={styles.historyTitleFont}>
-                        {date[2]}
-                    </Text>
-                </View>
-                <View style={styles.historyContainer}>
-                    <Text style={styles.historyTitleFont}>
-                        {data["isVendor"] ? reservationData["clientUsername"] : reservationData["vendorUsername"]}
-                    </Text>
-                    <Text style={styles.historyBodyFont}>
-                        {foodList}
-                    </Text>
-                </View>
-                <Text style={styles.historyTimeFont}>
-                    {time}
-                </Text>
-            </TouchableOpacity>
-        )
+        foodList = foodList.trimEnd()
+        const username = data["isVendor"] ? reservationData["clientUsername"] : reservationData["vendorUsername"]
+        return{
+            key: key,
+            data: reservationData,
+            date: date,
+            day: reservationDate.getDay(),
+            time: time,
+            isVendor: data["isVendor"],
+            username: username,
+            foodList: foodList
+        }
     }
 
     return (
@@ -153,9 +134,39 @@ export default ({navigation})=>{
             </View>) :
             (
             <View style={styles.profileContainer}>
-                <ScrollView>
-                    {list}
-                </ScrollView>
+                <FlatList
+                data={historyList}
+                renderItem={({item}) => (
+                    <TouchableOpacity style={styles.historyRowContainer}
+                    onPress={() => {navigation.navigate('History', {
+                        data: item.data,
+                        date: item.date,
+                        day: item.day,
+                        time: item.time,
+                        isVendor: item.isVendor
+                        })}}>
+                        <View style={styles.historyDateContainer}>
+                            <Text style={styles.historyTitleFont}>
+                                {item.date[1]}
+                            </Text>
+                            <Text style={styles.historyTitleFont}>
+                                {item.date[2]}
+                            </Text>
+                        </View>
+                        <View style={styles.historyContainer}>
+                            <Text style={styles.historyTitleFont}>
+                                {item.username}
+                            </Text>
+                            <Text style={styles.historyBodyFont}>
+                                {item.foodList}
+                            </Text>
+                        </View>
+                        <Text style={styles.historyTimeFont}>
+                            {item.time}
+                        </Text>
+                    </TouchableOpacity>
+                )}
+                />
             </View>
             )
             }
