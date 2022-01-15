@@ -1,8 +1,9 @@
 import React from "react";
 import { StyleSheet, Text, TouchableOpacity, Dimensions } from "react-native";
-
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
+import { signOut } from "firebase/auth";
+import { auth } from "./firebase";
 import SignIn from "./pages/SignIn";
 import SignUp from "./pages/SignUp";
 import UserSetting from "./pages/UserSetting";
@@ -76,7 +77,7 @@ export default function Navigation() {
             headerTitleAlign: "center",
             headerTintColor: "#fff",
             headerStyle: { backgroundColor: "#116530", elevation: 0 },
-            headerTitleStyle: { fontSize: 24, fontFamily:"Merriweather_700Bold" }
+            headerTitleStyle: { fontSize: 18, fontFamily:"Merriweather_700Bold" }
           }}
           initialRouteName="Search Page"  // testing
         >
@@ -85,6 +86,7 @@ export default function Navigation() {
             component={SignIn}
             initialParams={{ styles}}
             options={({ navigation }) => ({
+              headerLeft: null,
               headerRight: () => (
                 <TouchableOpacity
                   onPress={() => navigation.navigate("Sign Up")}
@@ -111,7 +113,13 @@ export default function Navigation() {
                   <Text style={[styles.buttonText, {margin:10}]}>Settings</Text>
                 </TouchableOpacity>),
               headerRight: () => (
-                <TouchableOpacity onPress={()=>navigation.navigate('Sign In')}>
+                <TouchableOpacity onPress={()=>{
+                  signOut(auth).then(() => {
+                    navigation.navigate('Sign In')
+                  }).catch((error) => {
+                    alert(error.message)
+                  });
+                  }}>
                   <Text style={[styles.buttonText, {margin:10}]}>Sign Out</Text>
                 </TouchableOpacity>),
               title: route.params.username,

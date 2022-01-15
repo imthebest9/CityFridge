@@ -1,8 +1,8 @@
-import React from "react";
+import React, { useState } from "react";
 import { View, Text } from "react-native";
 import NumericInput from "react-native-numeric-input";
 
-const items = [
+const data = [
   {
     food: "Sardin",
     quantity: "9",
@@ -54,6 +54,62 @@ const items = [
 ];
 
 export default function FoodQuantityUpdate() {
+  const [items, setItems] = useState([
+    {
+      food: "Sardin",
+      quantity: "9",
+    },
+    {
+      food: "Bread",
+      quantity: "11",
+    },
+    {
+      food: "Cake",
+      quantity: "19",
+    },
+    {
+      food: "Coke",
+      quantity: "20",
+    },
+    {
+      food: "Sardin",
+      quantity: "9",
+    },
+    {
+      food: "Bread",
+      quantity: "11",
+    },
+    {
+      food: "Cake",
+      quantity: "19",
+    },
+    {
+      food: "Coke",
+      quantity: "20",
+    },
+    {
+      food: "Sardin",
+      quantity: "9",
+    },
+    {
+      food: "Bread",
+      quantity: "11",
+    },
+    {
+      food: "Cake",
+      quantity: "19",
+    },
+    {
+      food: "Coke",
+      quantity: "20",
+    },
+  ]);
+  const updateData = (value) => {
+    let newArr = [...items];
+    newArr[index] = e.target.value;
+
+    setItems(newArr);
+  };
   return (
     <View>
       {items.map((item, index) => (
@@ -78,7 +134,11 @@ export default function FoodQuantityUpdate() {
            >
               {item.quantity}
             </Text> */}
-            <NumericInput value={parseInt(item.quantity)} containerStyle={{marginRight: 30, width: 150, height: 60}} />
+            <NumericInput
+              value={item.quantity}
+              onChange={value => updateData(value)}
+              containerStyle={{ marginRight: 30, width: 150, height: 60 }}
+            />
           </View>
           <View
             style={{
