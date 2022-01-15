@@ -11,7 +11,7 @@ import {
 } from "react-native";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import BottomTabsVendor from "../components/vendor/BottomTabsVendor";
-import { db } from "../firebase";
+import { database } from "../firebase";
 import { addDoc, collection, doc, setDoc } from "firebase/firestore";
 
 export default function VendorNewFoodType() {
@@ -43,7 +43,7 @@ export default function VendorNewFoodType() {
   };
 
   const onSave = async ()=> {
-    await setDoc(doc(db, "foods", name), {
+    await setDoc(doc(database, "foods", name), {
       name: name,
       quantity: quantity,
       price: price,
