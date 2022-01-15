@@ -12,13 +12,13 @@ import SearchStorePage from "./pages/SearchStorePage";
 import SignIn from "./pages/SignIn";
 
 export default function App() {
-  //  return <Navigation />
+  return <Navigation />
   //  return <Taddcart />;
   //  return <Tviewcart/>;
   // return < VendorMain/>;
   //return <VendorNewFoodType/>;
   //  return <VendorUpdateFoodQty/>;
-  return <SearchStorePage/>;
+  // return <SearchStorePage/>;
   //return <SignIn/>;
   //return <SignUp/>;
 }

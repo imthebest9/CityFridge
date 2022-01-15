@@ -12,6 +12,7 @@ import VendorMain from "./pages/VendorMain";
 import VendorConfirmOrder from "./pages/VendorConfirmOrder";
 import VendorUpdateFoodQty from "./pages/VendorUpdateFoodQty";
 import VendorNewFoodType from "./pages/VendorNewFoodType";
+import SearchStorePage from "./pages/SearchStorePage";
 import {
   useFonts,
   Merriweather_300Light,
@@ -77,7 +78,7 @@ export default function Navigation() {
             headerStyle: { backgroundColor: "#116530", elevation: 0 },
             headerTitleStyle: { fontSize: 24, fontFamily:"Merriweather_700Bold" }
           }}
-          initialRouteName="Kingsbay Hypermarket"  // testing
+          initialRouteName="Search Page"  // testing
         >
           <Stack.Screen
             name="Sign In"
@@ -147,6 +148,10 @@ export default function Navigation() {
           <Stack.Screen
             name="Kingsbay Hypermarket"
             component={StorePage}
+          />
+          <Stack.Screen
+            name="Search Page"
+            component={SearchStorePage}
           />
         </Stack.Navigator>
       </NavigationContainer>
