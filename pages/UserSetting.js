@@ -71,17 +71,28 @@ export default ()=>{
     }
 
     const onUpdateAccount = () => {
-        if(!password && !newPassword && !confirmPassword){
-            if(email!=user.email){
-                
-                /*updateEmail(user, email).then(()=>{
+        if(email!=user.email && !password){
+            alert("Please enter your current password to update your email")
+        }
+        else if(!newPassword && !confirmPassword && password){
+            if(!email){
+                alert("Please enter your new email to update your email")
+            }
+            else if(email!=user.email){
+                const credential = EmailAuthProvider.credential(
+                    user.email, 
+                    password
+                );
+                reauthenticateWithCredential(user, credential).then(() => {
+                    updateEmail(user, email).then(()=>{
                     setDoc(doc(database, profile, user.uid), {
                     email: email
                     }, { merge: true });
                     alert('Email updated')
-                }).catch((error)=>{
-                    alert(error.message)
-                })*/
+                    }).catch((error)=>{
+                        alert(error.message)
+                    })
+                }).catch(error=>alert(error.message))
             }
         }
         else{
@@ -198,7 +209,7 @@ export default ()=>{
                         <View style={styles.infoRowContainer}>
                             <Text style={styles.infoTitleFont}>Password</Text>
                             <TextInput style={styles.settingTextInput}
-                                placeholder='Password'
+                                placeholder='Current Password'
                                 onChangeText={(input)=>setPassword(input)}
                                 secureTextEntry={true}
                                 />

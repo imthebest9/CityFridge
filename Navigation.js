@@ -8,7 +8,7 @@ import SignIn from "./pages/SignIn";
 import SignUp from "./pages/SignUp";
 import UserSetting from "./pages/UserSetting";
 import UserProfile from "./pages/UserProfile";
-import HistoryInsight from "./pages/HistoryInsight";
+import UserHistory from "./pages/UserHistory";
 import VendorMain from "./pages/VendorMain";
 import VendorConfirmOrder from "./pages/VendorConfirmOrder";
 import VendorUpdateFoodQty from "./pages/VendorUpdateFoodQty";
@@ -124,7 +124,7 @@ export default function Navigation() {
             />
             <Stack.Screen
             name='History'
-            component={HistoryInsight}
+            component={UserHistory}
             options={
             {
               headerTintColor: "black",

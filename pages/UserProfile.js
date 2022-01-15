@@ -16,8 +16,8 @@ import AsyncStorage from '@react-native-async-storage/async-storage'
 
 export default ({navigation})=>{
     const [data, setData] = useState([])
-    const [reservation, setReservation] = useState([])
     const [history, setHistory] = useState([])
+    const [list, setList] = useState([])
     const [selectedOption, setSelectedOption] = useState(1)
 
     useEffect(()=>{
@@ -27,7 +27,7 @@ export default ({navigation})=>{
                     setData(docSnap.data())
                 })
                 getDoc(doc(database, "history", user.uid)).then(docSnap=>{
-                    setReservation(docSnap.data()["history"])
+                    setHistory(docSnap.data())
                 })
             }
             else{
@@ -40,10 +40,13 @@ export default ({navigation})=>{
 
     const pushHistory = ()=>{
         var historyList = []
-        reservation.forEach(async(reservationID)=>{
-            historyList.push(await reservationDetail(reservationID))
-            setHistory(historyList)
-        })
+        const reservations = history["reservations"]
+        for(var i = reservations.length-1; i>=0; i--){
+            reservationDetail(reservations[i]).then(reservation=>{
+                historyList.push(reservation)
+                setList(historyList)
+            })
+        }
     }
 
     const reservationDetail = async(reservationID)=>{
@@ -140,7 +143,7 @@ export default ({navigation})=>{
                     </View>
                     <View style={styles.contributionInfoContainer}>
                         <Text style={styles.contributionInfoFont}>
-                            {data['contribution']} kg
+                            {history["contribution"]} kg
                         </Text>
                         <Text style={styles.contributionInfoBodyFont}>
                             of foods have been saved
@@ -151,7 +154,7 @@ export default ({navigation})=>{
             (
             <View style={styles.profileContainer}>
                 <ScrollView>
-                    {history}
+                    {list}
                 </ScrollView>
             </View>
             )

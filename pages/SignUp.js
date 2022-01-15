@@ -30,7 +30,7 @@ export default ({navigation})=>{
         else if(!username)
         alert('Please enter your username')
         else if(!username.match(/^[a-zA-Z0-9_\.]*$/))
-        alert('Username must must contain lowecase letters, numbers, periods(.), or underscores(_) only.')
+        alert('Username must must contain only lowecase letters, numbers, periods(.), or underscores(_) only.')
         else if(!email)
         alert('Please enter your email address')
         else if(!contact)
