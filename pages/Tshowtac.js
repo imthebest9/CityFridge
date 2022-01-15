@@ -14,7 +14,7 @@ export default function Tshowtac() {
         <GenerateTac />
 
         <View style={styles.smallSquare}>
-          <Text></Text>
+          <Text  style={styles.text}>123wwe</Text>
         </View>
         <TouchableOpacity></TouchableOpacity>
       </View>
@@ -54,8 +54,8 @@ const styles = StyleSheet.create({
   },
   smallSquare: {
     backgroundColor: "#E8E8CC",
-    width: 150,
-    height: 35,
+    width: 180,
+    height: 45,
     alignItems: "center",
   },
 });

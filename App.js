@@ -13,9 +13,9 @@ import VendorConfirmOrder from "./pages/VendorConfirmOrder";
 
 export default function App() {
     // return <Navigation />
-      return <Taddcart />;
-      // return <Tviewcart/>;
-    //  return<Tshowtac/>;
+      //  return <Taddcart />;
+      //  return <Tviewcart/>;
+      return<Tshowtac/>;
     // return<VendorConfirmOrder/>;
   // return < VendorMain/>;
   //return <VendorNewFoodType/>;

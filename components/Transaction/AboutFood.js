@@ -3,7 +3,7 @@ import { View, Text, Image, StyleSheet, ScrollView } from "react-native";
 import BouncyCheckbox from "react-native-bouncy-checkbox";
 import Divider from "react-native-divider";
 import NumericInput from "react-native-numeric-input";
-import { useDispatch } from "react-redux";
+// import { useDispatch } from "react-redux";
 
 // refer MenuItem in youtube
 const food = [
@@ -69,12 +69,12 @@ const styles = StyleSheet.create({
 
 export default function AboutFood() {
 
-  const dispatch = useDispatch();
-  const selectItem = (item) =>
-    dispatch({
-      type: "ADD_TO_CART",
-      payload: item,
-    });
+  // const dispatch = useDispatch();
+  // const selectItem = (item) =>
+  //   dispatch({
+  //     type: "ADD_TO_CART",
+  //     payload: item,
+  //   });
 
   return (
     <View style={{ flex: 1 }}>
