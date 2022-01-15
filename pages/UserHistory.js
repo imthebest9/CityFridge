@@ -1,22 +1,21 @@
 import React, {useState, useEffect} from 'react'
 import { useIsFocused } from '@react-navigation/native'
-import { View, Text, StyleSheet } from 'react-native'
-import { ScrollView } from 'react-native-gesture-handler';
+import { View, Text, FlatList, StyleSheet } from 'react-native'
 import { database } from "../firebase"
 import { doc, getDoc } from 'firebase/firestore';
 
 
 export default ({route})=>{
-    const {data, date, day, time, isVendor} = route.params
+    const {data, date, day, time, isVendor, username} = route.params
     const weekdays = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Firday", "Saturday"]
-    const [weight, setWeight] = useState()
-    const [price, setPrice] = useState()
-    const [history, setHistory] = useState([])
+    const [weight, setWeight] = useState(0)
+    const [price, setPrice] = useState(0)
+    const [foodList, setFoodList] = useState([])
 
     useEffect(async() => {
         var totalWeight = 0
         var totalPrice = 0
-        var foodList = []
+        var list = []
         for (var foodID in data["foods"]){
             const quantity = data["foods"][foodID]
             const foodData = (await getDoc(doc(database, "foods", foodID))).data()
@@ -24,36 +23,16 @@ export default ({route})=>{
             totalWeight += weight
             const price = foodData["price"] * quantity
             totalPrice += price
-            foodList.push(historyItem(foodData["name"] + " x " + quantity, weight, price.toFixed(2)))
+            list.push({
+                key: foodID,
+                name: foodData["name"] + " x " + quantity,
+                weight: weight,
+                price: price.toFixed(2)})
         }
         setWeight(totalWeight)
         setPrice(totalPrice.toFixed(2))
-        setHistory(foodList)
+        setFoodList(list)
     }, [useIsFocused()])
-    
-    const historyItem = (item, weight, price)=>{
-        return(
-            <View style={styles.insightRowContainer}>
-                <View style={styles.insightLargeColumnContainer}>
-                    <View style={styles.itemBullet}>
-                    </View>
-                    <Text style={styles.itemFont}>
-                        {item}
-                    </Text>
-                </View>
-                <View style={styles.insightSmallColumnContainer}>
-                    <Text style={styles.itemFont}>
-                        {weight}
-                    </Text>
-                </View>
-                <View style={styles.insightSmallColumnContainer}>
-                    <Text style={styles.itemFont}>
-                        {price}
-                    </Text>
-                </View>
-            </View>
-        )
-    }
 
     return (
         <View style={styles.container}>
@@ -78,7 +57,7 @@ export default ({route})=>{
             </View>
             <View style={styles.insightContainer}>
                 <Text style={styles.insightStoreFont}>
-                {isVendor ? data["clientUsername"] : data["vendorUsername"]}
+                {username}
                 </Text>
                 <View style={styles.insightRowContainer}>
                     <View style={styles.insightLargeColumnContainer}>
@@ -97,9 +76,31 @@ export default ({route})=>{
                         </Text>
                     </View>
                 </View>
-                <ScrollView style={{maxHeight:180}}>
-                    {history}
-                </ScrollView>
+                <FlatList
+                style={{maxHeight:180}}
+                data={foodList}
+                renderItem={({item}) => (
+                    <View style={styles.insightRowContainer}>
+                        <View style={styles.insightLargeColumnContainer}>
+                            <View style={styles.itemBullet}>
+                            </View>
+                            <Text style={styles.itemFont}>
+                                {item.name}
+                            </Text>
+                        </View>
+                        <View style={styles.insightSmallColumnContainer}>
+                            <Text style={styles.itemFont}>
+                                {item.weight}
+                            </Text>
+                        </View>
+                        <View style={styles.insightSmallColumnContainer}>
+                            <Text style={styles.itemFont}>
+                                {item.price}
+                            </Text>
+                        </View>
+                    </View>
+                )}
+                />
                 <View style={styles.insightTotal}>
                     <View style={styles.insightRowContainer}>
                         <View style={styles.insightLargeColumnContainer}>

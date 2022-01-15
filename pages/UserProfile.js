@@ -72,6 +72,7 @@ export default ({navigation})=>{
         return{
             key: key,
             data: reservationData,
+            isComplete: reservationData["isComplete"],
             date: date,
             day: reservationDate.getDay(),
             time: time,
@@ -138,14 +139,16 @@ export default ({navigation})=>{
                 data={historyList}
                 renderItem={({item}) => (
                     <TouchableOpacity style={styles.historyRowContainer}
-                    onPress={() => {navigation.navigate('History', {
+                    onPress={() => {
+                        navigation.navigate('History', {
                         data: item.data,
                         date: item.date,
                         day: item.day,
                         time: item.time,
-                        isVendor: item.isVendor
+                        isVendor: item.isVendor,
+                        username: item.username
                         })}}>
-                        <View style={styles.historyDateContainer}>
+                        <View style={[styles.historyDateContainer, {backgroundColor: item.isComplete ? '#f6f6f6' : '#4EB574'}]}>
                             <Text style={styles.historyTitleFont}>
                                 {item.date[1]}
                             </Text>
@@ -331,7 +334,6 @@ export const styles = StyleSheet.create({
         borderBottomWidth: 1,
     },
     historyDateContainer:{
-        backgroundColor: '#f6f6f6',
         padding: 5,
         borderRadius: 10,
         alignItems: 'center',
