@@ -2,8 +2,10 @@ import React from "react";
 import { Text, TouchableOpacity, StyleSheet } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
+
 import { signOut } from "firebase/auth";
 import { auth } from "./firebase";
+
 import SignIn from "./pages/SignIn";
 import SignUp from "./pages/SignUp";
 import UserSetting from "./pages/UserSetting";
@@ -168,5 +170,8 @@ const styles = StyleSheet.create({
     fontSize: 16,
     textAlign: "center",
     fontFamily: "Merriweather_400Regular"
+
+
   }
 });
+

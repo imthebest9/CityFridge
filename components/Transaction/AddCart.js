@@ -10,7 +10,7 @@ export default function AddCart() {
         justifyContent:"center",
         flexDirection:"row",
         position:"absolute",
-        bottom: -280,
+        bottom: 90,
         zIndex: 999,
     }}>
       <View
@@ -25,7 +25,7 @@ export default function AddCart() {
             marginTop: 20,
             backgroundColor: "#4EB574",
             alignItems: "center",
-            padding: 13,
+            padding: 10,
             borderRadius: 30,
             width: 300,
             position: "relative",
