@@ -10,7 +10,7 @@ export default function GenerateTac() {
 }
 
 
-
+Math.floor((Math.random() * 100) + 1);
 
 
 // import React, { useState } from "react";
