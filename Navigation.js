@@ -171,7 +171,6 @@ const styles = StyleSheet.create({
     textAlign: "center",
     fontFamily: "Merriweather_400Regular"
 
-
   }
 });
 

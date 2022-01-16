@@ -8,6 +8,7 @@ import {
     TextInput
     } from 'react-native'
     import SwitchSelector from '../components/SwitchSelector';
+
 import ImagePicker from 'react-native-image-picker';
 import { styles } from './UserProfile'
 import { auth, database } from "../firebase";
