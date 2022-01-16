@@ -3,8 +3,10 @@ import { View, Text, Image } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 
 import { doc, getDoc } from "firebase/firestore";
-
-
+import { database } from "../firebase";
+import { collection, getDocs } from "firebase/firestore";
+import { useState, useEffect } from "react";
+import { useIsFocused } from "@react-navigation/native";
 
 const StoreData = [
   {
@@ -57,18 +59,24 @@ const StoreData = [
   },
 ];
 
+
 export default function Stores() {
-    const docRef = doc(database, "cities", "SF");
-    const docSnap = await getDoc(docRef);
+  const [store, setStore] = useState([]); 
 
-    if (docSnap.exists()) {
-    console.log("Document data:", docSnap.data());
-    } else {
-    // doc.data() will be undefined in this case
-    console.log("No such document!");
-    }
+  const [storeData, setStoreData] = useState([])
 
-    return (
+  useEffect(async() => {
+    const querySnapshot = await getDocs(collection(database, "Stores"));
+    const saveFirebaseItems = [];
+    querySnapshot.forEach((doc) => {
+      // doc.data() is never undefined for query doc snapshots
+      // console.log(doc.id, " => ", doc.data());
+      saveFirebaseItems.push(doc.data());
+    });
+    setStoreData(saveFirebaseItems);
+  }, [useIsFocused()])
+
+  return (
     
     <View
       style={{
@@ -79,7 +87,7 @@ export default function Stores() {
       }}
     >
       <ScrollView vertical>
-        {StoreData.map((Store, index) => (
+        {storeData.map((Store, index) => (
           <View
             key={index}
             style={{
@@ -87,9 +95,9 @@ export default function Stores() {
               //marginTop: 10,
               paddingBottom: 10,
               paddingTop: 10,
-              
+
               flex: 1,
-              borderBottomWidth: 1
+              borderBottomWidth: 1,
             }}
           >
             <StoreImage image={Store.image_url} />
@@ -105,7 +113,7 @@ const StoreImage = (props) => (
   <View
     style={{
       alignItems: "center",
-    //   marginTop: 10,
+      //   marginTop: 10,
       marginLeft: 15,
       borderRadius: 20,
     }}
@@ -114,7 +122,7 @@ const StoreImage = (props) => (
       source={{
         uri: props.image,
       }}
-      style={{ width: 120, height: 120, borderRadius: 20, }}
+      style={{ width: 120, height: 120, borderRadius: 20 }}
     />
   </View>
 );
@@ -134,25 +142,22 @@ const StoreInfo = (props) => (
     <Text
       style={{
         fontFamily: "MerriweatherSans_700Bold",
-        
       }}
     >
       {props.name}
     </Text>
     <View
-      style={
-        {
-            marginTop: 5,
-            marginBottom: 5,
-          // flex: 1
-        }
-      }
+      style={{
+        marginTop: 5,
+        marginBottom: 5,
+        // flex: 1
+      }}
     >
       <ScrollView vertical>
         <View
           style={{
             flex: 1,
-            
+
             // justifyContent: "justify",
             textAlign: "justify",
           }}
