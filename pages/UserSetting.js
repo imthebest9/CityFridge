@@ -8,10 +8,10 @@ import {
     TextInput
     } from 'react-native'
     import SwitchSelector from '../components/SwitchSelector';
-//import ImagePicker from 'react-native-image-crop-picker';
+import ImagePicker from 'react-native-image-picker';
 import { styles } from './UserProfile'
 import { auth, database } from "../firebase";
-import { updateEmail, updatePassword, reauthenticateWithCredential, sendSignInLinkToEmail , EmailAuthProvider  } from "firebase/auth";
+import { updateEmail, updatePassword, reauthenticateWithCredential , EmailAuthProvider  } from "firebase/auth";
 import { doc, getDoc, setDoc } from "firebase/firestore";
 import AsyncStorage from '@react-native-async-storage/async-storage'
 
@@ -139,15 +139,8 @@ export default ()=>{
         <View style={styles.container}>
             <View style={styles.header}>
                 <TouchableOpacity style={styles.profilePicFrame}
-                /*onPress={()=>{
-                    ImagePicker.openPicker({
-                        width: 300,
-                        height: 400,
-                        cropping: true
-                      }).then(image => {
-                        console.log(image);
-                      });
-                }}*/
+                onPress={()=>{
+                }}
                 >
                     <Image
                     source={require('../assets/logo.png')}
