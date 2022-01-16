@@ -1,46 +1,21 @@
 import React from "react";
-import { StyleSheet, Text, TouchableOpacity, Dimensions } from "react-native";
-
+import { Text, TouchableOpacity, StyleSheet } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
-import Taddcart from "./pages/Taddcart";
-import Tviewcart from "./pages/Tviewcart";
 
-import { Provider as ReduxProvider } from "react-redux";
-import configureStore from "./redux/store";
-// import configureStore from "./redux/reducers/store";
+import { signOut } from "firebase/auth";
+import { auth } from "./firebase";
 
-
-const store = configureStore();
-
-export default function Navigation() {
-  const Stack = createStackNavigator();
-
-  const screenOptions = {
-    headerShown: false,
-  };
-
-  return (
-    <ReduxProvider store={store}>
-      <NavigationContainer>
-        <Stack.Navigator initialRouteName="Taddcart" screenOptions={screenOptions}>
-          <Stack.Screen name="Taddcart" component={Taddcart} />
-          <Stack.Screen name="Tviewcart" component={Tviewcart} />
-        </Stack.Navigator>
-      </NavigationContainer>
-    </ReduxProvider>
-  );
-}
-
-/*
 import SignIn from "./pages/SignIn";
 import SignUp from "./pages/SignUp";
 import UserSetting from "./pages/UserSetting";
 import UserProfile from "./pages/UserProfile";
+import UserHistory from "./pages/UserHistory";
 import VendorMain from "./pages/VendorMain";
 import VendorConfirmOrder from "./pages/VendorConfirmOrder";
 import VendorUpdateFoodQty from "./pages/VendorUpdateFoodQty";
 import VendorNewFoodType from "./pages/VendorNewFoodType";
+import SearchStorePage from "./pages/SearchStorePage";
 import {
   useFonts,
   Merriweather_300Light,
@@ -67,6 +42,7 @@ import {
   MerriweatherSans_800ExtraBold_Italic,
 } from "@expo-google-fonts/merriweather-sans";
 import AppLoading from "expo-app-loading";
+import StorePage from "./pages/StorePage";
 
 const Stack = createStackNavigator();
 
@@ -101,22 +77,22 @@ export default function Navigation() {
         <Stack.Navigator
           screenOptions={{
             headerTitleAlign: "center",
-            headerStyle: { backgroundColor: "#116530", elevation: 0 },
             headerTintColor: "#fff",
-            headerTitleStyle: { fontSize: 24, fontFamily:"Merriweather_700Bold" },
+            headerStyle: { backgroundColor: "#116530", elevation: 0 },
+            headerTitleStyle: { fontSize: 18, fontFamily:"Merriweather_700Bold" }
           }}
-          initialRouteName="Sign In"
+          initialRouteName="Search Page"  // testing
         >
           <Stack.Screen
             name="Sign In"
             component={SignIn}
-            initialParams={{ styles}}
             options={({ navigation }) => ({
+              headerLeft: null,
               headerRight: () => (
                 <TouchableOpacity
                   onPress={() => navigation.navigate("Sign Up")}
                 >
-                  <Text style={[styles.buttonText, { margin: 10 }]}>
+                  <Text style={[styles.headerText, { margin: 10 }]}>
                     Sign Up
                   </Text>
                 </TouchableOpacity>
@@ -126,7 +102,6 @@ export default function Navigation() {
           <Stack.Screen
             name="Sign Up"
             component={SignUp}
-            initialParams={{ styles, componentWidth }}
           />
           <Stack.Screen
             name='Profile'
@@ -134,14 +109,31 @@ export default function Navigation() {
             options={({navigation, route}) => ({
               headerLeft: () => (
                 <TouchableOpacity onPress={()=>navigation.navigate('Setting')}>
-                  <Text style={[styles.buttonText, {margin:10}]}>Settings</Text>
+                  <Text style={[styles.headerText, {margin:10}]}>Settings</Text>
                 </TouchableOpacity>),
               headerRight: () => (
-                <TouchableOpacity onPress={()=>navigation.navigate('Sign In')}>
-                  <Text style={[styles.buttonText, {margin:10}]}>Sign Out</Text>
+                <TouchableOpacity onPress={()=>{
+                  signOut(auth).then(() => {
+                    navigation.navigate('Sign In')
+                  }).catch((error) => {
+                    alert(error.message)
+                  });
+                  }}>
+                  <Text style={[styles.headerText, {margin:10}]}>Sign Out</Text>
                 </TouchableOpacity>),
-              title: route.params.username
+              title: route.params.username,
               })
+            }
+            />
+            <Stack.Screen
+            name='History'
+            component={UserHistory}
+            options={
+            {
+              headerTintColor: "black",
+              headerStyle: { backgroundColor: "white", elevation: 0 },
+              headerTitleStyle: { fontSize: 24, fontFamily:"Merriweather_700Bold" }
+            }
             }
             />
             <Stack.Screen
@@ -158,53 +150,28 @@ export default function Navigation() {
             name="Add New Food Type"
             component={VendorNewFoodType}
           />
+          <Stack.Screen
+            name="Kingsbay Hypermarket"
+            component={StorePage}
+          />
+          <Stack.Screen
+            name="Search Page"
+            component={SearchStorePage}
+          />
         </Stack.Navigator>
       </NavigationContainer>
     );
   }
 }
 
-const width = Dimensions.get("screen").width;
-export const componentWidth = width * 0.8;
-
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#fff",
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  form: {
-    flex: 1,
-    alignItems: "center",
-    width: componentWidth,
-  },
-  textInput: {
-    flexDirection: "row",
-    backgroundColor: "#f6f6f6",
-    borderRadius: 5,
-    padding: 10,
-    margin: 7,
-    width: "100%",
-    color: "#000",
-    fontSize: 16,
-    fontFamily: "MerriweatherSans_400Regular"
-  },
-  button: {
-    backgroundColor: "#4EB574",
-    borderRadius: 50,
-    padding: 10,
-    margin: 10,
-    width: "100%",
-  },
-  buttonText: {
+  headerText: {
     color: "#fff",
     fontSize: 16,
     textAlign: "center",
     fontFamily: "Merriweather_400Regular"
-  },
-  logo: {
-    margin: 20,
-    height: width * 0.3,
-  },
-});*/
+
+
+  }
+});
+

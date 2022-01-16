@@ -7,32 +7,6 @@ import {
   ScrollView,
   TouchableOpacity,
 } from "react-native";
-import {
-  useFonts,
-  Merriweather_300Light,
-  Merriweather_300Light_Italic,
-  Merriweather_400Regular,
-  Merriweather_400Regular_Italic,
-  Merriweather_700Bold,
-  Merriweather_700Bold_Italic,
-  Merriweather_900Black,
-  Merriweather_900Black_Italic,
-} from "@expo-google-fonts/merriweather";
-import {
-  MerriweatherSans_300Light,
-  MerriweatherSans_400Regular,
-  MerriweatherSans_500Medium,
-  MerriweatherSans_600SemiBold,
-  MerriweatherSans_700Bold,
-  MerriweatherSans_800ExtraBold,
-  MerriweatherSans_300Light_Italic,
-  MerriweatherSans_400Regular_Italic,
-  MerriweatherSans_500Medium_Italic,
-  MerriweatherSans_600SemiBold_Italic,
-  MerriweatherSans_700Bold_Italic,
-  MerriweatherSans_800ExtraBold_Italic,
-} from "@expo-google-fonts/merriweather-sans";
-import AppLoading from "expo-app-loading";
 import HeaderTabsVendor from "../components/vendor/HeaderTabsVendor";
 import Reservations from "../components/vendor/Reservations";
 import BottomTabsVendor from "../components/vendor/BottomTabsVendor";
