@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Text, Image } from "react-native";
+import { View, Text, Image, TouchableOpacity } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 
 import { doc, getDoc } from "firebase/firestore";
@@ -7,6 +7,7 @@ import { database } from "../firebase";
 import { collection, getDocs } from "firebase/firestore";
 import { useState, useEffect } from "react";
 import { useIsFocused } from "@react-navigation/native";
+import Navigation from "../Navigation";
 
 const StoreData = [
   {
@@ -59,13 +60,11 @@ const StoreData = [
   },
 ];
 
+export default function Stores({navigation}) {
 
-export default function Stores() {
-  const [store, setStore] = useState([]); 
+  const [storeData, setStoreData] = useState([]);
 
-  const [storeData, setStoreData] = useState([])
-
-  useEffect(async() => {
+  useEffect(async () => {
     const querySnapshot = await getDocs(collection(database, "Stores"));
     const saveFirebaseItems = [];
     querySnapshot.forEach((doc) => {
@@ -74,10 +73,9 @@ export default function Stores() {
       saveFirebaseItems.push(doc.data());
     });
     setStoreData(saveFirebaseItems);
-  }, [useIsFocused()])
+  }, [useIsFocused()]);
 
   return (
-    
     <View
       style={{
         flexDirection: "row",
@@ -100,7 +98,10 @@ export default function Stores() {
               borderBottomWidth: 1,
             }}
           >
-            <StoreImage image={Store.image_url} />
+            <TouchableOpacity onPress={() => navigation.navigate("Taddcart")}>
+              <StoreImage image={Store.image_url} />
+            </TouchableOpacity>
+
             <StoreInfo name={Store.name} description={Store.description} />
           </View>
         ))}

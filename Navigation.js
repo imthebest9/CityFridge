@@ -8,6 +8,7 @@ import { auth } from "./firebase";
 
 import SignIn from "./pages/SignIn";
 import SignUp from "./pages/SignUp";
+import Taddcart from  "./pages/Taddcart";
 import UserSetting from "./pages/UserSetting";
 import UserProfile from "./pages/UserProfile";
 import UserHistory from "./pages/UserHistory";
@@ -43,6 +44,7 @@ import {
 } from "@expo-google-fonts/merriweather-sans";
 import AppLoading from "expo-app-loading";
 import StorePage from "./pages/StorePage";
+import Stores from "./components/Stores";
 
 const Stack = createStackNavigator();
 
@@ -157,6 +159,14 @@ export default function Navigation() {
           <Stack.Screen
             name="Search Page"
             component={SearchStorePage}
+          />
+          <Stack.Screen
+            name="Stores"
+            component={Stores}
+          />
+          <Stack.Screen
+            name="Taddcart"
+            component={Taddcart}
           />
         </Stack.Navigator>
       </NavigationContainer>
