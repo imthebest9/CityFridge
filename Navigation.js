@@ -2,8 +2,10 @@ import React from "react";
 import { Text, TouchableOpacity, StyleSheet } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
+
 import { signOut } from "firebase/auth";
 import { auth } from "./firebase";
+
 import SignIn from "./pages/SignIn";
 import SignUp from "./pages/SignUp";
 import UserSetting from "./pages/UserSetting";
@@ -13,6 +15,7 @@ import VendorMain from "./pages/VendorMain";
 import VendorConfirmOrder from "./pages/VendorConfirmOrder";
 import VendorUpdateFoodQty from "./pages/VendorUpdateFoodQty";
 import VendorNewFoodType from "./pages/VendorNewFoodType";
+import SearchStorePage from "./pages/SearchStorePage";
 import {
   useFonts,
   Merriweather_300Light,
@@ -78,8 +81,7 @@ export default function Navigation() {
             headerStyle: { backgroundColor: "#116530", elevation: 0 },
             headerTitleStyle: { fontSize: 18, fontFamily:"Merriweather_700Bold" }
           }}
-          initialRouteName="Your Store"  // testing
-
+          initialRouteName="Search Page"  // testing
         >
           <Stack.Screen
             name="Sign In"
@@ -152,6 +154,10 @@ export default function Navigation() {
             name="Kingsbay Hypermarket"
             component={StorePage}
           />
+          <Stack.Screen
+            name="Search Page"
+            component={SearchStorePage}
+          />
         </Stack.Navigator>
       </NavigationContainer>
     );
@@ -164,5 +170,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     textAlign: "center",
     fontFamily: "Merriweather_400Regular"
+
   }
 });
+

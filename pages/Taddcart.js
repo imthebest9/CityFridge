@@ -3,19 +3,21 @@ import { View, Text, StyleSheet } from "react-native";
 import AboutFood from "../components/Transaction/AboutFood";
 import AboutRestaurant from "../components/Transaction/AboutRestaurant";
 import AddCart from "../components/Transaction/AddCart";
+import BottomTabsVendor from "../components/vendor/BottomTabsVendor";
 
 const Separator = () => <View style={styles.separator} />;
 
 export default function Taddcart() {
   return (
-    <View>
+    <View style={{flex:1}}>
       <AboutRestaurant />
 
       <Separator />
 
       <AboutFood />
-      
+
       <AddCart/>
+      <BottomTabsVendor/>
     </View>
   );
 }
@@ -29,7 +31,7 @@ const styles = StyleSheet.create({
 
   separator: {
     
-    marginVertical: 8,
+    marginVertical: 6,
     borderBottomColor: "#737373",
     borderBottomWidth: StyleSheet.hairlineWidth
   }

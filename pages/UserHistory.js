@@ -123,8 +123,9 @@ export default ({route})=>{
             </View>
             <Text style={styles.verificationCode}>
                 {
-                (true) ?
-                "Code: 214" : "Completed"
+
+                (isVendor) ?
+                "Completed" : "Code: 214"
                 }
             </Text>
         </View>

@@ -2,7 +2,7 @@ import React from "react";
 import { View, Text } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
 
-export default function ReserveButton() {
+export default function VreserveButton() {
   return (
     <View style={{
         flex:1,
@@ -10,7 +10,7 @@ export default function ReserveButton() {
         justifyContent:"center",
         flexDirection:"row",
         position:"absolute",
-        bottom: -490,
+        bottom: 130,
         zIndex: 999,
     }}>
       <View
