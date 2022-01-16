@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   View,
   Text,
@@ -16,12 +16,10 @@ import {
   setDoc,
 } from "firebase/firestore";
 import { database } from "../../firebase";
+import { useIsFocused } from "@react-navigation/native";
 
 export default function FoodQuantityUpdate() {
   const [items, setItems] = useState([]);
-  // const [test, setTest] = useState(null);
-
-  const batch = writeBatch(database);
 
   const onQuery = async () => {
     const querySnapshot = await getDocs(collection(database, "foods"));
@@ -33,6 +31,17 @@ export default function FoodQuantityUpdate() {
     });
     setItems(saveFirebaseItems);
   };
+
+  useEffect(async() => {
+    const querySnapshot = await getDocs(collection(database, "foods"));
+    const saveFirebaseItems = [];
+    querySnapshot.forEach((doc) => {
+      // doc.data() is never undefined for query doc snapshots
+      // console.log(doc.id, " => ", doc.data());
+      saveFirebaseItems.push(doc.data());
+    });
+    setItems(saveFirebaseItems);
+  }, [useIsFocused()])
 
   const onUpdate = async () => {
     for (let x in items) {
@@ -48,15 +57,15 @@ export default function FoodQuantityUpdate() {
     }
     // await batch.commit();
   };
-  
-  const updateFieldChanged = index => e => {
-    console.log('index: ' + index);
+
+  const updateFieldChanged = (index) => (e) => {
+    console.log("index: " + index);
     let newArr = [...items];
     newArr[index].quantity = e;
 
-    setItems(newArr)
+    setItems(newArr);
     // console.log(items)
-  }
+  };
 
   return (
     <View style={{ flex: 1 }}>
@@ -84,7 +93,7 @@ export default function FoodQuantityUpdate() {
                 /> */}
                 <TextInput
                   value={items.quantity}
-                  onChangeText={updateFieldChanged( index, item)}
+                  onChangeText={updateFieldChanged(index, item)}
                   style={{
                     backgroundColor: "#E8E8E8",
                     margin: 10,

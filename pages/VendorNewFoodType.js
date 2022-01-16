@@ -45,9 +45,9 @@ export default function VendorNewFoodType() {
   const onSave = async ()=> {
     await setDoc(doc(database, "foods", name), {
       name: name,
-      quantity: quantity,
-      price: price,
-      weight: weight,
+      quantity: parseFloat(quantity),
+      price: parseFloat(price),
+      weight: parseFloat(weight),
       date: date,
     });
     console.log("saved")
