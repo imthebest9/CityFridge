@@ -15,6 +15,7 @@ import { doc, setDoc } from "firebase/firestore";
 
 export default ({navigation})=>{
     const [name, setName] = useState('');
+    const [description, setDescription] = useState('');
     const [username, setUsername] = useState('');
     const [email, setEmail] = useState('');
     const [contact, setContact] = useState('');
@@ -27,10 +28,12 @@ export default ({navigation})=>{
     const onValidatie = () => {
         if(!name)
         alert('Please enter your name')
+        else if(isVendor && !description)
+        alert('Please add a description for your store')
         else if(!username)
         alert('Please enter your username')
-        else if(!username.match(/^[a-zA-Z0-9_\.]*$/))
-        alert('Username must must contain only lowecase letters, numbers, periods(.), or underscores(_) only.')
+        else if(!username.match(/^[a-zA-Z0-9@_\.]*$/))
+        alert('Username must must contain only lowecase letters, numbers, at(@), periods(.), or underscores(_) only.')
         else if(!email)
         alert('Please enter your email address')
         else if(!contact)
@@ -57,13 +60,15 @@ export default ({navigation})=>{
                 if(isVendor){
                     setDoc(doc(database, "vendors", user.uid), {
                         name: name,
+                        description: description,
                         username: username,
                         contact: contact,
                         email: email,
                         location: location,
                         address: address,
                         isVendor: isVendor,
-                        contribution: parseFloat(0)
+                        contribution: parseFloat(0),
+                        review: parseFloat(5.0)
                       });
                 }
                 else{
@@ -115,6 +120,12 @@ export default ({navigation})=>{
                     <TextInput style={styles.textInput}
                     placeholder='Business Name'
                     onChangeText={(input)=>setName(input.trim())}
+                    />
+                    <TextInput style={styles.textInput}
+                    multiline = {true}
+                    maxHeight = {80}
+                    placeholder='Store Description'
+                    onChangeText={(input)=>setDescription(input.trim())}
                     />
                 </View>
                 ) : (

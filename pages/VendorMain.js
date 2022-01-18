@@ -131,7 +131,7 @@ export default function VendorMain({ navigation }) {
         </View>
       )}
 
-      <BottomTabsVendor />
+      <BottomTabsVendor navigation={navigation}/>
     </View>
   );
 }

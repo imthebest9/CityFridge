@@ -9,25 +9,39 @@ import {
     StyleSheet
     } from 'react-native'
 import SwitchSelector from '../components/SwitchSelector'
+import BottomTabsVendor from "../components/vendor/BottomTabsVendor";
+import BottomTabsCustomer from "../components/BottomTabsCustomer";
 import { StackActions, useIsFocused } from '@react-navigation/native'
-import { auth, database } from "../firebase"
+import { auth, database, storage } from "../firebase";
 import { doc, getDoc } from "firebase/firestore"
 import AsyncStorage from '@react-native-async-storage/async-storage'
+import { getDownloadURL, ref } from 'firebase/storage'
 
 export default ({navigation})=>{
     const [data, setData] = useState([])
+    const [isVendor, setIsVendor] = useState(false)
     const [history, setHistory] = useState([])
     const [historyList, setHistoryList] = useState([])
     const [selectedOption, setSelectedOption] = useState(1)
+    const [image, setImage] = useState(null)
 
     useEffect(()=>{
-        auth.onAuthStateChanged(async(user)=>{
+        auth.onAuthStateChanged(user=>{
             if(user){
-                getDoc(doc(database, await AsyncStorage.getItem("profile"), user.uid)).then(docSnap=>{
-                    setData(docSnap.data())
+                AsyncStorage.getItem("profile").then(profile=>{
+                    if(profile=="vendors")
+                    setIsVendor(true)
+                    getDoc(doc(database, profile, user.uid)).then(async(userDoc)=>{
+                        setData(userDoc.data())
+                        const url = userDoc.data().image_url
+                        if(url == null)
+                        setImage(await getDownloadURL(ref(storage, "logo.jpeg")))
+                        else
+                        setImage(url)
+                    })
                 })
-                getDoc(doc(database, "history", user.uid)).then(docSnap=>{
-                    setHistory(docSnap.data())
+                getDoc(doc(database, "history", user.uid)).then(historyDoc=>{
+                    setHistory(historyDoc.data())
                 })
             }
             else{
@@ -38,15 +52,13 @@ export default ({navigation})=>{
         })
     }, [useIsFocused()])
 
-    const pushHistory = ()=>{
+    const pushHistory = async()=>{
         var list = []
         const reservations = history["reservations"]
         for(var i = reservations.length-1; i>=0; i--){
-            reservationDetail(reservations[i], i).then(reservation=>{
-                list.push(reservation)
-                setHistoryList(list)
-            })
+            list.push(await reservationDetail(reservations[i], i))
         }
+        setHistoryList(list)
     }
 
     const reservationDetail = async(reservationID, key)=>{
@@ -83,16 +95,15 @@ export default ({navigation})=>{
     }
 
     return (
-        data!=null ?
         <View style={styles.container}>
             <View style={styles.header}>
-                <View style={styles.profilePicFrame}>
-                    <Image
-                    source={require('../assets/logo.png')}
-                    style={styles.profilePic}
-                    resizeMode='contain'
-                    />
-                </View>
+            </View>
+            <View style={styles.profilePicFrame}>
+                <Image
+                style={styles.profilePic}
+                source={{uri: image }}
+                resizeMode='contain'
+                />
             </View>
             {
                 (selectedOption==1) ?
@@ -103,6 +114,18 @@ export default ({navigation})=>{
                 <Text style={styles.locationFont}>
                     {data['location']}
                 </Text>
+                {isVendor && 
+                <View>
+                    <Text style={styles.descriptionFont}>
+                        {data['description']}
+                    </Text>
+                    <View  style={styles.contributionTitleContainer}>
+                        <Text style={styles.contributionTitleFont}>
+                            Rating: {data['review'] && data['review'].toFixed(1)}
+                        </Text>
+                    </View>
+                </View>
+                }
                 <View style={styles.infoContainer}>
                     <View style={styles.infoRowContainer}>
                         <Text style={styles.infoTitleFont}>Address</Text> 
@@ -117,7 +140,7 @@ export default ({navigation})=>{
                         <Text style={styles.infoBodyFont}>{data['email']}</Text>
                     </View>
                 </View>
-                <View style={styles.contributionContainer}>
+                {!isVendor && <View style={styles.contributionContainer}>
                     <View style={styles.contributionTitleContainer}>
                         <Text style={styles.contributionTitleFont}>
                             Total Contribution
@@ -131,10 +154,16 @@ export default ({navigation})=>{
                             of foods have been saved
                         </Text>
                     </View>
-                </View>
+                </View>}
             </View>) :
             (
             <View style={styles.profileContainer}>
+                {historyList.length==0 ?
+                <View>
+                    <Text style={styles.nameFont}>
+                        Loading
+                    </Text>
+                </View>:
                 <FlatList
                 data={historyList}
                 renderItem={({item}) => (
@@ -168,8 +197,22 @@ export default ({navigation})=>{
                             {item.time}
                         </Text>
                     </TouchableOpacity>
-                )}
-                />
+                )}/>}
+                {isVendor && <View style={styles.contributionContainer}>
+                    <View style={styles.contributionTitleContainer}>
+                        <Text style={styles.contributionTitleFont}>
+                            Total Contribution
+                        </Text>
+                    </View>
+                    <View style={styles.contributionInfoContainer}>
+                        <Text style={styles.contributionInfoFont}>
+                            {history["contribution"]} kg
+                        </Text>
+                        <Text style={styles.contributionInfoBodyFont}>
+                            of foods have been saved
+                        </Text>
+                    </View>
+                </View>}
             </View>
             )
             }
@@ -185,7 +228,8 @@ export default ({navigation})=>{
                         }
                     }/>
             </View>
-        </View> : null
+            {isVendor ? <BottomTabsVendor navigation={navigation}/> : <BottomTabsCustomer navigation={navigation}/>}
+        </View>
     )
 }
 
@@ -234,17 +278,17 @@ export const styles = StyleSheet.create({
     header:{
         backgroundColor: '#116530',
         width: width,
-        height: 80,
-        marginBottom: 90,
+        height: 70,
+        marginBottom: -70,
         alignItems: 'center'
     },
     profilePicFrame:{
         alignItems: 'center',
         justifyContent: 'center',
         backgroundColor: 'white',
-        height: 150,
-        width: 150,
-        marginTop: 10,
+        height: 120,
+        width: 120,
+        margin: 10,
         borderWidth: 2,
         borderColor: 'white',
         borderRadius: 80,
@@ -252,24 +296,36 @@ export const styles = StyleSheet.create({
     },
     profilePic: {
         flex: 1,
-        resizeMode: 'contain',
-        borderRadius: 80
+        resizeMode: 'cover',
+        borderRadius: 80,
+        height: 120,
+        width: 120,
     },
     profileContainer:{
         flex: 1,
         alignItems: 'center',
-        marginBottom: 15
+        marginBottom: 15,
+        width: componentWidth
     },
     nameFont:{
         color: '#116530',
         fontSize: 20,
-        fontFamily: "Merriweather_700Bold"
+        fontFamily: "Merriweather_700Bold",
+        textAlign: 'center'
     },
     locationFont:{
         color: '#000',
         fontSize: 18,
-        marginBottom: 15,
-        fontFamily: "Merriweather_400Regular"
+        fontFamily: "Merriweather_400Regular",
+        marginBottom: 10
+    },
+    descriptionFont:{
+        color: '#000',
+        fontSize: 15,
+        fontFamily: "Merriweather_300Light",
+        textAlign: 'center',
+        marginTop: 5,
+        marginBottom: 10
     },
     infoContainer:{
         backgroundColor: '#f6f6f6',
@@ -295,14 +351,13 @@ export const styles = StyleSheet.create({
         fontFamily: "MerriweatherSans_300Light_Italic"
     },
     contributionContainer:{
-        width: 250,
-        marginTop: 20
+        width: 250
     },
     contributionTitleContainer:{
         backgroundColor: '#4EB574',
         borderRadius: 5,
         paddingVertical: 7,
-        marginBottom: 15
+        marginVertical: 10
     },
     contributionTitleFont:{
         color: 'white',
@@ -313,7 +368,7 @@ export const styles = StyleSheet.create({
     contributionInfoContainer:{
         backgroundColor: '#f6f6f6',
         borderRadius: 5,
-        paddingVertical: 15,
+        paddingVertical: 10,
         alignItems: 'center'
     },
     contributionInfoFont: {

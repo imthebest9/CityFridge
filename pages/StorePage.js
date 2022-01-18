@@ -33,7 +33,6 @@ export default function StorePage() {
             borderRadius: 100,
             margin: 5,
           }}
-          //   onPress={() => navigation.navigate("")}
         >
           <Text
             style={{
