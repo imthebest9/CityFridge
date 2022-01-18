@@ -69,7 +69,7 @@ export default function ManageFood() {
     setItems(saveFirebaseItems);
   };
 
-  useEffect(async() => {
+  useEffect(async () => {
     const querySnapshot = await getDocs(collection(database, "foods"));
     const saveFirebaseItems = [];
     querySnapshot.forEach((doc) => {
@@ -78,7 +78,7 @@ export default function ManageFood() {
       saveFirebaseItems.push(doc.data());
     });
     setItems(saveFirebaseItems);
-  }, [useIsFocused()])
+  }, [useIsFocused()]);
 
   return (
     <View>
