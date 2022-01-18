@@ -10,11 +10,12 @@ export default function Tshowtac() {
         <Text style={styles.text}>Reedem within 24 hours</Text>
         <Text style={styles.msg}>
           {"Show this code to cashier to reedem food"}
+          
         </Text>
-        <GenerateTac />
+        
 
         <View style={styles.smallSquare}>
-          <Text  style={styles.text}>123wwe</Text>
+          <Text  style={styles.text}><GenerateTac /></Text>
         </View>
         <TouchableOpacity></TouchableOpacity>
       </View>
