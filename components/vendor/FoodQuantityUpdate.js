@@ -32,7 +32,7 @@ export default function FoodQuantityUpdate() {
     setItems(saveFirebaseItems);
   };
 
-  useEffect(async() => {
+  useEffect(async () => {
     const querySnapshot = await getDocs(collection(database, "foods"));
     const saveFirebaseItems = [];
     querySnapshot.forEach((doc) => {
@@ -41,7 +41,7 @@ export default function FoodQuantityUpdate() {
       saveFirebaseItems.push(doc.data());
     });
     setItems(saveFirebaseItems);
-  }, [useIsFocused()])
+  }, [useIsFocused()]);
 
   const onUpdate = async () => {
     for (let x in items) {
