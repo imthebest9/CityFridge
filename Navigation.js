@@ -1,6 +1,6 @@
 import React from "react";
 import { Text, TouchableOpacity, StyleSheet } from "react-native";
-import { NavigationContainer } from "@react-navigation/native";
+import { NavigationContainer, StackActions } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 
 import { signOut } from "firebase/auth";
@@ -83,7 +83,7 @@ export default function Navigation() {
             headerStyle: { backgroundColor: "#116530", elevation: 0 },
             headerTitleStyle: { fontSize: 18, fontFamily:"Merriweather_700Bold" }
           }}
-          initialRouteName="Search Page"  // testing
+          initialRouteName="Sign In"
         >
           <Stack.Screen
             name="Sign In"
@@ -108,7 +108,7 @@ export default function Navigation() {
           <Stack.Screen
             name='Profile'
             component={UserProfile}
-            options={({navigation, route}) => ({
+            options={({navigation}) => ({
               headerLeft: () => (
                 <TouchableOpacity onPress={()=>navigation.navigate('Setting')}>
                   <Text style={[styles.headerText, {margin:10}]}>Settings</Text>
@@ -116,14 +116,13 @@ export default function Navigation() {
               headerRight: () => (
                 <TouchableOpacity onPress={()=>{
                   signOut(auth).then(() => {
-                    navigation.navigate('Sign In')
+                    navigation.dispatch(StackActions.replace('Sign In'))
                   }).catch((error) => {
                     alert(error.message)
                   });
                   }}>
                   <Text style={[styles.headerText, {margin:10}]}>Sign Out</Text>
-                </TouchableOpacity>),
-              title: route.params.username,
+                </TouchableOpacity>)
               })
             }
             />
@@ -159,10 +158,6 @@ export default function Navigation() {
           <Stack.Screen
             name="Search Page"
             component={SearchStorePage}
-          />
-          <Stack.Screen
-            name="Stores"
-            component={Stores}
           />
           <Stack.Screen
             name="Taddcart"

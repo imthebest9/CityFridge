@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React, {useState, useEffect} from 'react'
 import {
     View,
     Image,
@@ -10,20 +10,25 @@ import {
     Keyboard
     } from 'react-native'
 import { StackActions } from '@react-navigation/native'
-import { auth, database } from "../firebase"
+import { auth, database, storage } from "../firebase";
 import { signInWithEmailAndPassword } from "firebase/auth"
 import { doc, getDoc } from "firebase/firestore"
+import { getDownloadURL, ref } from 'firebase/storage'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 
 export default ({navigation}) => {
     const [email, setEmail] = useState(null);
     const [password, setPassword] = useState(null);
+    const [image, setImage] = useState(null)
 
-    auth.onAuthStateChanged((user)=>{
-        if(user && user.emailVerified){
-            storeProfile(user.uid, user.displayName)
-        }
-    })
+    useEffect(async()=>{
+        //setImage(await getDownloadURL(ref(storage, "logo.png")))
+        auth.onAuthStateChanged((user)=>{
+            if(user && user.emailVerified){
+                storeProfile(user.uid, user.displayName)
+            }
+        })
+    }, [image==null])
 
     const onSignIn = () => {
         Keyboard.dismiss()
@@ -52,16 +57,15 @@ export default ({navigation}) => {
             }
         });
         navigation.dispatch(
-            StackActions.replace('Profile', {
-                username: username
-            })
+            StackActions.replace('Profile')
         );
     }
 
     return (
         <View style={styles.container}>
             <Image
-            source={require('../assets/logo.png')}
+            //source={{uri: image }}
+            source={require("../assets/logo.png")}
             style={styles.logo}
             resizeMode='contain'
             />
