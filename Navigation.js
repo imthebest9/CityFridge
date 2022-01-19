@@ -83,7 +83,7 @@ export default function Navigation() {
             headerStyle: { backgroundColor: "#116530", elevation: 0 },
             headerTitleStyle: { fontSize: 18, fontFamily:"Merriweather_700Bold" }
           }}
-          initialRouteName="Search Page"  // testing
+          initialRouteName="Home Page"  // testing
         >
           <Stack.Screen
             name="Sign In"
@@ -157,7 +157,7 @@ export default function Navigation() {
             component={StorePage}
           />
           <Stack.Screen
-            name="Search Page"
+            name="Home Page"
             component={SearchStorePage}
           />
           <Stack.Screen

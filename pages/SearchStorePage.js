@@ -9,14 +9,14 @@ import { ScrollView } from "react-native-gesture-handler";
 export default function SearchStorePage({ navigation }) {
   return (
     <View style={{ flex: 1, marginTop: 30, flex: 1 }}>
-      <SearchBar />
+      {/* <SearchBar /> */}
       <View style={{ borderBottomWidth: 1, marginBottom: 10 }}></View>
       <ScrollView vertical>
-        {/* <TouchableOpacity onPress={() => navigation.navigate("Taddcart")}> */}
+        <TouchableOpacity onPress={() => navigation.navigate("Taddcart")}>
           <Stores 
             navigation={navigation}
           />
-        {/* </TouchableOpacity> */}
+        </TouchableOpacity>
       </ScrollView>
 
       <BottomTabsCustomer style={{ flex: 1 }} />
