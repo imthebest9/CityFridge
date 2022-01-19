@@ -102,7 +102,7 @@ export default function Reservations() {
                   marginBottom: 10,
                 }}
               >
-                {item.clientUsername}
+                {item.customerName}
               </Text>
               <Text
                 style={{
