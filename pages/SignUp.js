@@ -10,12 +10,12 @@ import SwitchSelector from '../components/SwitchSelector';
 import { styles } from './SignIn'
 import { StackActions } from '@react-navigation/native';
 import { auth, database } from "../firebase";
-import { createUserWithEmailAndPassword, updateProfile, sendEmailVerification } from "firebase/auth";
+import { createUserWithEmailAndPassword, sendEmailVerification } from "firebase/auth";
 import { doc, setDoc } from "firebase/firestore"; 
 
 export default ({navigation})=>{
     const [name, setName] = useState('');
-    const [username, setUsername] = useState('');
+    const [description, setDescription] = useState('');
     const [email, setEmail] = useState('');
     const [contact, setContact] = useState('');
     const [password, setPassword] = useState('');
@@ -27,10 +27,12 @@ export default ({navigation})=>{
     const onValidatie = () => {
         if(!name)
         alert('Please enter your name')
-        else if(!username)
+        else if(isVendor && !description)
+        alert('Please add a description for your store')
+        /*else if(!username)
         alert('Please enter your username')
-        else if(!username.match(/^[a-zA-Z0-9_\.]*$/))
-        alert('Username must must contain only lowecase letters, numbers, periods(.), or underscores(_) only.')
+        else if(!username.match(/^[a-zA-Z0-9@_\.]*$/))
+        alert('Username must must contain only lowecase letters, numbers, at(@), periods(.), or underscores(_) only.')*/
         else if(!email)
         alert('Please enter your email address')
         else if(!contact)
@@ -57,30 +59,31 @@ export default ({navigation})=>{
                 if(isVendor){
                     setDoc(doc(database, "vendors", user.uid), {
                         name: name,
-                        username: username,
+                        description: description,
                         contact: contact,
                         email: email,
                         location: location,
                         address: address,
                         isVendor: isVendor,
-                        contribution: parseFloat(0)
+                        contribution: parseFloat(0),
+                        review: parseFloat(5.0)
                       });
                 }
                 else{
                     setDoc(doc(database, "customers", user.uid), {
                         name: name,
-                        username: username,
                         contact: contact,
                         email: email,
                         location: location,
                         address: address,
                         isVendor: isVendor,
-                        contribution: parseFloat(0)
+                        contribution: parseFloat(5.0)
                       });
                 }
-                updateProfile(user, {
-                    displayName: username
-                  }).then(() => {
+                setDoc(doc(database, "history", user.uid), {
+                    food: [],
+                    contribution: parseFloat(0)
+                }).then(() => {
                     sendEmailVerification(user)
                     .then(() => {
                         alert("Thank you for signing up for CityFridge.\nPlease verify your email then log in.")
@@ -116,6 +119,12 @@ export default ({navigation})=>{
                     placeholder='Business Name'
                     onChangeText={(input)=>setName(input.trim())}
                     />
+                    <TextInput style={styles.textInput}
+                    multiline = {true}
+                    maxHeight = {80}
+                    placeholder='Store Description'
+                    onChangeText={(input)=>setDescription(input.trim())}
+                    />
                 </View>
                 ) : (
                 <View style={styles.form}>
@@ -127,10 +136,6 @@ export default ({navigation})=>{
                 )
             }
             <View style={styles.form}>
-                <TextInput style={styles.textInput}
-                placeholder='Username'
-                onChangeText={(input)=>setUsername(input.trim())}
-                />
                 <TextInput style={styles.textInput}
                 placeholder='Email'
                 onChangeText={(input)=>setEmail(input.trim())}

@@ -8,8 +8,7 @@ import {
   StyleSheet,
 } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
-
-import { doc, getDoc } from "firebase/firestore";
+import { getDownloadURL, ref } from 'firebase/storage'
 import { database } from "../firebase";
 import { collection, getDocs } from "firebase/firestore";
 import { useState, useEffect } from "react";
@@ -75,9 +74,7 @@ export default function Stores({ navigation }) {
   useEffect(async () => {
     const querySnapshot = await getDocs(collection(database, "vendors"));
     const saveFirebaseItems = [];
-    querySnapshot.forEach((doc) => {
-      // doc.data() is never undefined for query doc snapshots
-      // console.log(doc.id, " => ", doc.data());
+    querySnapshot.forEach(async(doc) => {
       saveFirebaseItems.push(doc.data());
     });
     setStoreData(saveFirebaseItems);
@@ -174,7 +171,6 @@ const StoreImage = (props) => (
   <View
     style={{
       alignItems: "center",
-      //   marginTop: 10,
       marginLeft: 15,
       borderRadius: 20,
     }}
