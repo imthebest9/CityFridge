@@ -6,7 +6,7 @@ import { doc, getDoc } from 'firebase/firestore';
 
 
 export default ({route})=>{
-    const {data, date, day, time, isVendor, username} = route.params
+    const {data, date, day, time, isVendor, name} = route.params
     const weekdays = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Firday", "Saturday"]
     const [weight, setWeight] = useState(0)
     const [price, setPrice] = useState(0)
@@ -57,7 +57,7 @@ export default ({route})=>{
             </View>
             <View style={styles.insightContainer}>
                 <Text style={styles.insightStoreFont}>
-                {username}
+                {name}
                 </Text>
                 <View style={styles.insightRowContainer}>
                     <View style={styles.insightLargeColumnContainer}>
