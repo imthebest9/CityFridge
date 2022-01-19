@@ -2,8 +2,9 @@ import React from "react";
 import { View, Text, Image, StyleSheet, ScrollView } from "react-native";
 import BouncyCheckbox from "react-native-bouncy-checkbox";
 import Divider from "react-native-divider";
-import NumericInput from "react-native-numeric-input";
-// import { useDispatch } from "react-redux";
+import { database } from "../firebase";
+import { addDoc, collection, doc, setDoc } from "firebase/firestore";
+import { useDispatch } from "react-redux";
 
 // refer MenuItem in youtube
 const food = [

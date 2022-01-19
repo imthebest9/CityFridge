@@ -1,6 +1,7 @@
 import React from "react";
 import { View, Text, Image } from "react-native";
-
+import { database } from "../firebase";
+import { addDoc, collection, doc, setDoc } from "firebase/firestore";
 const yelpRestaurantInfo = {
   name: "Kingsbay Restaurant",
   image: "https://upload.wikimedia.org/wikipedia/commons/6/62/Barbieri_-_ViaSophia25668.jpg",
