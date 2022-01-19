@@ -79,7 +79,7 @@ export default ({navigation})=>{
             const foodData = (await getDoc(doc(database, "foods", foodID))).data()
             foodList += foodData["name"] + " x " + reservationData["foods"][foodID] + "\n"
         }
-        const username = data["isVendor"] ? reservationData["customerUsername"] : reservationData["vendorUsername"]
+        const name = data["isVendor"] ? reservationData["customerName"] : reservationData["vendorName"]
         return{
             key: key,
             data: reservationData,
@@ -88,7 +88,7 @@ export default ({navigation})=>{
             day: reservationDate.getDay(),
             time: time,
             isVendor: data["isVendor"],
-            username: username,
+            name: name,
             foodList: foodList.trimEnd()
         }
     }
@@ -157,7 +157,7 @@ export default ({navigation})=>{
                         day: item.day,
                         time: item.time,
                         isVendor: item.isVendor,
-                        username: item.username
+                        name: item.name
                         })}}>
                         <View style={[styles.historyDateContainer, {backgroundColor: item.isComplete ? '#f6f6f6' : '#4EB574'}]}>
                             <Text style={styles.historyTitleFont}>
@@ -169,7 +169,7 @@ export default ({navigation})=>{
                         </View>
                         <View style={styles.historyRecordContainer}>
                             <Text style={styles.historyTitleFont}>
-                                {item.username}
+                                {item.name}
                             </Text>
                             <Text style={styles.historyBodyFont}>
                                 {item.foodList}
