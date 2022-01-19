@@ -28,7 +28,7 @@ export default function BottomTabsCustomer({navigation}) {
         width: Dimensions.get("screen").width
       }}
     >
-      <Icon icon="home" text="Home" screen="Search Page"/>
+      <Icon icon="home" text="Home" screen="Home Page"/>
       <Icon icon="shopping-cart" text="Cart" screen="Taddcart"/>
       <Icon icon="user-alt" text="Profile" screen="Profile"/>
     </View>

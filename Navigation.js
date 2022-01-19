@@ -156,7 +156,7 @@ export default function Navigation() {
             component={StorePage}
           />
           <Stack.Screen
-            name="Search Page"
+            name="Home Page"
             component={SearchStorePage}
           />
           <Stack.Screen
