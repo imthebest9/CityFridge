@@ -79,7 +79,7 @@ export default ({navigation})=>{
             const foodData = (await getDoc(doc(database, "foods", foodID))).data()
             foodList += foodData["name"] + " x " + reservationData["foods"][foodID] + "\n"
         }
-        const username = data["isVendor"] ? reservationData["clientUsername"] : reservationData["vendorUsername"]
+        const username = data["isVendor"] ? reservationData["customerUsername"] : reservationData["vendorUsername"]
         return{
             key: key,
             data: reservationData,

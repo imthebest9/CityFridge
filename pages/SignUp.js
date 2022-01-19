@@ -10,13 +10,12 @@ import SwitchSelector from '../components/SwitchSelector';
 import { styles } from './SignIn'
 import { StackActions } from '@react-navigation/native';
 import { auth, database } from "../firebase";
-import { createUserWithEmailAndPassword, updateProfile, sendEmailVerification } from "firebase/auth";
+import { createUserWithEmailAndPassword, sendEmailVerification } from "firebase/auth";
 import { doc, setDoc } from "firebase/firestore"; 
 
 export default ({navigation})=>{
     const [name, setName] = useState('');
     const [description, setDescription] = useState('');
-    const [username, setUsername] = useState('');
     const [email, setEmail] = useState('');
     const [contact, setContact] = useState('');
     const [password, setPassword] = useState('');
@@ -30,10 +29,10 @@ export default ({navigation})=>{
         alert('Please enter your name')
         else if(isVendor && !description)
         alert('Please add a description for your store')
-        else if(!username)
+        /*else if(!username)
         alert('Please enter your username')
         else if(!username.match(/^[a-zA-Z0-9@_\.]*$/))
-        alert('Username must must contain only lowecase letters, numbers, at(@), periods(.), or underscores(_) only.')
+        alert('Username must must contain only lowecase letters, numbers, at(@), periods(.), or underscores(_) only.')*/
         else if(!email)
         alert('Please enter your email address')
         else if(!contact)
@@ -61,7 +60,6 @@ export default ({navigation})=>{
                     setDoc(doc(database, "vendors", user.uid), {
                         name: name,
                         description: description,
-                        username: username,
                         contact: contact,
                         email: email,
                         location: location,
@@ -74,7 +72,6 @@ export default ({navigation})=>{
                 else{
                     setDoc(doc(database, "customers", user.uid), {
                         name: name,
-                        username: username,
                         contact: contact,
                         email: email,
                         location: location,
@@ -86,10 +83,7 @@ export default ({navigation})=>{
                 setDoc(doc(database, "history", user.uid), {
                     food: [],
                     contribution: parseFloat(0)
-                });
-                updateProfile(user, {
-                    displayName: username
-                  }).then(() => {
+                }).then(() => {
                     sendEmailVerification(user)
                     .then(() => {
                         alert("Thank you for signing up for CityFridge.\nPlease verify your email then log in.")
@@ -142,10 +136,6 @@ export default ({navigation})=>{
                 )
             }
             <View style={styles.form}>
-                <TextInput style={styles.textInput}
-                placeholder='Username'
-                onChangeText={(input)=>setUsername(input.trim())}
-                />
                 <TextInput style={styles.textInput}
                 placeholder='Email'
                 onChangeText={(input)=>setEmail(input.trim())}
