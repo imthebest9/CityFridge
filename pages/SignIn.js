@@ -22,7 +22,7 @@ export default ({navigation}) => {
     const [image, setImage] = useState(null)
 
     useEffect(async()=>{
-        //setImage(await getDownloadURL(ref(storage, "logo.png")))
+        setImage(await getDownloadURL(ref(storage, "logo.png")))
         auth.onAuthStateChanged((user)=>{
             if(user && user.emailVerified){
                 storeProfile(user.uid, user.displayName)

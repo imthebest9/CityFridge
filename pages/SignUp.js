@@ -80,9 +80,13 @@ export default ({navigation})=>{
                         location: location,
                         address: address,
                         isVendor: isVendor,
-                        contribution: parseFloat(0)
+                        contribution: parseFloat(5.0)
                       });
                 }
+                setDoc(doc(database, "history", user.uid), {
+                    food: [],
+                    contribution: parseFloat(0)
+                });
                 updateProfile(user, {
                     displayName: username
                   }).then(() => {

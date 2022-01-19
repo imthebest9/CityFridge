@@ -79,7 +79,6 @@ export default ({navigation})=>{
             const foodData = (await getDoc(doc(database, "foods", foodID))).data()
             foodList += foodData["name"] + " x " + reservationData["foods"][foodID] + "\n"
         }
-        foodList = foodList.trimEnd()
         const username = data["isVendor"] ? reservationData["clientUsername"] : reservationData["vendorUsername"]
         return{
             key: key,
@@ -90,7 +89,7 @@ export default ({navigation})=>{
             time: time,
             isVendor: data["isVendor"],
             username: username,
-            foodList: foodList
+            foodList: foodList.trimEnd()
         }
     }
 
@@ -109,23 +108,21 @@ export default ({navigation})=>{
                 (selectedOption==1) ?
                 (<View style={styles.profileContainer}>
                 <Text style={styles.nameFont}>
-                    {data['name']}
+                    {data['name'] +' ('+ (data['review'] && data['review'].toFixed(1))+'⭐)'}
                 </Text>
                 <Text style={styles.locationFont}>
                     {data['location']}
                 </Text>
-                {isVendor && 
                 <View>
                     <Text style={styles.descriptionFont}>
                         {data['description']}
                     </Text>
-                    <View  style={styles.contributionTitleContainer}>
-                        <Text style={styles.contributionTitleFont}>
-                            Rating: {data['review'] && data['review'].toFixed(1)}
+                    <View style={styles.contributionContainer}>
+                        <Text style={styles.contributionFont}>
+                            Contribution: {history["contribution"]} kg
                         </Text>
                     </View>
                 </View>
-                }
                 <View style={styles.infoContainer}>
                     <View style={styles.infoRowContainer}>
                         <Text style={styles.infoTitleFont}>Address</Text> 
@@ -140,24 +137,9 @@ export default ({navigation})=>{
                         <Text style={styles.infoBodyFont}>{data['email']}</Text>
                     </View>
                 </View>
-                {!isVendor && <View style={styles.contributionContainer}>
-                    <View style={styles.contributionTitleContainer}>
-                        <Text style={styles.contributionTitleFont}>
-                            Total Contribution
-                        </Text>
-                    </View>
-                    <View style={styles.contributionInfoContainer}>
-                        <Text style={styles.contributionInfoFont}>
-                            {history["contribution"]} kg
-                        </Text>
-                        <Text style={styles.contributionInfoBodyFont}>
-                            of foods have been saved
-                        </Text>
-                    </View>
-                </View>}
             </View>) :
             (
-            <View style={styles.profileContainer}>
+            <View style={styles.historyContainer}>
                 {historyList.length==0 ?
                 <View>
                     <Text style={styles.nameFont}>
@@ -185,7 +167,7 @@ export default ({navigation})=>{
                                 {item.date[2]}
                             </Text>
                         </View>
-                        <View style={styles.historyContainer}>
+                        <View style={styles.historyRecordContainer}>
                             <Text style={styles.historyTitleFont}>
                                 {item.username}
                             </Text>
@@ -198,21 +180,6 @@ export default ({navigation})=>{
                         </Text>
                     </TouchableOpacity>
                 )}/>}
-                {isVendor && <View style={styles.contributionContainer}>
-                    <View style={styles.contributionTitleContainer}>
-                        <Text style={styles.contributionTitleFont}>
-                            Total Contribution
-                        </Text>
-                    </View>
-                    <View style={styles.contributionInfoContainer}>
-                        <Text style={styles.contributionInfoFont}>
-                            {history["contribution"]} kg
-                        </Text>
-                        <Text style={styles.contributionInfoBodyFont}>
-                            of foods have been saved
-                        </Text>
-                    </View>
-                </View>}
             </View>
             )
             }
@@ -351,35 +318,23 @@ export const styles = StyleSheet.create({
         fontFamily: "MerriweatherSans_300Light_Italic"
     },
     contributionContainer:{
-        width: 250
-    },
-    contributionTitleContainer:{
+        flexDirection: 'row',
+        justifyContent: 'space-around',
         backgroundColor: '#4EB574',
         borderRadius: 5,
         paddingVertical: 7,
         marginVertical: 10
     },
-    contributionTitleFont:{
+    contributionFont:{
         color: 'white',
-        fontSize: 14,
+        fontSize: 15,
         textAlign: 'center',
         fontFamily: "Merriweather_400Regular"
     },
-    contributionInfoContainer:{
-        backgroundColor: '#f6f6f6',
-        borderRadius: 5,
-        paddingVertical: 10,
-        alignItems: 'center'
-    },
-    contributionInfoFont: {
-        color: '#4EB574',
-        fontSize: 20,
-        fontFamily: "Merriweather_900Black"
-    },
-    contributionInfoBodyFont:{
-        color: 'black',
-        margin: 5,
-        fontFamily: "MerriweatherSans_300Light_Italic"
+    historyContainer:{
+        flex: 1,
+        alignItems: 'center',
+        width: width
     },
     historyRowContainer:{
         flexDirection: 'row',
@@ -396,7 +351,7 @@ export const styles = StyleSheet.create({
         width: 60,
         height: 60
     },
-    historyContainer:{
+    historyRecordContainer:{
         width: '60%',
         marginHorizontal: 10
     },
