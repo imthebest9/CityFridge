@@ -44,14 +44,7 @@ export default ()=>{
                 setProfile(profile)
                 getDoc(doc(database, profile, user.uid)).then((snapshot)=>{
                     setData(snapshot.data())
-                    const url = snapshot.data().image_url
-                    if(url==null){
-                        getDownloadURL(ref(storage, "logo.jpeg")).then((url)=>{
-                            setImage(url)
-                        })
-                    }
-                    else
-                    setImage(url)
+                    setImage(snapshot.data().image_url)
                 })
             })
             setImageRef(ref(storage, currentUser.uid+"/profile.jpeg"))

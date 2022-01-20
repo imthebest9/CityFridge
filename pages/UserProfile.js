@@ -12,10 +12,9 @@ import SwitchSelector from '../components/SwitchSelector'
 import BottomTabsVendor from "../components/vendor/BottomTabsVendor";
 import BottomTabsCustomer from "../components/BottomTabsCustomer";
 import { StackActions, useIsFocused } from '@react-navigation/native'
-import { auth, database, storage } from "../firebase";
+import { auth, database } from "../firebase";
 import { doc, getDoc } from "firebase/firestore"
 import AsyncStorage from '@react-native-async-storage/async-storage'
-import { getDownloadURL, ref } from 'firebase/storage'
 
 export default ({navigation})=>{
     const [data, setData] = useState([])
@@ -31,13 +30,9 @@ export default ({navigation})=>{
                 AsyncStorage.getItem("profile").then(profile=>{
                     if(profile=="vendors")
                     setIsVendor(true)
-                    getDoc(doc(database, profile, user.uid)).then(async(userDoc)=>{
+                    getDoc(doc(database, profile, user.uid)).then(userDoc=>{
                         setData(userDoc.data())
-                        const url = userDoc.data().image_url
-                        if(url == null)
-                        setImage(await getDownloadURL(ref(storage, "logo.jpeg")))
-                        else
-                        setImage(url)
+                        setImage(userDoc.data().image_url)
                     })
                 })
                 getDoc(doc(database, "history", user.uid)).then(historyDoc=>{
@@ -108,7 +103,7 @@ export default ({navigation})=>{
                 (selectedOption==1) ?
                 (<View style={styles.profileContainer}>
                 <Text style={styles.nameFont}>
-                    {data['name'] +' ('+ (data['review'] && data['review'].toFixed(1))+'⭐)'}
+                    {data['name']}
                 </Text>
                 <Text style={styles.locationFont}>
                     {data['location']}

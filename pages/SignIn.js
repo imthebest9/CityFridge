@@ -22,10 +22,10 @@ export default ({navigation}) => {
     const [image, setImage] = useState(null)
 
     useEffect(async()=>{
-        setImage(await getDownloadURL(ref(storage, "logo.png")))
+        setImage(await getDownloadURL(ref(storage, "logo.jpeg")))
         auth.onAuthStateChanged((user)=>{
             if(user && user.emailVerified){
-                storeProfile(user.uid, user.displayName)
+                storeProfile(user.uid)
             }
         })
     }, [image==null])
@@ -36,7 +36,7 @@ export default ({navigation}) => {
         .then((userCredential) => {
             const user = userCredential.user;
             if(user.emailVerified){
-                storeProfile(user.uid, user.displayName)
+                storeProfile(user.uid)
             }
             else{
                 alert("Please verify your email")
@@ -47,7 +47,7 @@ export default ({navigation}) => {
         });
     }
 
-    const storeProfile = (id, username) => {
+    const storeProfile = (id) => {
         getDoc(doc(database, "customers", id)).then((docSnap)=>{
             if(docSnap.exists()){
                 AsyncStorage.setItem("profile", "customers")
@@ -64,8 +64,7 @@ export default ({navigation}) => {
     return (
         <View style={styles.container}>
             <Image
-            //source={{uri: image }}
-            source={require("../assets/logo.png")}
+            source={{uri: image}}
             style={styles.logo}
             resizeMode='contain'
             />
@@ -132,5 +131,6 @@ export const styles = StyleSheet.create({
   logo: {
     margin: 20,
     height: width * 0.3,
+    width: width * 0.3
   }
 });

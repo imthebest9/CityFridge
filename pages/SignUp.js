@@ -9,9 +9,10 @@ import {
 import SwitchSelector from '../components/SwitchSelector';
 import { styles } from './SignIn'
 import { StackActions } from '@react-navigation/native';
-import { auth, database } from "../firebase";
+import { auth, database, storage } from "../firebase";
 import { createUserWithEmailAndPassword, sendEmailVerification } from "firebase/auth";
-import { doc, setDoc } from "firebase/firestore"; 
+import { doc, setDoc } from "firebase/firestore";
+import { getDownloadURL, ref } from 'firebase/storage'
 
 export default ({navigation})=>{
     const [name, setName] = useState('');
@@ -29,10 +30,6 @@ export default ({navigation})=>{
         alert('Please enter your name')
         else if(isVendor && !description)
         alert('Please add a description for your store')
-        /*else if(!username)
-        alert('Please enter your username')
-        else if(!username.match(/^[a-zA-Z0-9@_\.]*$/))
-        alert('Username must must contain only lowecase letters, numbers, at(@), periods(.), or underscores(_) only.')*/
         else if(!email)
         alert('Please enter your email address')
         else if(!contact)
@@ -54,7 +51,7 @@ export default ({navigation})=>{
     const onSignUp = () => {
         if (onValidatie()) {
             createUserWithEmailAndPassword(auth, email, password)
-            .then((userCredential) => {
+            .then(async(userCredential) => {
                 const user = userCredential.user;
                 if(isVendor){
                     setDoc(doc(database, "vendors", user.uid), {
@@ -66,7 +63,7 @@ export default ({navigation})=>{
                         address: address,
                         isVendor: isVendor,
                         contribution: parseFloat(0),
-                        review: parseFloat(5.0)
+                        image_url: await getDownloadURL(ref(storage, "logo.jpeg"))
                       });
                 }
                 else{
@@ -77,7 +74,8 @@ export default ({navigation})=>{
                         location: location,
                         address: address,
                         isVendor: isVendor,
-                        contribution: parseFloat(5.0)
+                        contribution: parseFloat(0),
+                        image_url: await getDownloadURL(ref(storage, "logo.jpeg"))
                       });
                 }
                 setDoc(doc(database, "history", user.uid), {
