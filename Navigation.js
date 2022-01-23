@@ -45,6 +45,11 @@ import {
 import AppLoading from "expo-app-loading";
 import StorePage from "./pages/StorePage";
 import Stores from "./components/Stores";
+import TShoppingCart from "./pages/TShoppingCart";
+import TAboutRestaurant from "./pages/TAboutRestaurant";
+import TAboutFood from "./pages/TAboutFood";
+// import { Provider } from "react-redux";
+// import store from "./reducers/store";
 
 const Stack = createStackNavigator();
 
@@ -168,6 +173,26 @@ export default function Navigation() {
             name="Taddcart"
             component={Taddcart}
           />
+          <Stack.Screen
+            name="ShoppingCart"
+            component={TShoppingCart}
+
+              // <Provider store ={store}>
+
+              // </Provider>
+
+
+
+          />
+          <Stack.Screen
+            name="Restaurants"
+            component={TAboutRestaurant}
+          />
+          <Stack.Screen
+            name="Foods"
+            component={TAboutFood}
+          />
+
         </Stack.Navigator>
       </NavigationContainer>
     );

@@ -1,23 +1,24 @@
 import React from "react";
 import { View, Text, StyleSheet } from "react-native";
-import AboutFood from "../components/Transaction/AboutFood";
-import AboutRestaurant from "../components/Transaction/AboutRestaurant";
+import TAboutFood from "./TAboutFood";
+import TAboutRestaurant from "./TAboutRestaurant";
 import AddCart from "../components/Transaction/AddCart";
-import BottomTabsVendor from "../components/vendor/BottomTabsVendor";
+import BottomTabsCustomer from "../components/BottomTabsCustomer";
 
 const Separator = () => <View style={styles.separator} />;
 
 export default function Taddcart() {
   return (
     <View style={{flex:1}}>
-      <AboutRestaurant />
+       {/* <TAboutRestaurant /> */}
 
       <Separator />
 
-      <AboutFood />
+      {/* <AboutFood /> */}
 
       <AddCart/>
-      <BottomTabsVendor/>
+      
+      <BottomTabsCustomer style={{ flex: 1 }} />
     </View>
   );
 }

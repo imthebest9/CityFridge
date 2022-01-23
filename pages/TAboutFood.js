@@ -2,8 +2,8 @@ import React from "react";
 import { View, Text, Image, StyleSheet, ScrollView } from "react-native";
 import BouncyCheckbox from "react-native-bouncy-checkbox";
 import Divider from "react-native-divider";
-import { database } from "../firebase";
-import { addDoc, collection, doc, setDoc } from "firebase/firestore";
+// import { database } from "../firebase";
+// import { addDoc, collection, doc, setDoc } from "firebase/firestore";
 import { useDispatch } from "react-redux";
 
 // refer MenuItem in youtube
@@ -68,7 +68,7 @@ const styles = StyleSheet.create({
   },
 });
 
-export default function AboutFood() {
+export default function TAboutFood() {
 
   // const dispatch = useDispatch();
   // const selectItem = (item) =>

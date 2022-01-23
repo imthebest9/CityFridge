@@ -11,10 +11,13 @@ import UserProfile from "./pages/UserProfile";
 import SignUp from "./pages/SignUp";
 import SearchStorePage from "./pages/SearchStorePage";
 import SignIn from "./pages/SignIn";
+import TShoppingCart from "./pages/TShoppingCart";
+
 
 export default function App() {
-  // return <Navigation />
-     return <Taddcart />;
+   return <Navigation />
+  // return <TShoppingCart/>;
+    //  return <Taddcart />;
   //  return <Tviewcart/>;
   //  return <Tshowtac/>;
   // return < VendorMain/>;

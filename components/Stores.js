@@ -98,7 +98,7 @@ export default function Stores({navigation}) {
               borderBottomWidth: 1,
             }}
           >
-            <TouchableOpacity onPress={() => navigation.navigate("Taddcart")}>
+            <TouchableOpacity onPress={() => navigation.navigate("Foods")}>
               <StoreImage image={Store.image_url} />
             </TouchableOpacity>
 
