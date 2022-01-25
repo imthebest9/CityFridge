@@ -60,7 +60,7 @@ const StoreData = [
   },
 ];
 
-export default function Stores({navigation}) {
+export default function Stores({navigation, ...props}) {
 
   const [storeData, setStoreData] = useState([]);
 
@@ -98,7 +98,8 @@ export default function Stores({navigation}) {
               borderBottomWidth: 1,
             }}
           >
-            <TouchableOpacity onPress={() => navigation.navigate("Foods")}>
+            {/* <TouchableOpacity onPress={() => navigation.navigate("Foods")}> */}
+            <TouchableOpacity onPress={() => navigation.navigate("Taddcart")}>
               <StoreImage image={Store.image_url} />
             </TouchableOpacity>
 

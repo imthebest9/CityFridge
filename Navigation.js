@@ -48,10 +48,16 @@ import Stores from "./components/Stores";
 import TShoppingCart from "./pages/TShoppingCart";
 import AboutRestaurant from "./components/Transaction/AboutRestaurant";
 import AboutFood from "./components/Transaction/AboutFood";
-// import { Provider } from "react-redux";
-// import store from "./reducers/store";
+import { Provider } from "react-redux";
+import store from "./reducers/store";
+// youtube ubereats
+// import { Provider as ReduxProvider } from "react-redux";
+// import configureStore from "./redux/store";
+
+// const store = configureStore();
 
 const Stack = createStackNavigator();
+
 
 export default function Navigation() {
   let [fontsLoaded] = useFonts({
@@ -80,6 +86,8 @@ export default function Navigation() {
     return <AppLoading />;
   } else {
     return (
+      <Provider store={store}>
+      {/* <ReduxProvider store={store}> */}
       <NavigationContainer>
         <Stack.Navigator
           screenOptions={{
@@ -173,17 +181,10 @@ export default function Navigation() {
             name="Taddcart"
             component={Taddcart}
           />
-          <Stack.Screen
+          {/* <Stack.Screen
             name="ShoppingCart"
             component={TShoppingCart}
-
-              // <Provider store ={store}>
-
-              // </Provider>
-
-
-
-          />
+          /> */}
           <Stack.Screen
             name="Restaurants"
             component={AboutRestaurant}
@@ -195,6 +196,8 @@ export default function Navigation() {
 
         </Stack.Navigator>
       </NavigationContainer>
+      {/* </ReduxProvider> */}
+       </Provider>
     );
   }
 }

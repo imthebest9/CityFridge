@@ -15,8 +15,8 @@ import TShoppingCart from "./pages/TShoppingCart";
 
 
 export default function App() {
-   return <Navigation />;
-  // return <TShoppingCart/>;
+  return <Navigation />;
+  //  return <TShoppingCart/>;
     //  return <Taddcart />;
   //  return <Tviewcart/>;
   //  return <Tshowtac/>;

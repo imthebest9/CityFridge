@@ -1,8 +1,9 @@
 import React from "react";
 import { View, Text, TouchableOpacity } from "react-native";
 import FontAwesome5 from "react-native-vector-icons/FontAwesome5";
-
-export default function BottomTabsCustomer() {
+import BottomCartIcon from "./BottomCartIcon";
+// import {connect} from 'react-redux';
+export default function BottomTabsCustomer({navigation}) {
   return (
     <View
       style={{
@@ -13,8 +14,9 @@ export default function BottomTabsCustomer() {
       }}
     >
       <Icon icon="home" text="Home" />
-
-      <View>
+      <BottomCartIcon/>
+       {/* <BottomCartIcon  onPress={() => navigation.navigate("ShoppingCart")}/> */}
+      {/* <View>
         <View
           style={{
             position: "absolute", height: 30, width: 30,
@@ -23,11 +25,11 @@ export default function BottomTabsCustomer() {
             alignItems: "center", justifyContent: "center", zIndex: 2000,
           }}
         >
-          <Text style={{ color: "white", fontWeight: "bold" }}>0</Text>
+          <Text style={{ color: "white", fontWeight: "bold" }}>10</Text>
         </View>
 
         <Icon icon="shopping-cart" text="Cart" />
-      </View>
+      </View> */}
       <Icon icon="user-alt" text="Profile" />
     </View>
   );

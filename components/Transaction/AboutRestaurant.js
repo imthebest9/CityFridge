@@ -6,14 +6,14 @@ const yelpRestaurantInfo = {
   name: "Kingsbay Restaurant",
   image: "https://upload.wikimedia.org/wikipedia/commons/6/62/Barbieri_-_ViaSophia25668.jpg",
   rating: 4.5,
-  kilogram: 30,
+  kilogram: 30, 
 };
 
 const {name, image, rating, kilogram}= yelpRestaurantInfo;
 // const formattedCategories = categories.map((cat)=> cat.title).join(" • ");
 const description = `Rating: ${rating}⭐ Total Saved: ${kilogram} kg`; 
 
-export default function TAboutRestaurant() {
+export default function AboutRestaurant() {
   return (
     <View>
       <RestaurantName name={name}/>
@@ -30,7 +30,7 @@ const RestaurantImage = (props) => (
 
 const RestaurantName = (props) => (<Text style={{
     fontSize:21,
-    marginTop:15,
+    // marginTop:8,
     textAlign: "center",
     // marginHorizontal:15,
 }}>{props.name}</Text>);

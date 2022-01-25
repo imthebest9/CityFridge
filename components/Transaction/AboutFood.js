@@ -1,13 +1,14 @@
 import React from "react";
-import { View, Text, Image, StyleSheet, ScrollView } from "react-native";
+import { View, Text, Image, StyleSheet, ScrollView, Button, TouchableOpacity } from "react-native";
 import BouncyCheckbox from "react-native-bouncy-checkbox";
 import Divider from "react-native-divider";
 // import { database } from "../firebase";
 // import { addDoc, collection, doc, setDoc } from "firebase/firestore";
-import { useDispatch } from "react-redux";
+import {connect} from "react-redux";
 
 // refer MenuItem in youtube
-const food = [
+// import { useDispatch } from "react-redux";
+const foods = [
   {
     title: "Apple",
     weight: "Weight: 1.2 kg",
@@ -59,51 +60,90 @@ const food = [
 const styles = StyleSheet.create({
   foodItemStyle: {
     flexDirection: "row",
-    justifyContent: "space-between",
-    margin: 8,
+    justifyContent: "space-evenly",
+    margin: 5,
   },
   titleStyle: {
     fontSize: 19,
-    fontWeight: "800",
+    fontWeight: "bold",
   },
 });
 
-export default function TAboutFood() {
+const mapDispatchToProps = (dispatch) =>{
+  return{ 
+    addItemToCart:(product) =>dispatch({type:'ADD_TO_CART', payload:product})
+  }
+}
 
-  // const dispatch = useDispatch();
-  // const selectItem = (item) =>
-  //   dispatch({
-  //     type: "ADD_TO_CART",
-  //     payload: item,
-  //   });
-
-  return (
-    <View style={{ flex: 1 }}>
+const AboutFood = (props) =>(
+  <View style={{ flex: 1 }}>
       <ScrollView showsVerticalScrollIndicator={false}>
-        {food.map((food, index) => (
+        {foods.map((food, index) => (
           <View key={index}>
+            {/* <TouchableOpacity onPress={()=> alert('Added to cart')} title={food.name+ "-" + food.price}> */}
+            <TouchableOpacity onPress={()=> props.addItemToCart()}>
+              {/*                     <Button onPress={() => this.props.onPress(item)} title={item.name + " - " + item.price} /> */}
             <View style={styles.foodItemStyle}>
               {
-                <BouncyCheckbox
-                  iconStyle={{ borderColor: "lightgray", borderRadius: 6 }}
-                  fillColor="#4EB574"
-                  onPress={()=> selectItem(food)}
-                />
+                // <BouncyCheckbox
+                //   iconStyle={{ borderColor: "lightgray", borderRadius: 6 }}
+                //   fillColor="#4EB574"
+                //   onPress={()=> selectItem(food)}
+                // />
+               
               }
+              {/* onPress={props.addItemToCart()} */}
               <FoodInfo food={food} />
               <FoodImage food={food} />
             </View>
-            <Divider
-              width={0.5}
+            </TouchableOpacity>
+            {/* <Divider
+              width={0.5} 
               orientation="vertical"
               style={{ marginHorizontal: 10 }}
-            />
+            /> */}
           </View>
         ))}
       </ScrollView>
     </View>
-  );
-}
+)
+export default connect(null, mapDispatchToProps)(AboutFood);
+// export default function AboutFood() {
+
+//   // const dispatch = useDispatch();
+//   // const selectItem = (item) =>
+//   //   dispatch({
+//   //     type: "ADD_TO_CART",
+//   //     payload: item,  
+//   //   });
+
+//   return (
+//     <View style={{ flex: 1 }}>
+//       <ScrollView showsVerticalScrollIndicator={false}>
+//         {foods.map((food, index) => (
+//           <View key={index}>
+//             <View style={styles.foodItemStyle}>
+//               {
+//                 <BouncyCheckbox
+//                   iconStyle={{ borderColor: "lightgray", borderRadius: 6 }}
+//                   fillColor="#4EB574"
+//                   onPress={()=> selectItem(food)}
+//                 />
+//               }
+//               <FoodInfo food={food} />
+//               <FoodImage food={food} />
+//             </View>
+//             {/* <Divider
+//               width={0.5} 
+//               orientation="vertical"
+//               style={{ marginHorizontal: 10 }}
+//             /> */}
+//           </View>
+//         ))}
+//       </ScrollView>
+//     </View>
+//   );
+// }
 
 const FoodInfo = (props) => (
   <View style={{ width: 235, justifyContent: "space-evenly" }}>

@@ -1,4 +1,5 @@
-import { createStore } from "redux";
-import cartItems from "../reducers/cartItems";
+import { createStore } from 'redux';
+
+import cartItems from '../cartItems';
 
 export default store = createStore(cartItems)
