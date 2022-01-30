@@ -19,7 +19,7 @@ const BottomCartIcon = (props) => (
         zIndex: 2000,
       }}
     >
-      <Text style={{ color: "white", fontWeight: "bold" }}>{props.cartItems.length}</Text>
+      <Text style={{ color: "white", fontWeight: "bold" }}>0</Text>
     </View>
 
     <Icon icon="shopping-cart" text="Cart" />
@@ -31,8 +31,8 @@ const mapStatetoProps =(state)=>{
     cartItems: state
   }
 }
-export default connect (mapStatetoProps)(BottomCartIcon);
-
+// export default connect (mapStatetoProps)(BottomCartIcon);
+export default BottomCartIcon;
 const Icon = (props) => (
   <TouchableOpacity>
     <View>

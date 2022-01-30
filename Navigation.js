@@ -8,7 +8,7 @@ import { auth } from "./firebase";
 
 import SignIn from "./pages/SignIn";
 import SignUp from "./pages/SignUp";
-import Taddcart from  "./pages/Taddcart";
+import Taddcart from "./pages/Taddcart";
 import UserSetting from "./pages/UserSetting";
 import UserProfile from "./pages/UserProfile";
 import UserHistory from "./pages/UserHistory";
@@ -50,6 +50,7 @@ import AboutRestaurant from "./components/Transaction/AboutRestaurant";
 import AboutFood from "./components/Transaction/AboutFood";
 import { Provider } from "react-redux";
 import store from "./reducers/store";
+import FoodDetails from "./components/Transaction/FoodDetails";
 // youtube ubereats
 // import { Provider as ReduxProvider } from "react-redux";
 // import configureStore from "./redux/store";
@@ -57,7 +58,6 @@ import store from "./reducers/store";
 // const store = configureStore();
 
 const Stack = createStackNavigator();
-
 
 export default function Navigation() {
   let [fontsLoaded] = useFonts({
@@ -86,118 +86,109 @@ export default function Navigation() {
     return <AppLoading />;
   } else {
     return (
-      <Provider store={store}>
-      {/* <ReduxProvider store={store}> */}
-      <NavigationContainer>
-        <Stack.Navigator
-          screenOptions={{
-            headerTitleAlign: "center",
-            headerTintColor: "#fff",
-            headerStyle: { backgroundColor: "#116530", elevation: 0 },
-            headerTitleStyle: { fontSize: 18, fontFamily:"Merriweather_700Bold" }
-          }}
-          initialRouteName="Search Page"  // testing
-        >
-          <Stack.Screen
-            name="Sign In"
-            component={SignIn}
-            options={({ navigation }) => ({
-              headerLeft: null,
-              headerRight: () => (
-                <TouchableOpacity
-                  onPress={() => navigation.navigate("Sign Up")}
-                >
-                  <Text style={[styles.headerText, { margin: 10 }]}>
-                    Sign Up
-                  </Text>
-                </TouchableOpacity>
-              )
-            })}
-          />
-          <Stack.Screen
-            name="Sign Up"
-            component={SignUp}
-          />
-          <Stack.Screen
-            name='Profile'
-            component={UserProfile}
-            options={({navigation, route}) => ({
-              headerLeft: () => (
-                <TouchableOpacity onPress={()=>navigation.navigate('Setting')}>
-                  <Text style={[styles.headerText, {margin:10}]}>Settings</Text>
-                </TouchableOpacity>),
-              headerRight: () => (
-                <TouchableOpacity onPress={()=>{
-                  signOut(auth).then(() => {
-                    navigation.navigate('Sign In')
-                  }).catch((error) => {
-                    alert(error.message)
-                  });
-                  }}>
-                  <Text style={[styles.headerText, {margin:10}]}>Sign Out</Text>
-                </TouchableOpacity>),
-              title: route.params.username,
-              })
-            }
+      // <Provider store={store}>
+        // <ReduxProvider store={store}>
+        <NavigationContainer>
+          <Stack.Navigator
+            screenOptions={{
+              headerTitleAlign: "center",
+              headerTintColor: "#fff",
+              headerStyle: { backgroundColor: "#116530", elevation: 0 },
+              headerTitleStyle: {
+                fontSize: 18,
+                fontFamily: "Merriweather_700Bold",
+              },
+            }}
+            initialRouteName="Search Page" // testing
+          >
+            <Stack.Screen
+              name="Sign In"
+              component={SignIn}
+              options={({ navigation }) => ({
+                headerLeft: null,
+                headerRight: () => (
+                  <TouchableOpacity
+                    onPress={() => navigation.navigate("Sign Up")}
+                  >
+                    <Text style={[styles.headerText, { margin: 10 }]}>
+                      Sign Up
+                    </Text>
+                  </TouchableOpacity>
+                ),
+              })}
+            />
+            <Stack.Screen name="Sign Up" component={SignUp} />
+            <Stack.Screen
+              name="Profile"
+              component={UserProfile}
+              options={({ navigation, route }) => ({
+                headerLeft: () => (
+                  <TouchableOpacity
+                    onPress={() => navigation.navigate("Setting")}
+                  >
+                    <Text style={[styles.headerText, { margin: 10 }]}>
+                      Settings
+                    </Text>
+                  </TouchableOpacity>
+                ),
+                headerRight: () => (
+                  <TouchableOpacity
+                    onPress={() => {
+                      signOut(auth)
+                        .then(() => {
+                          navigation.navigate("Sign In");
+                        })
+                        .catch((error) => {
+                          alert(error.message);
+                        });
+                    }}
+                  >
+                    <Text style={[styles.headerText, { margin: 10 }]}>
+                      Sign Out
+                    </Text>
+                  </TouchableOpacity>
+                ),
+                title: route.params.username,
+              })}
             />
             <Stack.Screen
-            name='History'
-            component={UserHistory}
-            options={
-            {
-              headerTintColor: "black",
-              headerStyle: { backgroundColor: "white", elevation: 0 },
-              headerTitleStyle: { fontSize: 24, fontFamily:"Merriweather_700Bold" }
-            }
-            }
+              name="History"
+              component={UserHistory}
+              options={{
+                headerTintColor: "black",
+                headerStyle: { backgroundColor: "white", elevation: 0 },
+                headerTitleStyle: {
+                  fontSize: 24,
+                  fontFamily: "Merriweather_700Bold",
+                },
+              }}
+            />
+            <Stack.Screen name="Setting" component={UserSetting} />
+            <Stack.Screen name="Your Store" component={VendorMain} />
+            <Stack.Screen name="Confirm Order" component={VendorConfirmOrder} />
+            <Stack.Screen
+              name="Update Food Quantity"
+              component={VendorUpdateFoodQty}
             />
             <Stack.Screen
-            name='Setting'
-            component={UserSetting}
+              name="Add New Food Type"
+              component={VendorNewFoodType}
             />
-          <Stack.Screen name="Your Store" component={VendorMain} />
-          <Stack.Screen name="Confirm Order" component={VendorConfirmOrder} />
-          <Stack.Screen
-            name="Update Food Quantity"
-            component={VendorUpdateFoodQty}
-          />
-          <Stack.Screen
-            name="Add New Food Type"
-            component={VendorNewFoodType}
-          />
-          <Stack.Screen
-            name="Kingsbay Hypermarket"
-            component={StorePage}
-          />
-          <Stack.Screen
-            name="Search Page"
-            component={SearchStorePage}
-          />
-          <Stack.Screen
-            name="Stores"
-            component={Stores}
-          />
-          <Stack.Screen
-            name="Taddcart"
-            component={Taddcart}
-          />
-          {/* <Stack.Screen
+            <Stack.Screen name="Kingsbay Hypermarket" component={StorePage} />
+            <Stack.Screen name="Search Page" component={SearchStorePage} />
+            <Stack.Screen name="Stores" component={Stores} />
+            <Stack.Screen name="Taddcart" component={Taddcart} />
+            {/* <Stack.Screen
             name="ShoppingCart"
             component={TShoppingCart}
           /> */}
-          <Stack.Screen
-            name="Restaurants"
-            component={AboutRestaurant}
-          />
-          <Stack.Screen
-            name="Foods"
-            component={AboutFood}
-          />
-
-        </Stack.Navigator>
-      </NavigationContainer>
-      {/* </ReduxProvider> */}
-       </Provider>
+            <Stack.Screen name="Restaurants" component={AboutRestaurant} />
+            <Stack.Screen name="Foods" component={AboutFood} />
+            <Stack.Screen name="Food Details" component={FoodDetails} />
+          </Stack.Navigator>
+        </NavigationContainer>
+        //  </ReduxProvider>
+      // </Provider>
     );
   }
 }
@@ -207,8 +198,6 @@ const styles = StyleSheet.create({
     color: "#fff",
     fontSize: 16,
     textAlign: "center",
-    fontFamily: "Merriweather_400Regular"
-
-  }
+    fontFamily: "Merriweather_400Regular",
+  },
 });
-

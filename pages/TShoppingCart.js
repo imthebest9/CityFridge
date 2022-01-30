@@ -7,10 +7,10 @@ import store from "../reducers/store";
 const TShoppingCart = (props) => (
   <View>
   <View style={styles.container}>
-   {/* {props.cartItems.length > 0?
-    <product x {props.cartItems}/>
-   : <Text>No items in your cart</Text> */}
-  }
+     {/* {props.cartItems.length > 0?
+     <product x {props.cartItems}/>
+    : <Text>No items in your cart</Text>
+  } */}
     
   </View>
 </View>

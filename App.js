@@ -12,16 +12,18 @@ import SignUp from "./pages/SignUp";
 import SearchStorePage from "./pages/SearchStorePage";
 import SignIn from "./pages/SignIn";
 import TShoppingCart from "./pages/TShoppingCart";
+import FoodDetails from "./components/Transaction/FoodDetails";
 
 
 export default function App() {
-  return <Navigation />;
+    // return <Navigation />;
+  //  return <FoodDetails/>;
   //  return <TShoppingCart/>;
-    //  return <Taddcart />;
+      return <Taddcart />;
   //  return <Tviewcart/>;
   //  return <Tshowtac/>;
   // return < VendorMain/>;
-  //return <VendorNewFoodType/>;
+  // return <VendorNewFoodType/>;
   //  return <VendorUpdateFoodQty/>;
   // return <SearchStorePage/>;
   //return <SignIn/>;
