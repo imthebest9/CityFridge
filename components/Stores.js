@@ -99,7 +99,7 @@ export default function Stores({navigation, ...props}) {
             }}
           >
             {/* <TouchableOpacity onPress={() => navigation.navigate("Foods")}> */}
-            <TouchableOpacity onPress={() => navigation.navigate("Taddcart")}>
+            <TouchableOpacity onPress={() => navigation.navigate("Taddcart",index)}>
               <StoreImage image={Store.image_url} />
             </TouchableOpacity>
 

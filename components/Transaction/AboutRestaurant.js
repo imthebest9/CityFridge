@@ -1,8 +1,9 @@
-import React from "react";
+import React,{useState, useEffect} from "react";
 import { View, Text, Image } from "react-native";
+import { database } from "../../firebase";
+import { collection, getDocs } from "firebase/firestore";
+import { useIsFocused } from "@react-navigation/native";
 
-// import { database } from "../firebase";
-// import { addDoc, collection, doc, setDoc } from "firebase/firestore";
 const yelpRestaurantInfo = {
   name: "Kingsbay Restaurant",
   image:
@@ -16,12 +17,27 @@ const { name, image, rating, kilogram } = yelpRestaurantInfo;
 const description = `Rating: ${rating}⭐ Total Saved: ${kilogram} kg`;
 
 export default function AboutRestaurant() {
+
+  const [storeData, setStoreData] = useState([]);
+
+  useEffect(async () => {
+    const querySnapshot = await getDocs(collection(database, "Stores"));
+    const saveFirebaseItems = [];
+    querySnapshot.forEach((doc) => {
+      // doc.data() is never undefined for query doc snapshots
+      // console.log(doc.id, " => ", doc.data());
+      saveFirebaseItems.push(doc.data());
+    });
+    setStoreData(saveFirebaseItems);
+  }, []); 
+  // [useIsFocused()]
+  console.log(storeData[0].name);
+
   return (
     <View>
-      <RestaurantName name={name} />
-      <RestaurantImage image={image} />
-
-      <RestaurantDescription description={description} />
+      <RestaurantName name= {storeData[1].name} />
+      <RestaurantImage image = {storeData[1].image_url}  />
+      <RestaurantDescription description= {storeData[1].description}  />
     </View>
   );
 }

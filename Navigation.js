@@ -46,8 +46,6 @@ import AppLoading from "expo-app-loading";
 import StorePage from "./pages/StorePage";
 import Stores from "./components/Stores";
 import TShoppingCart from "./pages/TShoppingCart";
-import AboutRestaurant from "./components/Transaction/AboutRestaurant";
-import AboutFood from "./components/Transaction/AboutFood";
 import { Provider } from "react-redux";
 import store from "./reducers/store";
 import FoodDetails from "./components/Transaction/FoodDetails";
@@ -182,8 +180,6 @@ export default function Navigation() {
             name="ShoppingCart"
             component={TShoppingCart}
           /> */}
-            <Stack.Screen name="Restaurants" component={AboutRestaurant} />
-            <Stack.Screen name="Foods" component={AboutFood} />
             <Stack.Screen name="Food Details" component={FoodDetails} />
           </Stack.Navigator>
         </NavigationContainer>

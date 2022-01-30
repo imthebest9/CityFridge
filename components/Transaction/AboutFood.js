@@ -37,6 +37,7 @@ const styles = StyleSheet.create({
 //     addItemToCart:(product) =>dispatch({type:'ADD_TO_CART', payload:product})
 //   }
 // }
+
 export default function AboutFood({ navigation }, props) {
   
   const [cart, setCart] = useState([]);
@@ -72,7 +73,7 @@ export default function AboutFood({ navigation }, props) {
   ]);
 
   const addToCart = (food) =>{
-    
+    console.log("i am in");
     setCart([...cart, food]);
   }
 
@@ -81,32 +82,16 @@ export default function AboutFood({ navigation }, props) {
       <ScrollView showsVerticalScrollIndicator={false}>
         {foods.map((food, index) => (
           <View key={index}>
-            {/*<TouchableOpacity > onPress={()=> props.addItemToCart()} */}
-            {/* <TouchableOpacity  onPress={() => navigation.navigate("Food Details")}> */}
-            {/* <TouchableOpacity> */}
+       
               <View style={styles.foodItemStyle}>
-                {
-                  // <BouncyCheckbox
-                  //   iconStyle={{ borderColor: "lightgray", borderRadius: 6 }}
-                  //   fillColor="#4EB574"
-                  //   onPress={()=> selectItem(food)}
-                  // />
-                }
-                {/* onPress={props.addItemToCart()} */}
                 <FoodImage food={food} />
                 <FoodInfo food={food} />
-                
                 <Icon icon="shopping-cart" 
                 onPress={()=> addToCart(food)}/>
                 <FoodDetails mycart = {cart}/>
                 
               </View>
-            {/* </TouchableOpacity> */}
-            {/* <Divider
-              width={0.5} 
-              orientation="vertical"
-              style={{ marginHorizontal: 10 }}
-            /> */}
+         
           </View>
         ))}
       </ScrollView>
