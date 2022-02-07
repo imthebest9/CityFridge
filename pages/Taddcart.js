@@ -15,6 +15,7 @@ import { doc, setDoc } from "firebase/firestore";
 
 const Separator = () => <View style={styles.separator} />;
 
+
 const Taddcart = ({ navigation }, props) => {
   const [foodItem, setFoodItem] = useState();
   const [quantity, setQuantity] = useState(null);
@@ -81,7 +82,7 @@ const Taddcart = ({ navigation }, props) => {
 
       {/*  <AddCart /> */}
 
-      <BottomTabsCustomer style={{ flex: 1 }} />
+      <BottomTabsCustomer style={{ flex: 1 }} navigation={navigation} />
     </View>
   );
 };

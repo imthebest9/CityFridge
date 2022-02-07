@@ -1,11 +1,13 @@
-import React from "react";
+import React, { useContext } from "react";
 import { View, Text } from "react-native";
+import BottomTabsCustomer from "../components/BottomTabsCustomer";
 import VpickupTime from "../components/Transaction/GenerateTac";
 import VreserveButton from "../components/Transaction/VreserveButton";
 import BottomTabsVendor from "../components/vendor/BottomTabsVendor";
+import { Tcontext } from "./Tcontext";
 
 export default function Tviewcart() {
-  // const{title, price} = item;
+  const contextValue = useContext(Tcontext);
 
   return (
     <View style={{ flex: 1 }}>
@@ -41,12 +43,12 @@ export default function Tviewcart() {
           borderBottomColor: "#999",
         }}
       >
-        <Text style={{ fontWeight: "600", fontSize: 16 }}>Apple</Text>
+        <Text style={{ fontWeight: "600", fontSize: 16 }}>Apple {contextValue}</Text>
         <Text style={{ opacity: 0.7, fontSize: 16 }}>RM 10.00</Text>
       </View>
       <VreserveButton />
       
-      <BottomTabsVendor />
+      <BottomTabsCustomer style={{ flex: 1 }} />
     </View>
   );
 }

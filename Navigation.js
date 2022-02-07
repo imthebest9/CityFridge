@@ -49,6 +49,9 @@ import TShoppingCart from "./pages/TShoppingCart";
 import { Provider } from "react-redux";
 import store from "./reducers/store";
 import FoodDetails from "./components/Transaction/FoodDetails";
+import { TProvider } from "./pages/Tcontext";
+import Tviewcart from "./pages/Tviewcart";
+import BottomTabsCustomer from "./components/BottomTabsCustomer";
 // youtube ubereats
 // import { Provider as ReduxProvider } from "react-redux";
 // import configureStore from "./redux/store";
@@ -86,6 +89,7 @@ export default function Navigation() {
     return (
       // <Provider store={store}>
         // <ReduxProvider store={store}>
+        <TProvider>
         <NavigationContainer>
           <Stack.Navigator
             screenOptions={{
@@ -174,11 +178,7 @@ export default function Navigation() {
           <Stack.Screen
             name="Kingsbay Hypermarket"
             component={StorePage}
-          />
-          {/* <Stack.Screen
-            name="Kingsbay Hypermarket"
-            component={Stores}
-          /> */}
+          /> 
           <Stack.Screen
             name="Home Page"
             component={SearchStorePage}
@@ -187,12 +187,18 @@ export default function Navigation() {
             name="Taddcart"
             component={Taddcart}
           />
-           {/* <Stack.Screen
-            name=""
-            component={}
-          /> */}
+           <Stack.Screen
+            name="ViewCart"
+            component={Tviewcart}
+          />
+           <Stack.Screen
+            name="BottomTab"
+            component={BottomTabsCustomer}
+          />
+          
         </Stack.Navigator>
       </NavigationContainer>
+      </TProvider>
     );
   }
 }

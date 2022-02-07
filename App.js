@@ -15,11 +15,11 @@ import FoodDetails from "./components/Transaction/FoodDetails";
 
 
 export default function App() {
-     return <Navigation />;
+       return <Navigation />;
   //  return <FoodDetails/>;
   //  return <TShoppingCart/>;
       // return <Taddcart />;
-  //  return <Tviewcart/>;
+    //  return <Tviewcart/>;
   //  return <Tshowtac/>;
   // return < VendorMain/>;
   // return <VendorNewFoodType/>;

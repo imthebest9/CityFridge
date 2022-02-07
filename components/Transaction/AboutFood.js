@@ -18,9 +18,13 @@ import { useIsFocused } from "@react-navigation/native";
 
 
 export default function AboutFood({ navigation }, props) {
-  
+  // foodData contains all food from firebase
   const [foodData, setfoodData] = useState([]);
  
+  const [cart, setCart] = useState();
+  
+
+
   useEffect(async () => {
     const querySnapshot = await getDocs(collection(database, "foods"));
     const saveFirebaseItems = [];
