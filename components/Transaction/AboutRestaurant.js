@@ -40,7 +40,7 @@ export default function AboutRestaurant() {
       <RestaurantName name={storeData ? storeData[1].name : "Loading" } />
       <RestaurantImage image={storeData ? storeData[1].image_url : "Null Image" } />
       <RestaurantDescription
-        description={storeData ? storeData[1].review + `⭐` + "\t\t" + storeData[1].description: "0" }
+        description={storeData ? storeData[1].review + `⭐` + "\t\t" + storeData[1].description: "" }
       />
       {/* <ScrollView vertical>
       {storeData.map((Store, index) => (

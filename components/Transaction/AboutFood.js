@@ -22,7 +22,7 @@ export default function AboutFood({ navigation }, props) {
   const [foodData, setfoodData] = useState([]);
  
   useEffect(async () => {
-    const querySnapshot = await getDocs(collection(database, "FoodCollection"));
+    const querySnapshot = await getDocs(collection(database, "foods"));
     const saveFirebaseItems = [];
     querySnapshot.forEach((doc) => {
 
@@ -39,7 +39,7 @@ export default function AboutFood({ navigation }, props) {
        
               <View style={styles.foodItemStyle}>
                 <FoodImage image={food.image_url} />
-                <FoodInfo title={food.Name} expirydate={food.Expiry_date} weight={food.Weight}  stock={food.Stock} price={food.Price} />
+                <FoodInfo title={food.name} expirydate={food.date} weight={food.weight}  stock={food.quantity} price={food.price} />
                 
                 <Icon icon="shopping-cart" 
                 //  onPress={()=> addToCart(food)}
@@ -75,7 +75,7 @@ const styles = StyleSheet.create({
 const FoodInfo = (props) => (
   <View style={{ width: 235, justifyContent: "space-evenly" }}>
     <Text style={styles.titleStyle}>{props.title}</Text>
-    <Text>Exp Date:{props.expirydate}</Text>
+    <Text>Exp Date:{new Date(props.expirydate.toDate()).toDateString()}</Text> 
     <Text>{props.weight} KG</Text>
     <Text>Stock: {props.stock}</Text>
     <Text style={styles.priceTitle}>RM {props.price}</Text>

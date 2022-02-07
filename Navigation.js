@@ -97,7 +97,7 @@ export default function Navigation() {
                 fontFamily: "Merriweather_700Bold",
               },
             }}
-            initialRouteName="Search Page" // testing
+            initialRouteName="Home Page" // testing
           >
             <Stack.Screen
               name="Sign In"
@@ -175,6 +175,10 @@ export default function Navigation() {
             name="Kingsbay Hypermarket"
             component={StorePage}
           />
+          {/* <Stack.Screen
+            name="Kingsbay Hypermarket"
+            component={Stores}
+          /> */}
           <Stack.Screen
             name="Home Page"
             component={SearchStorePage}
@@ -183,6 +187,10 @@ export default function Navigation() {
             name="Taddcart"
             component={Taddcart}
           />
+           {/* <Stack.Screen
+            name=""
+            component={}
+          /> */}
         </Stack.Navigator>
       </NavigationContainer>
     );
