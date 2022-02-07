@@ -1,5 +1,4 @@
 import * as React from "react";
-import { View, Text } from "react-native";
 import Navigation from "./Navigation";
 import Taddcart from "./pages/Taddcart";
 import Tviewcart from "./pages/Tviewcart";

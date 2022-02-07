@@ -8,17 +8,19 @@ import {
     TextInput
     } from 'react-native'
     import SwitchSelector from '../components/SwitchSelector';
+import * as ImagePicker from 'expo-image-picker';
 
-import ImagePicker from 'react-native-image-picker';
 import { styles } from './UserProfile'
-import { auth, database } from "../firebase";
+import { auth, database, storage } from "../firebase";
 import { updateEmail, updatePassword, reauthenticateWithCredential , EmailAuthProvider  } from "firebase/auth";
 import { doc, getDoc, setDoc } from "firebase/firestore";
 import AsyncStorage from '@react-native-async-storage/async-storage'
+import { ref, getDownloadURL, uploadBytes } from 'firebase/storage';
 
 export default ()=>{
     const [data, setData] = useState([])
     const [name, setName] = useState('')
+    const [description, setDescription] = useState('')
     const [email, setEmail] = useState('')
     const [contact, setContact] = useState('')
     const [password, setPassword] = useState('')
@@ -29,30 +31,35 @@ export default ()=>{
     const [selectedOption, setSelectedOption] = useState(1)
     const [user, setUser] = useState()
     const [profile, setProfile] = useState('')
+    const [isVendor, setIsVendor] = useState(false)
+    const [image, setImage] = useState(null)
+    const [imageRef, setImageRef] = useState(null)
 
     useEffect(()=>{
         auth.onAuthStateChanged((currentUser)=>{
-            if(currentUser){
-                setUser(currentUser)
-                AsyncStorage.getItem('profile').then(profile=>{
-                    setProfile(profile)
-                    getDoc(doc(database, profile, user.uid)).then((snapshot)=>{
-                        setData(snapshot.data())
-                    })
+            setUser(currentUser)
+            AsyncStorage.getItem('profile').then(profile=>{
+                if(profile=="vendors")
+                setIsVendor(true)
+                setProfile(profile)
+                getDoc(doc(database, profile, user.uid)).then((snapshot)=>{
+                    setData(snapshot.data())
+                    setImage(snapshot.data().image_url)
                 })
-            }
+            })
+            setImageRef(ref(storage, currentUser.uid+"/profile.jpeg"))
         })
     }, [profile==''])
-
-    
 
     const onValidatieProfile = () => {
         if(!name)
         alert('Please enter your name')
-        else if(!contact)
-        alert('Please enter your mobile number')
         else if(!location)
         alert('Please enter your location')
+        else if(!contact)
+        alert('Please enter your mobile number')
+        else if(isVendor && !description)
+        alert('Please add a description for your store')
         else if(!address)
         alert('Please enter your full address')
         else return true
@@ -61,12 +68,19 @@ export default ()=>{
 
     const onUpdateProfile = () => {
         if(onValidatieProfile()){
-            setDoc(doc(database, profile, user.uid), {
+            setDoc(doc(database, profile, user.uid), isVendor?
+            {
+                name: name,
+                contact: contact,
+                location: location,
+                address: address,
+                description: description
+            } :{
                 name: name,
                 contact: contact,
                 location: location,
                 address: address
-              }, { merge: true });
+            }, { merge: true });
         }
         alert('Saved!')
     }
@@ -139,17 +153,35 @@ export default ()=>{
     return (
         <View style={styles.container}>
             <View style={styles.header}>
-                <TouchableOpacity style={styles.profilePicFrame}
-                onPress={()=>{
-                }}
-                >
-                    <Image
-                    source={require('../assets/logo.png')}
-                    style={styles.profilePic}
-                    resizeMode='contain'
-                    />
-                </TouchableOpacity>
             </View>
+            <TouchableOpacity style={styles.profilePicFrame}
+                onPress={
+                    async()=>{
+                        let result = await ImagePicker.launchImageLibraryAsync({
+                            mediaTypes: ImagePicker.MediaTypeOptions.Images,
+                            allowsEditing: true,
+                            aspect: [1, 1],
+                            quality: 1,
+                          });
+                      
+                          if (!result.cancelled) {
+                            const response = await fetch(result.uri)
+                            const blob = await response.blob();
+                            uploadBytes(imageRef, blob).then(async()=>{
+                                setDoc(doc(database, profile, user.uid), {
+                                    image_url: await getDownloadURL(imageRef)
+                                }, { merge: true });
+                                setImage(result.uri)})
+                            .catch(error=>alert(error.message))
+                          }
+                    }
+                }
+                >
+                    {<Image
+                    style={styles.profilePic}
+                    source={{uri: image }}
+                    />}
+                </TouchableOpacity>
             <SwitchSelector
                 selectionOption={1}
                 optionLeft={'Profile'}
@@ -160,7 +192,7 @@ export default ()=>{
             <ScrollView contentContainerStyle={styles.form}>
                 {
                     (selectedOption==1) ? (
-                    <View style={styles.infoContainer}>
+                    <ScrollView contentContainerStyle={styles.infoContainer}>
                         <View style={styles.infoRowContainer}>
                             <Text style={styles.infoTitleFont}>Name</Text>
                             <TextInput style={styles.settingTextInput}
@@ -168,6 +200,22 @@ export default ()=>{
                             onChangeText={(input)=>setName(input.trim())}
                             />
                         </View>
+                        <View style={styles.infoRowContainer}>
+                            <Text style={styles.infoTitleFont}>Location</Text>
+                            <TextInput style={styles.settingTextInput}
+                                defaultValue={data["location"]}
+                                onChangeText={(input)=>setLocation(input.trim())}
+                                />
+                        </View>
+                        {data['isVendor'] && <View style={styles.infoRowContainer}>
+                            <Text style={styles.infoTitleFont}>Description</Text>
+                            <TextInput style={styles.settingTextInput}
+                            multiline = {true}
+                            maxHeight = {80}
+                            defaultValue={data["description"]}
+                            onChangeText={(input)=>setDescription(input.trim())}
+                            />
+                        </View>}
                         <View style={styles.infoRowContainer}>
                             <Text style={styles.infoTitleFont}>Contact Number</Text> 
                             <TextInput style={styles.settingTextInput}
@@ -177,20 +225,19 @@ export default ()=>{
                                 />
                         </View>
                         <View style={styles.infoRowContainer}>
-                            <Text style={styles.infoTitleFont}>Location</Text>
-                            <TextInput style={styles.settingTextInput}
-                                defaultValue={data["location"]}
-                                onChangeText={(input)=>setLocation(input.trim())}
-                                />
-                        </View>
-                        <View style={styles.infoRowContainer}>
                             <Text style={styles.infoTitleFont}>Address</Text>
                             <TextInput style={styles.settingTextInput}
                                 defaultValue={data["address"]}
                                 onChangeText={(input)=>setAddress(input.trim())}
                                 />
                         </View>
-                    </View>
+                        <TouchableOpacity style={styles.button}
+                        onPress={onUpdateProfile}>
+                    <Text style={styles.buttonText}>
+                    Save
+                    </Text>
+                </TouchableOpacity>
+                    </ScrollView>
                     ) : (
                     <View style={styles.infoContainer}>
                         <View style={styles.infoRowContainer}>
@@ -224,21 +271,15 @@ export default ()=>{
                                 secureTextEntry={true}
                                 />
                         </View>
+                        <TouchableOpacity style={styles.button}
+                            onPress={onUpdateAccount}>
+                            <Text style={styles.buttonText}>
+                            Save
+                            </Text>
+                        </TouchableOpacity>
                     </View>
                     )
                 }
-                <TouchableOpacity style={styles.button}
-                    onPress={()=>{
-                        if(selectedOption==1)
-                        onUpdateProfile()
-                        else
-                        onUpdateAccount()
-                    }
-                    }>
-                    <Text style={styles.buttonText}>
-                    Save
-                    </Text>
-                </TouchableOpacity>
             </ScrollView>
         </View>
     )

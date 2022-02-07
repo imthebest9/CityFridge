@@ -1,5 +1,8 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { View, Text } from "react-native";
+import { collection, getDocs } from "firebase/firestore";
+import { database } from "../../firebase";
+import { useIsFocused } from "@react-navigation/native";
 
 const items = [
   {
@@ -62,9 +65,35 @@ const items = [
     food: "sardin x4, bread x3",
     time: "11m ago",
   },
+  {
+    userid: "userno3",
+    food: "sardin x4, bread x3",
+    time: "11m ago",
+  },
 ];
 
 export default function Reservations() {
+  const [items, setItems] = useState([]);
+
+  useEffect(async () => {
+    const querySnapshot = await getDocs(collection(database, "reservations"));
+    const saveFirebaseItems = [];
+    querySnapshot.forEach((doc) => {
+      saveFirebaseItems.push(doc.data());
+    });
+    setItems(saveFirebaseItems);
+  }, [useIsFocused()]);
+
+  const getFoods = (foods) => {
+    let str = ""
+
+    for(key in foods ){
+      str += key + " x" + foods[key] + "\n";
+    }
+
+    return str.trimEnd();
+  }
+
   return (
     <View style={{ marginTop: 20 }}>
       {items.map((item, index) => (
@@ -78,7 +107,7 @@ export default function Reservations() {
                   marginBottom: 10,
                 }}
               >
-                {item.userid}
+                {item.customerName}
               </Text>
               <Text
                 style={{
@@ -86,7 +115,7 @@ export default function Reservations() {
                   fontFamily: "MerriweatherSans_300Light",
                 }}
               >
-                {item.food}
+                {getFoods(item.foods)}
               </Text>
             </View>
             <View style={{ marginRight: 20 }}>
@@ -97,7 +126,7 @@ export default function Reservations() {
                   color: "#4EB574",
                 }}
               >
-                {item.time}
+                {new Date(item.date.toDate()).toUTCString()}
               </Text>
             </View>
           </View>

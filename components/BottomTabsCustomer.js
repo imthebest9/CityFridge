@@ -1,5 +1,6 @@
 import React from "react";
-import { View, Text, TouchableOpacity } from "react-native";
+import { StackActions } from "@react-navigation/native";
+import { View, Text, TouchableOpacity, Dimensions } from "react-native";
 import FontAwesome5 from "react-native-vector-icons/FontAwesome5";
 import BottomCartIcon from "./BottomCartIcon";
 // import {connect} from 'react-redux';

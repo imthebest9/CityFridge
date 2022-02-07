@@ -1,6 +1,6 @@
 import React from "react";
 import { Text, TouchableOpacity, StyleSheet } from "react-native";
-import { NavigationContainer } from "@react-navigation/native";
+import { NavigationContainer, StackActions } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 
 import { signOut } from "firebase/auth";
@@ -161,30 +161,30 @@ export default function Navigation() {
                 },
               }}
             />
-            <Stack.Screen name="Setting" component={UserSetting} />
-            <Stack.Screen name="Your Store" component={VendorMain} />
-            <Stack.Screen name="Confirm Order" component={VendorConfirmOrder} />
-            <Stack.Screen
-              name="Update Food Quantity"
-              component={VendorUpdateFoodQty}
-            />
-            <Stack.Screen
-              name="Add New Food Type"
-              component={VendorNewFoodType}
-            />
-            <Stack.Screen name="Kingsbay Hypermarket" component={StorePage} />
-            <Stack.Screen name="Search Page" component={SearchStorePage} />
-            <Stack.Screen name="Stores" component={Stores} />
-            <Stack.Screen name="Taddcart" component={Taddcart} />
-            {/* <Stack.Screen
-            name="ShoppingCart"
-            component={TShoppingCart}
-          /> */}
-            <Stack.Screen name="Food Details" component={FoodDetails} />
-          </Stack.Navigator>
-        </NavigationContainer>
-        //  </ReduxProvider>
-      // </Provider>
+          <Stack.Screen name="Your Store" component={VendorMain} />
+          <Stack.Screen name="Confirm Order" component={VendorConfirmOrder} />
+          <Stack.Screen
+            name="Update Food Quantity"
+            component={VendorUpdateFoodQty}
+          />
+          <Stack.Screen
+            name="Add New Food Type"
+            component={VendorNewFoodType}
+          />
+          <Stack.Screen
+            name="Kingsbay Hypermarket"
+            component={StorePage}
+          />
+          <Stack.Screen
+            name="Home Page"
+            component={SearchStorePage}
+          />
+          <Stack.Screen
+            name="Taddcart"
+            component={Taddcart}
+          />
+        </Stack.Navigator>
+      </NavigationContainer>
     );
   }
 }

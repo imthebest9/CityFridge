@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React, {useState, useEffect} from 'react'
 import {
     View,
     Image,
@@ -10,20 +10,25 @@ import {
     Keyboard
     } from 'react-native'
 import { StackActions } from '@react-navigation/native'
-import { auth, database } from "../firebase"
+import { auth, database, storage } from "../firebase";
 import { signInWithEmailAndPassword } from "firebase/auth"
 import { doc, getDoc } from "firebase/firestore"
+import { getDownloadURL, ref } from 'firebase/storage'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 
 export default ({navigation}) => {
     const [email, setEmail] = useState(null);
     const [password, setPassword] = useState(null);
+    const [image, setImage] = useState(null)
 
-    auth.onAuthStateChanged((user)=>{
-        if(user && user.emailVerified){
-            storeProfile(user.uid, user.displayName)
-        }
-    })
+    useEffect(async()=>{
+        setImage(await getDownloadURL(ref(storage, "logo.jpeg")))
+        auth.onAuthStateChanged((user)=>{
+            if(user && user.emailVerified){
+                storeProfile(user.uid)
+            }
+        })
+    }, [image==null])
 
     const onSignIn = () => {
         Keyboard.dismiss()
@@ -31,7 +36,7 @@ export default ({navigation}) => {
         .then((userCredential) => {
             const user = userCredential.user;
             if(user.emailVerified){
-                storeProfile(user.uid, user.displayName)
+                storeProfile(user.uid)
             }
             else{
                 alert("Please verify your email")
@@ -42,7 +47,7 @@ export default ({navigation}) => {
         });
     }
 
-    const storeProfile = (id, username) => {
+    const storeProfile = (id) => {
         getDoc(doc(database, "customers", id)).then((docSnap)=>{
             if(docSnap.exists()){
                 AsyncStorage.setItem("profile", "customers")
@@ -52,16 +57,14 @@ export default ({navigation}) => {
             }
         });
         navigation.dispatch(
-            StackActions.replace('Profile', {
-                username: username
-            })
+            StackActions.replace('Profile')
         );
     }
 
     return (
         <View style={styles.container}>
             <Image
-            source={require('../assets/logo.png')}
+            source={{uri: image}}
             style={styles.logo}
             resizeMode='contain'
             />
@@ -128,5 +131,6 @@ export const styles = StyleSheet.create({
   logo: {
     margin: 20,
     height: width * 0.3,
+    width: width * 0.3
   }
 });

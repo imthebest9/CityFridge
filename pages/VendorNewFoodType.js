@@ -8,11 +8,14 @@ import {
   Button,
   Platform,
   ScrollView,
+  Image,
 } from "react-native";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import BottomTabsVendor from "../components/vendor/BottomTabsVendor";
-import { database } from "../firebase";
+import { database, storage } from "../firebase";
 import { addDoc, collection, doc, setDoc } from "firebase/firestore";
+import * as ImagePicker from 'expo-image-picker';
+import { ref, getDownloadURL, uploadBytes } from 'firebase/storage';
 
 export default function VendorNewFoodType() {
   const [date, setDate] = useState(new Date(1598051730000));
@@ -22,6 +25,7 @@ export default function VendorNewFoodType() {
   const [quantity, setQuantity] = useState(null);
   const [price, setPrice] = useState(null);
   const [weight, setWeight] = useState(null);
+  const [image, setImage] = useState(null)
 
   const onChange = (event, selectedDate) => {
     const currentDate = selectedDate || date;
@@ -42,7 +46,7 @@ export default function VendorNewFoodType() {
     showMode("time");
   };
 
-  const onSave = async ()=> {
+  const onSave = async () => {
     await setDoc(doc(database, "foods", name), {
       name: name,
       quantity: parseFloat(quantity),
@@ -50,7 +54,7 @@ export default function VendorNewFoodType() {
       weight: parseFloat(weight),
       date: date,
     });
-    console.log("saved")
+    console.log("saved");
   };
 
   return (
@@ -98,6 +102,40 @@ export default function VendorNewFoodType() {
             />
           )}
         </View>
+        <View style={{}}>
+          <TouchableOpacity
+            style={styles.profilePicFrame}
+            onPress={async () => {
+              let result = await ImagePicker.launchImageLibraryAsync({
+                mediaTypes: ImagePicker.MediaTypeOptions.Images,
+                allowsEditing: true,
+                aspect: [1, 1],
+                quality: 1,
+              });
+
+              if (!result.cancelled) {
+                const response = await fetch(result.uri);
+                const blob = await response.blob();
+                const ref2 = ref(storage, `${name}.jpg`);
+                uploadBytes(ref2, blob)
+                  .then(async () => {
+                    setDoc(
+                      doc(database, "foods", `${name}`),
+                      {
+                        image_url: await getDownloadURL(ref2),
+                      },
+                      { merge: true }
+                    );
+                    setImage(result.uri);
+                  })
+                  .catch((error) => alert(error.message));
+              }
+            }}
+          >
+            <Text style={{color: "white", marginTop: 10}}>PICK FOOD IMAGE</Text>
+            {<Image style={styles.profilePic} source={{ uri: image }} />}
+          </TouchableOpacity>
+        </View>
         <View style={{ flex: 1, marginTop: 30, alignItems: "center" }}>
           <TouchableOpacity
             style={{
@@ -136,5 +174,20 @@ const styles = StyleSheet.create({
     padding: 10,
     fontSize: 16,
     fontFamily: "MerriweatherSans_400Regular",
+  },
+  profilePicFrame: {
+    alignItems: "center",
+    backgroundColor: "#4EB574",
+    margin: 10,
+    marginHorizontal: 25,
+    marginRight: 140,
+    height: 40,
+  },
+  profilePic: {
+    flex: 1,
+    resizeMode: "cover",
+    borderRadius: 80,
+    height: 120,
+    width: 120,
   },
 });
