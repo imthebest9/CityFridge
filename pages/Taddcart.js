@@ -16,9 +16,9 @@ import { doc, setDoc } from "firebase/firestore";
 const Separator = () => <View style={styles.separator} />;
 
 const Taddcart = ({ navigation }, props) => {
-   const [foodItem, setFoodItem] = useState();
-   const [quantity, setQuantity] = useState(null);
-   const [price, setPrice] = useState(null);
+  const [foodItem, setFoodItem] = useState();
+  const [quantity, setQuantity] = useState(null);
+  const [price, setPrice] = useState(null);
 
   const onSave = async () => {
     await setDoc(doc(database, "reservations", foodItem), {
@@ -30,7 +30,10 @@ const Taddcart = ({ navigation }, props) => {
   };
   return (
     <View style={{ flex: 1 }}>
-      <View style={{ backgroundColor: "#fff", paddingTop: 40, flex: 1 }}>
+      <AboutRestaurant />
+
+      <Separator />
+      {/* <View style={{ backgroundColor: "#fff", paddingTop: 40, flex: 1 }}>
         <ScrollView>
           <TextInput
             placeholder="Food Name"
@@ -72,13 +75,9 @@ const Taddcart = ({ navigation }, props) => {
             </Text>
           </TouchableOpacity>
         </View>
-      </View>
-  
-       <AboutRestaurant />
+      </View> */}
 
-       <Separator /> 
-
-       <AboutFood />
+      <AboutFood />
 
       {/*  <AddCart /> */}
 

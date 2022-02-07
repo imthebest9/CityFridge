@@ -9,6 +9,7 @@ import { useState, useEffect } from "react";
 import { useIsFocused } from "@react-navigation/native";
 import Navigation from "../Navigation";
 
+
 const StoreData = [
   {
     name: "Happy Mart",
@@ -60,10 +61,9 @@ const StoreData = [
   },
 ];
 
-export default function Stores({navigation, ...props}) {
-
+export default function Stores({ navigation, ...props }) {
   const [storeData, setStoreData] = useState([]);
-
+ 
   useEffect(async () => {
     const querySnapshot = await getDocs(collection(database, "Stores"));
     const saveFirebaseItems = [];
@@ -99,11 +99,12 @@ export default function Stores({navigation, ...props}) {
             }}
           >
             {/* <TouchableOpacity onPress={() => navigation.navigate("Foods")}> */}
-            <TouchableOpacity onPress={() => navigation.navigate("Taddcart",index)}>
+            <TouchableOpacity onPress={() => navigation.navigate("Taddcart")}>
               <StoreImage image={Store.image_url} />
             </TouchableOpacity>
 
             <StoreInfo name={Store.name} description={Store.description} />
+            
           </View>
         ))}
       </ScrollView>
