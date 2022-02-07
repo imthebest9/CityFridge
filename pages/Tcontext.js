@@ -6,7 +6,7 @@ export const TProvider = (props) => {
     const [cart, setCart] = useState([]);
 
     return (
-    <Tcontext.Provider value="haha">
+    <Tcontext.Provider value={[cart, setCart]}>
         {props.children}
     </Tcontext.Provider>
     )

@@ -1,4 +1,4 @@
-import React, { useState,useEffect } from "react";
+import React, { useState,useEffect, useContext } from "react";
 import {
   View,
   Text,
@@ -15,15 +15,20 @@ import FoodDetails from "./FoodDetails";
 import { database } from "../../firebase";
 import { collection, getDocs } from "firebase/firestore";
 import { useIsFocused } from "@react-navigation/native";
+import { Tcontext } from "../../pages/Tcontext";
 
 
 export default function AboutFood({ navigation }, props) {
   // foodData contains all food from firebase
   const [foodData, setfoodData] = useState([]);
  
-  const [cart, setCart] = useState();
-  
+  const [cart, setCart] = useContext(Tcontext);
 
+  const addToCart = async (food)=>{ 
+  const obj = {name: food.name, price: food.price, image: food.image_url};
+  await setCart(currentCart => [...currentCart,obj]);
+    // setCart(cart =>[...cart, obj]);
+  }
 
   useEffect(async () => {
     const querySnapshot = await getDocs(collection(database, "foods"));
@@ -44,12 +49,10 @@ export default function AboutFood({ navigation }, props) {
               <View style={styles.foodItemStyle}>
                 <FoodImage image={food.image_url} />
                 <FoodInfo title={food.name} expirydate={food.date} weight={food.weight}  stock={food.quantity} price={food.price} />
-                
-                <Icon icon="shopping-cart" 
-                //  onPress={()=> addToCart(food)}
-                /> 
+                <TouchableOpacity onPress={ () => addToCart(food)}>
+                <Icon icon="shopping-cart" /> 
                 {/* <FoodDetails mycart = {cart}/> */}
-                
+                </TouchableOpacity>
               </View>
          
           </View>
@@ -96,7 +99,6 @@ const FoodImage = (props) => (
 );
 
 const Icon = (props) => (
-  <TouchableOpacity>
     <View>
       <FontAwesome5
         name={props.icon}
@@ -109,8 +111,6 @@ const Icon = (props) => (
           color: "#FFB84E"
   
         }}
-      />
-      
+      />     
     </View>
-  </TouchableOpacity>
 );

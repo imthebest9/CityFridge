@@ -37,7 +37,7 @@ export default function AboutRestaurant() {
       <RestaurantDescription description={description} /> */}
 
       {/* <RestaurantName name={storeData === [] ? "UNKNOWN" : storeData[1].name} /> */}
-      <RestaurantName name={storeData ? storeData[1].name : "Loading" } />
+      <RestaurantName name={storeData ? storeData[1].name : "⌛" } />
       <RestaurantImage image={storeData ? storeData[1].image_url : "Null Image" } />
       <RestaurantDescription
         description={storeData ? storeData[1].review + `⭐` + "\t\t" + storeData[1].description: "" }

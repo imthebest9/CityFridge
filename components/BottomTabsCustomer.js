@@ -6,7 +6,7 @@ import FontAwesome5 from "react-native-vector-icons/FontAwesome5";
 import { Tcontext } from "../pages/Tcontext";
 
 export default function BottomTabsCustomer({navigation}) {
-  const value = useContext(Tcontext);
+  const [cart, setCart] = useContext(Tcontext);
   return (
     <View
       style={{
@@ -32,7 +32,7 @@ export default function BottomTabsCustomer({navigation}) {
             zIndex: 2000,
           }}
         >
-          <Text style={{ color: "white", fontWeight: "bold" }}>{value}</Text>
+          <Text style={{ color: "white", fontWeight: "bold" }}>{cart.length}</Text>
         </View>
         <TouchableOpacity onPress={() => navigation.navigate("ViewCart")}>
           <Icon2 icon="shopping-cart" text="Cart" />
