@@ -25,7 +25,7 @@ export default function AboutFood({ navigation }, props) {
   const [cart, setCart] = useContext(Tcontext);
 
   const addToCart = async (food)=>{ 
-  const obj = {name: food.name, price: food.price, image: food.image_url};
+  const obj = { name: food.name, price: food.price, image: food.image_url};
   await setCart(currentCart => [...currentCart,obj]);
     // setCart(cart =>[...cart, obj]);
   }
@@ -50,7 +50,7 @@ export default function AboutFood({ navigation }, props) {
                 <FoodImage image={food.image_url} />
                 <FoodInfo title={food.name} expirydate={food.date} weight={food.weight}  stock={food.quantity} price={food.price} />
                 <TouchableOpacity onPress={ () => addToCart(food)}>
-                <Icon icon="shopping-cart" /> 
+                <Icon icon="cart-plus" /> 
                 {/* <FoodDetails mycart = {cart}/> */}
                 </TouchableOpacity>
               </View>

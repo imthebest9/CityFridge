@@ -1,14 +1,21 @@
 import React, { useContext } from "react";
-import { View, Text, StyleSheet, Image } from "react-native";
+import { View, Text, StyleSheet, Image,TouchableOpacity} from "react-native";
 import BottomTabsCustomer from "../components/BottomTabsCustomer";
 import VpickupTime from "../components/Transaction/GenerateTac";
 import VreserveButton from "../components/Transaction/VreserveButton";
 import BottomTabsVendor from "../components/vendor/BottomTabsVendor";
 import { Tcontext } from "./Tcontext";
+import FontAwesome5 from "react-native-vector-icons/FontAwesome5";
+
 
 export default function Tviewcart({ navigation }) {
   const [cart, setCart] = useContext(Tcontext);
-
+ 
+  const removeFromCart = async (food)=>{ 
+  const obj = { name: food.name, price: food.price, image: food.image_url};
+  await setCart(currentCart => currentCart.filter((currentCart)=> currentCart.food !== food));
+    
+  }
   // take function and inital value as parameters
   const totalPrice = cart.reduce(
     (accumulated, currentCart) => accumulated + currentCart.price,
@@ -25,10 +32,8 @@ export default function Tviewcart({ navigation }) {
               <View style={styles.foodImageStyle}>
                 <Image
                   source={{ uri: basket.image }}
-                  // resizeMode="contain"
                   style={{
-                    width: "100%",
-                    height: "100%",
+                    width: 100, height: 100, borderRadius: 8,
                     position: "absolute",
                   }}
                 />
@@ -37,14 +42,21 @@ export default function Tviewcart({ navigation }) {
                 <Text style={styles.titleStyle}>{basket.name} </Text>
                 <Text style={styles.priceTitle}> RM {basket.price} </Text>
               </View>
-              <StepperInput>
-                
-              </StepperInput>
+              <View style={{ flex: 1}}>
+              <TouchableOpacity >
+                {/* onPress={ () => removeFromCart(food)} */}
+                <Icon icon="trash" /> 
+              </TouchableOpacity>
+              </View>
 
             </View>
           </View>
         ))}
+        <View style={{ flex: 1 }}>
+      <Text>TOTAL: {totalPrice}</Text>
       </View>
+      </View>
+      
 
       {/* <View style={styles.content}>
         <Text style={{ fontWeight: "600", fontSize: 16 }}>
@@ -54,25 +66,34 @@ export default function Tviewcart({ navigation }) {
         <Text>TOTAL: {totalPrice}</Text>
       </View> */}
 
-      {/* <VreserveButton /> */}
-      {/* <FoodName title={basket.name}/>
-              <FoodPrice price ={basket.price}/> */}
+      <VreserveButton />
       <View>
+        
         <BottomTabsCustomer style={{ flex: 1 }} navigation={navigation} />
       </View>
     </View>
   );
 }
 
-const FoodName = (props) => (
-  <View>
-    <Text>{props.title}</Text>
-  </View>
-);
 
-const FoodPrice = (props) => (
+const Icon = (props) => (
   <View>
-    <Text>RM {props.price}</Text>
+    <FontAwesome5
+    
+      name={props.icon}
+      size={25}
+      style={{
+        zIndex : 1 ,
+        flex:1,
+        position: "absolute",
+        right:0,
+        flexDirection:'row',
+        alignItems:'center',
+        justifyContent:"space-between",
+        color: "#FFB84E"
+
+      }}
+    />
   </View>
 );
 
@@ -85,9 +106,10 @@ const styles = StyleSheet.create({
   },
 
   cartItemContainer: {
+    
     flexDirection: "row",
     alignItems: "center",
-    marginTop: 10,
+    marginTop: 5,
     paddingHorizontal: 15,
     borderRadius: 10,
     height: 100,
@@ -101,20 +123,23 @@ const styles = StyleSheet.create({
   },
 
   titleStyle: {
+    flex:1,
     fontSize: 19,
     fontWeight: "bold",
-    // marginTop: 5,
     padding: 15,
+    left:10
   },
 
   priceTitle: {
+    flex:1,
     fontSize: 19,
-    // fontWeight: "bold",
     color: "red",
     marginTop:-20,
     padding: 10,
+    left:10
   },
 
+  
   content: {
     flex: 1,
     flexDirection: "row",
