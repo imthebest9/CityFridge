@@ -52,6 +52,7 @@ import FoodDetails from "./components/Transaction/FoodDetails";
 import { TProvider } from "./pages/Tcontext";
 import Tviewcart from "./pages/Tviewcart";
 import BottomTabsCustomer from "./components/BottomTabsCustomer";
+import Tshowtac from "./pages/Tshowtac";
 // youtube ubereats
 // import { Provider as ReduxProvider } from "react-redux";
 // import configureStore from "./redux/store";
@@ -102,6 +103,8 @@ export default function Navigation() {
               },
             }}
             initialRouteName="Home Page" // testing
+            // initialRouteName="Your Store"
+            
           >
             <Stack.Screen
               name="Sign In"
@@ -190,6 +193,10 @@ export default function Navigation() {
            <Stack.Screen
             name="ViewCart"
             component={Tviewcart}
+          />
+           <Stack.Screen
+            name="Last Page"
+            component={Tshowtac}
           />
            <Stack.Screen
             name="BottomTab"

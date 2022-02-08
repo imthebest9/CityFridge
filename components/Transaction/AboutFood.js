@@ -18,6 +18,7 @@ import { useIsFocused } from "@react-navigation/native";
 import { Tcontext } from "../../pages/Tcontext";
 
 
+
 export default function AboutFood({ navigation }, props) {
   // foodData contains all food from firebase
   const [foodData, setfoodData] = useState([]);
@@ -25,9 +26,9 @@ export default function AboutFood({ navigation }, props) {
   const [cart, setCart] = useContext(Tcontext);
 
   const addToCart = async (food)=>{ 
-  const obj = { name: food.name, price: food.price, image: food.image_url};
+  const obj = { id: food.name, name: food.name, price: food.price, image: food.image_url};
   await setCart(currentCart => [...currentCart,obj]);
-    // setCart(cart =>[...cart, obj]);
+    
   }
 
   useEffect(async () => {
@@ -45,7 +46,7 @@ export default function AboutFood({ navigation }, props) {
       <ScrollView showsVerticalScrollIndicator={false}>
         {foodData.map((food, index) => (
           <View key={index}>
-       
+            
               <View style={styles.foodItemStyle}>
                 <FoodImage image={food.image_url} />
                 <FoodInfo title={food.name} expirydate={food.date} weight={food.weight}  stock={food.quantity} price={food.price} />
@@ -56,6 +57,7 @@ export default function AboutFood({ navigation }, props) {
               </View>
          
           </View>
+          
         ))}
       </ScrollView>
     </View>
@@ -82,7 +84,7 @@ const styles = StyleSheet.create({
 const FoodInfo = (props) => (
   <View style={{ width: 235, justifyContent: "space-evenly" }}>
     <Text style={styles.titleStyle}>{props.title}</Text>
-    <Text>Exp Date:{new Date(props.expirydate.toDate()).toDateString()}</Text> 
+    <Text>Exp Date: {new Date(props.expirydate.toDate()).toDateString()}</Text> 
     <Text>{props.weight} KG</Text>
     <Text>Stock: {props.stock}</Text>
     <Text style={styles.priceTitle}>RM {props.price}</Text>

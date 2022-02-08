@@ -16,6 +16,7 @@ import FoodDetails from "./components/Transaction/FoodDetails";
 
 export default function App() {
        return <Navigation />;
+      //  return <VendorMain/>;
   //  return <FoodDetails/>;
   //  return <TShoppingCart/>;
       // return <Taddcart />;

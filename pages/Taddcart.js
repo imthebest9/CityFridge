@@ -17,18 +17,18 @@ const Separator = () => <View style={styles.separator} />;
 
 
 const Taddcart = ({ navigation }, props) => {
-  const [foodItem, setFoodItem] = useState();
-  const [quantity, setQuantity] = useState(null);
-  const [price, setPrice] = useState(null);
+  // const [foodItem, setFoodItem] = useState();
+  // const [quantity, setQuantity] = useState(null);
+  // const [price, setPrice] = useState(null);
 
-  const onSave = async () => {
-    await setDoc(doc(database, "reservations", foodItem), {
-      name: foodItem,
-      quantity: parseFloat(quantity),
-      price: parseFloat(price),
-    });
-    console.log("saved");
-  };
+  // const onSave = async () => {
+  //   await setDoc(doc(database, "reservations", foodItem), {
+  //     name: foodItem,
+  //     quantity: parseFloat(quantity),
+  //     price: parseFloat(price),
+  //   });
+  //   console.log("saved");
+  // };
   return (
     <View style={{ flex: 1 }}>
       <AboutRestaurant />
