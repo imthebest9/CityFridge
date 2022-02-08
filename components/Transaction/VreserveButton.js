@@ -1,6 +1,5 @@
 import React, { useContext, useState } from "react";
 import { View, Text, StyleSheet,TouchableOpacity } from "react-native";
-// import { TouchableOpacity } from "react-native-gesture-handler";
 import { Tcontext } from "../../pages/Tcontext";
 import { database } from "../../firebase";
 import { doc, setDoc, updateDoc,  increment, Timestamp } from "firebase/firestore";
@@ -50,7 +49,9 @@ export default function VreserveButton({navigation}) {
       await updateDoc(foodDocRef, {
         quantity: increment(-1),
       });
+      
     } //  end for
+    navigation.navigate("Last Page");
   };
   // end of submit
 
@@ -58,7 +59,7 @@ export default function VreserveButton({navigation}) {
     <View style={styles.a}>
       <View style={styles.b}>
       
-        <TouchableOpacity style={styles.c} onPress={() => navigation.navigate("Home Page"), onSave} >
+        <TouchableOpacity style={styles.c} onPress={onSave} >
           <Text
             style={{
               color: "white",

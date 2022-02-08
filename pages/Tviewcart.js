@@ -9,7 +9,6 @@ import {
   Button,
 } from "react-native";
 import BottomTabsCustomer from "../components/BottomTabsCustomer";
-import VpickupTime from "../components/Transaction/GenerateTac";
 import VreserveButton from "../components/Transaction/VreserveButton";
 import { Tcontext } from "./Tcontext";
 import FontAwesome5 from "react-native-vector-icons/FontAwesome5";
@@ -68,7 +67,7 @@ export default function Tviewcart({ navigation }) {
         <Text style={styles.titleStyle}>TOTAL:           RM {ans}</Text>
       </View>
       <View>
-        <VreserveButton />
+        <VreserveButton navigation={navigation}/>
       </View>
       <View>
         <BottomTabsCustomer style={{ flex: 1 }} navigation={navigation} />

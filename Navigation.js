@@ -53,6 +53,7 @@ import { TProvider } from "./pages/Tcontext";
 import Tviewcart from "./pages/Tviewcart";
 import BottomTabsCustomer from "./components/BottomTabsCustomer";
 import Tshowtac from "./pages/Tshowtac";
+import VreserveButton from "./components/Transaction/VreserveButton";
 // youtube ubereats
 // import { Provider as ReduxProvider } from "react-redux";
 // import configureStore from "./redux/store";
@@ -198,6 +199,10 @@ export default function Navigation() {
             name="Last Page"
             component={Tshowtac}
           />
+           {/* <Stack.Screen
+            name="Reserve Button"
+            component={VreserveButton}
+          /> */}
            <Stack.Screen
             name="BottomTab"
             component={BottomTabsCustomer}

@@ -7,16 +7,13 @@ import {
   ScrollView,
   Button,
   TouchableOpacity,
+  Alert,
 } from "react-native";
 import FontAwesome5 from "react-native-vector-icons/FontAwesome5";
-import BouncyCheckbox from "react-native-bouncy-checkbox";
-import Divider from "react-native-divider";
-import FoodDetails from "./FoodDetails";
 import { database } from "../../firebase";
 import { collection, getDocs } from "firebase/firestore";
 import { useIsFocused } from "@react-navigation/native";
 import { Tcontext } from "../../pages/Tcontext";
-
 
 
 export default function AboutFood({ navigation }, props) {
@@ -41,6 +38,13 @@ export default function AboutFood({ navigation }, props) {
     setfoodData(saveFirebaseItems);
   }, [useIsFocused()]);
 
+  const disabled =(food)=>{ 
+    if (food.quantity <= 0)
+      return true;
+    else
+      return false;
+  }
+
   return (
     <View style={{ flex: 1 }}>
       <ScrollView showsVerticalScrollIndicator={false}>
@@ -50,7 +54,9 @@ export default function AboutFood({ navigation }, props) {
               <View style={styles.foodItemStyle}>
                 <FoodImage image={food.image_url} />
                 <FoodInfo title={food.name} expirydate={food.date} weight={food.weight}  stock={food.quantity} price={food.price} />
-                <TouchableOpacity onPress={ () => addToCart(food)}>
+                
+                <TouchableOpacity onPress={disabled(food) ? null : ()=>addToCart(food)}>
+                {/* <TouchableOpacity onPress={ () => addToCart(food)}> */}
                 <Icon icon="cart-plus" /> 
                 {/* <FoodDetails mycart = {cart}/> */}
                 </TouchableOpacity>
