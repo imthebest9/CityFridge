@@ -1,8 +1,8 @@
 import React from "react";
-import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
+import { View, Text, TouchableOpacity, StyleSheet, Button } from "react-native";
 import GenerateTac from "../components/Transaction/GenerateTac";
 
-export default function Tshowtac() {
+export default function Tshowtac({navigation}) {
   return (
     <View style={styles.item}>
       <View style={styles.square}>
@@ -13,10 +13,13 @@ export default function Tshowtac() {
         </Text>
         <View style={styles.smallSquare}>
           <Text style={styles.text}>
-            <GenerateTac />
+            {/* <GenerateTac /> */}
           </Text>
         </View>
-        <TouchableOpacity></TouchableOpacity>
+        <View style={{flex:1, marginTop: 20, width:100}}>
+        <Button title="Done" onPress={() => navigation.navigate('Home Page')} />
+        </View>
+        
       </View>
     </View>
   );

@@ -44,11 +44,6 @@ import {
 } from "@expo-google-fonts/merriweather-sans";
 import AppLoading from "expo-app-loading";
 import StorePage from "./pages/StorePage";
-import Stores from "./components/Stores";
-import TShoppingCart from "./pages/TShoppingCart";
-import { Provider } from "react-redux";
-import store from "./reducers/store";
-import FoodDetails from "./components/Transaction/FoodDetails";
 import { TProvider } from "./pages/Tcontext";
 import Tviewcart from "./pages/Tviewcart";
 import BottomTabsCustomer from "./components/BottomTabsCustomer";
@@ -199,10 +194,10 @@ export default function Navigation() {
             name="Last Page"
             component={Tshowtac}
           />
-           {/* <Stack.Screen
+           <Stack.Screen
             name="Reserve Button"
             component={VreserveButton}
-          /> */}
+          />
            <Stack.Screen
             name="BottomTab"
             component={BottomTabsCustomer}
