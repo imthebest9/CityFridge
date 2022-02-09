@@ -1,7 +1,7 @@
 import { collection, doc, getDocs, updateDoc } from "@firebase/firestore";
 import { useIsFocused } from "@react-navigation/native";
 import React, { useEffect, useState } from "react";
-import { View, Text, TextInput, TouchableOpacity } from "react-native";
+import { View, Text, TextInput, TouchableOpacity, Alert } from "react-native";
 import BottomTabsVendor from "../components/vendor/BottomTabsVendor";
 import { database } from "../firebase";
 
@@ -21,17 +21,30 @@ export default function VendorConfirmOrder() {
   console.log(code);
 
   const onConfirm = async () => {
+    let alertFlag = false;
     for (let r in res) {
       if (res[r].ConfirmationCode === code) {
+        let str = "";
+
+        for ( key in res[r].foods) {
+          str += key + " x" + res[r].foods[key] + "\n";
+        }
+
+        str = str.trimEnd();
+
+        Alert.alert("Order has been confirmed", `${str}`);
+        alertFlag = true;
         try {
-          await updateDoc(doc(database, "reservations", "Reservation1"), {
-            isComplete: "True"
+          await updateDoc(doc(database, "reservations", res[r].id), {
+            isComplete: "True",
           });
-          console.log("yes");
         } catch (e) {
           console.log(e);
         }
       }
+    }
+    if (!alertFlag) {
+      Alert.alert("Error", "Invalid code");
     }
   };
 
