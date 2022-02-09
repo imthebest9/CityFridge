@@ -30,13 +30,15 @@ export default function VreserveButton({navigation}) {
     } //  end for
 
     await setDoc(doc(database, "reservations", reserve), {
-      foods: foodsObj,
-      price: foodsPrice,
-      isComplete: "False",
+      
       ConfirmationCode: get6digit(),
-      date: Timestamp.now(),
       customerID: "001",
-      customerName:"Tiger"
+      customerName:"Tiger",
+      date: Timestamp.now(),
+      foods: foodsObj,
+      id: reserve,
+      isComplete: "False",
+      price: foodsPrice
     });
     // Update the quantity in foods
     //   Initial >> Kuih:1, Apple:5, Sushi:3
