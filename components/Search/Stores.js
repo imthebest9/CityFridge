@@ -15,6 +15,7 @@ import { useState, useEffect } from "react";
 import { useIsFocused } from "@react-navigation/native";
 import Navigation from "../../Navigation";
 
+
 const StoreData = [
   {
     name: "Happy Mart",

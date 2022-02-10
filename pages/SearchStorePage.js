@@ -41,7 +41,7 @@ export default function SearchStorePage({ navigation }) {
       </ScrollView>
       
 
-      <BottomTabsCustomer style={{ flex: 1 }} />
+      <BottomTabsCustomer style={{ flex: 1 }} navigation={navigation}/>
     </View>
   );
 }
