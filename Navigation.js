@@ -8,7 +8,7 @@ import { auth } from "./firebase";
 
 import SignIn from "./pages/SignIn";
 import SignUp from "./pages/SignUp";
-import Taddcart from  "./pages/Taddcart";
+import Taddcart from "./pages/Taddcart";
 import UserSetting from "./pages/UserSetting";
 import UserProfile from "./pages/UserProfile";
 import UserHistory from "./pages/UserHistory";
@@ -81,11 +81,12 @@ export default function Navigation() {
             headerTitleAlign: "center",
             headerTintColor: "#fff",
             headerStyle: { backgroundColor: "#116530", elevation: 0 },
-            headerTitleStyle: { fontSize: 18, fontFamily:"Merriweather_700Bold" }
+            headerTitleStyle: {
+              fontSize: 18,
+              fontFamily: "Merriweather_700Bold",
+            },
           }}
-
-          initialRouteName="Home Page"
-
+          initialRouteName="Sign In"
         >
           <Stack.Screen
             name="Sign In"
@@ -100,49 +101,55 @@ export default function Navigation() {
                     Sign Up
                   </Text>
                 </TouchableOpacity>
-              )
+              ),
+            })}
+          />
+          <Stack.Screen name="Sign Up" component={SignUp} />
+          <Stack.Screen
+            name="Profile"
+            component={UserProfile}
+            options={({ navigation }) => ({
+              headerLeft: () => (
+                <TouchableOpacity
+                  onPress={() => navigation.navigate("Setting")}
+                >
+                  <Text style={[styles.headerText, { margin: 10 }]}>
+                    Settings
+                  </Text>
+                </TouchableOpacity>
+              ),
+              headerRight: () => (
+                <TouchableOpacity
+                  onPress={() => {
+                    signOut(auth)
+                      .then(() => {
+                        navigation.dispatch(StackActions.replace("Sign In"));
+                      })
+                      .catch((error) => {
+                        alert(error.message);
+                      });
+                  }}
+                >
+                  <Text style={[styles.headerText, { margin: 10 }]}>
+                    Sign Out
+                  </Text>
+                </TouchableOpacity>
+              ),
             })}
           />
           <Stack.Screen
-            name="Sign Up"
-            component={SignUp}
-          />
-          <Stack.Screen
-            name='Profile'
-            component={UserProfile}
-            options={({navigation}) => ({
-              headerLeft: () => (
-                <TouchableOpacity onPress={()=>navigation.navigate('Setting')}>
-                  <Text style={[styles.headerText, {margin:10}]}>Settings</Text>
-                </TouchableOpacity>),
-              headerRight: () => (
-                <TouchableOpacity onPress={()=>{
-                  signOut(auth).then(() => {
-                    navigation.dispatch(StackActions.replace('Sign In'))
-                  }).catch((error) => {
-                    alert(error.message)
-                  });
-                  }}>
-                  <Text style={[styles.headerText, {margin:10}]}>Sign Out</Text>
-                </TouchableOpacity>)
-              })
-            }
-            />
-            <Stack.Screen
-            name='History'
+            name="History"
             component={UserHistory}
-            options={
-            {
+            options={{
               headerTintColor: "black",
               headerStyle: { backgroundColor: "white", elevation: 0 },
-              headerTitleStyle: { fontSize: 24, fontFamily:"Merriweather_700Bold" }
-            }
-            }
-            />
-            <Stack.Screen
-            name='Setting'
-            component={UserSetting}
-            />
+              headerTitleStyle: {
+                fontSize: 24,
+                fontFamily: "Merriweather_700Bold",
+              },
+            }}
+          />
+          <Stack.Screen name="Setting" component={UserSetting} />
           <Stack.Screen name="Your Store" component={VendorMain} />
           <Stack.Screen name="Confirm Order" component={VendorConfirmOrder} />
           <Stack.Screen
@@ -153,18 +160,9 @@ export default function Navigation() {
             name="Add New Food Type"
             component={VendorNewFoodType}
           />
-          <Stack.Screen
-            name="Kingsbay Hypermarket"
-            component={StorePage}
-          />
-          <Stack.Screen
-            name="Home Page"
-            component={SearchStorePage}
-          />
-          <Stack.Screen
-            name="Taddcart"
-            component={Taddcart}
-          />
+          <Stack.Screen name="Kingsbay Hypermarket" component={StorePage} />
+          <Stack.Screen name="Home Page" component={SearchStorePage} />
+          <Stack.Screen name="Taddcart" component={Taddcart} />
         </Stack.Navigator>
       </NavigationContainer>
     );
@@ -176,8 +174,6 @@ const styles = StyleSheet.create({
     color: "#fff",
     fontSize: 16,
     textAlign: "center",
-    fontFamily: "Merriweather_400Regular"
-
-  }
+    fontFamily: "Merriweather_400Regular",
+  },
 });
-
