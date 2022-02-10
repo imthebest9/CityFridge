@@ -114,6 +114,7 @@ export default function Navigation() {
                   </TouchableOpacity>
                 ),
               })}
+
             />
             <Stack.Screen name="Sign Up" component={SignUp} />
             <Stack.Screen
