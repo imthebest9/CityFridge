@@ -1,124 +1,124 @@
-import React from "react";
-import { View, Text, Image, StyleSheet, ScrollView } from "react-native";
-import BouncyCheckbox from "react-native-bouncy-checkbox";
-import Divider from "react-native-divider";
-import NumericInput from "react-native-numeric-input";
-// import { useDispatch } from "react-redux";
+import React, { useState,useEffect, useContext } from "react";
+import {
+  View,
+  Text,
+  Image,
+  StyleSheet,
+  ScrollView,
+  Button,
+  TouchableOpacity,
+  Alert,
+} from "react-native";
+import FontAwesome5 from "react-native-vector-icons/FontAwesome5";
+import { database } from "../../firebase";
+import { collection, getDocs } from "firebase/firestore";
+import { useIsFocused } from "@react-navigation/native";
+import { Tcontext } from "../../pages/Tcontext";
 
-// refer MenuItem in youtube
-const food = [
-  {
-    title: "Apple",
-    weight: "Weight: 1.2 kg",
-    expirydate: "Expire Date: 04-01-2022",
-    stock: "Stock: 3",
-    price: "RM 10.00",
-    image:
-      "https://hips.hearstapps.com/hmg-prod.s3.amazonaws.com/images/apples-at-farmers-market-royalty-free-image-1627321463.jpg?crop=1.00xw:0.631xh;0.00160xw,0.206xh&resize=980:*",
-  },
 
-  {
-    title: "Banana",
-    weight: "Weight: 1.2 kg",
-    expirydate: "Expire Date: 04-01-2022",
-    stock: "Stock: 1",
-    price: "RM 5.00",
-    image:
-      "https://cdn1.sph.harvard.edu/wp-content/uploads/sites/30/2018/08/bananas-1354785_1920-1200x800.jpg",
-  },
-  {
-    title: "Potato",
-    weight: "Weight: 1.2 kg",
-    expirydate: "Expire Date: 04-01-2022",
-    stock: "Stock: 1",
-    price: "RM 5.00",
-    image:
-      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRVASnErn64-EuhrxfcL2AB3fyINkudRk3zeA&usqp=CAU",
-  },
-  {
-    title: "Banana",
-    weight: "Weight: 1.2 kg",
-    expirydate: "Expire Date: 04-01-2022",
-    stock: "Stock: 1",
-    price: "RM 5.00",
-    image:
-      "https://media.istockphoto.com/photos/banana-bunch-picture-id173242750?b=1&k=20&m=173242750&s=170667a&w=0&h=oRhLWtbAiPOxFAWeo2xEeLzwmHHm8W1mtdNOS7Dddd4=",
-  },
-  {
-    title: "Apple",
-    weight: "Weight: 1.2 kg",
-    expirydate: "Expire Date: 04-01-2022",
-    stock: "Stock: 3",
-    price: "RM 10.00",
-    image:
-      "https://hips.hearstapps.com/hmg-prod.s3.amazonaws.com/images/apples-at-farmers-market-royalty-free-image-1627321463.jpg?crop=1.00xw:0.631xh;0.00160xw,0.206xh&resize=980:*",
-  },
-];
+export default function AboutFood({ navigation }, props) {
+  // foodData contains all food from firebase
+  const [foodData, setfoodData] = useState([]);
+ 
+  const [cart, setCart] = useContext(Tcontext);
 
-const styles = StyleSheet.create({
-  foodItemStyle: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    margin: 8,
-  },
-  titleStyle: {
-    fontSize: 19,
-    fontWeight: "800",
-  },
-});
+  const addToCart = async (food)=>{ 
+  const obj = { id: food.name, name: food.name, price: food.price, image: food.image_url};
+  await setCart(currentCart => [...currentCart,obj]);
+    
+  }
 
-export default function AboutFood() {
+  useEffect(async () => {
+    const querySnapshot = await getDocs(collection(database, "foods"));
+    const saveFirebaseItems = [];
+    querySnapshot.forEach((doc) => {
 
-  // const dispatch = useDispatch();
-  // const selectItem = (item) =>
-  //   dispatch({
-  //     type: "ADD_TO_CART",
-  //     payload: item,
-  //   });
+      saveFirebaseItems.push(doc.data());
+    });
+    setfoodData(saveFirebaseItems);
+  }, [useIsFocused()]);
+
+  const disabled =(food)=>{ 
+    if (food.quantity <= 0)
+      return true;
+    else
+      return false;
+  }
 
   return (
     <View style={{ flex: 1 }}>
       <ScrollView showsVerticalScrollIndicator={false}>
-        {food.map((food, index) => (
+        {foodData.map((food, index) => (
           <View key={index}>
-            <View style={styles.foodItemStyle}>
-              {
-                <BouncyCheckbox
-                  iconStyle={{ borderColor: "lightgray", borderRadius: 6 }}
-                  fillColor="#4EB574"
-                  onPress={()=> selectItem(food)}
-                />
-              }
-              <FoodInfo food={food} />
-              <FoodImage food={food} />
-            </View>
-            <Divider
-              width={0.5}
-              orientation="vertical"
-              style={{ marginHorizontal: 10 }}
-            />
+            
+              <View style={styles.foodItemStyle}>
+                <FoodImage image={food.image_url} />
+                <FoodInfo title={food.name} expirydate={food.date} weight={food.weight}  stock={food.quantity} price={food.price} />
+                
+                <TouchableOpacity onPress={disabled(food) ? null : ()=>addToCart(food)}>
+                {/* <TouchableOpacity onPress={ () => addToCart(food)}> */}
+                <Icon icon="cart-plus" /> 
+                {/* <FoodDetails mycart = {cart}/> */}
+                </TouchableOpacity>
+              </View>
+         
           </View>
+          
         ))}
       </ScrollView>
     </View>
   );
 }
 
+const styles = StyleSheet.create({
+  foodItemStyle: {
+    flexDirection: "row",
+    justifyContent: "space-evenly",
+    margin: 5,
+  },
+  titleStyle: {
+    fontSize: 19,
+    fontWeight: "bold",
+  },
+  priceTitle :{
+    fontSize: 15,
+    fontWeight: "bold",
+    color: "red"
+  }
+});
+
 const FoodInfo = (props) => (
   <View style={{ width: 235, justifyContent: "space-evenly" }}>
-    <Text style={styles.titleStyle}>{props.food.title}</Text>
-    <Text>{props.food.weight}</Text>
-    <Text>{props.food.expirydate}</Text>
-    <Text>{props.food.stock}</Text>
-    <Text>{props.food.price}</Text>
+    <Text style={styles.titleStyle}>{props.title}</Text>
+    <Text>Exp Date: {new Date(props.expirydate.toDate()).toDateString()}</Text> 
+    <Text>{props.weight} KG</Text>
+    <Text>Stock: {props.stock}</Text>
+    <Text style={styles.priceTitle}>RM {props.price}</Text>
   </View>
 );
 
 const FoodImage = (props) => (
   <View>
     <Image
-      source={{ uri: props.food.image }}
+      source={{ uri: props.image }}
       style={{ width: 100, height: 100, borderRadius: 8 }}
     />
   </View>
+);
+
+const Icon = (props) => (
+    <View>
+      <FontAwesome5
+        name={props.icon}
+        size={25}
+        style={{
+          flex:1,
+          flexDirection:'row',
+          alignItems:'center',
+          justifyContent:"space-evenly",
+          color: "#FFB84E"
+  
+        }}
+      />     
+    </View>
 );
