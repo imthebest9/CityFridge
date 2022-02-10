@@ -106,12 +106,35 @@ export default function Stores({ navigation }) {
     }
   }
 
+  // const searchFilter = (text) => {
+  //   if (text) {
+  //     const newData = filteredCategory.filter((item) => {
+  //       const itemData = item.name ? item.name.toUpperCase() : "".toUpperCase();
+  //       const textData = text.toUpperCase();
+  //       return itemData.indexOf(textData) > -1;
+  //     });
+  //     setfilterData(newData);
+  //     setsearch(text);
+  //   } else {
+  //     setfilterData(storeData);
+  //     setsearch(text);
+  //   }
+  // };
+
   const searchFilter = (text) => {
     if (text) {
       const newData = filteredCategory.filter((item) => {
-        const itemData = item.name ? item.name.toUpperCase() : "".toUpperCase();
+        const itemData = item.name
+          ? item.name.toUpperCase() 
+          : "".toUpperCase();
+        
+        const itemData2 = item.description
+          ? item.description.toUpperCase() 
+          : "".toUpperCase();
+        
         const textData = text.toUpperCase();
-        return itemData.indexOf(textData) > -1;
+
+        return itemData.indexOf(textData) > -1 || itemData2.indexOf(textData) > -1 ;
       });
       setfilterData(newData);
       setsearch(text);
@@ -125,11 +148,6 @@ export default function Stores({ navigation }) {
 
   return (
     <View>
-      <View>
-        <Text>Filter By Category </Text>
-      </View>
-      {/* <button className="previous-round" onClick={() => setOrderData_(previous(orderData_))}
-></button>   */}
       <TouchableOpacity onPress={() => categoryFilter('All')}>
         <View
           style={{
