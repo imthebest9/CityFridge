@@ -50,6 +50,7 @@ import BottomTabsCustomer from "./components/BottomTabsCustomer";
 import Tshowtac from "./pages/Tshowtac";
 import VreserveButton from "./components/Transaction/VreserveButton";
 import GenerateTac from "./components/Transaction/GenerateTac";
+import Stores from "./components/Search/Stores";
 
 const Stack = createStackNavigator();
 
