@@ -27,14 +27,7 @@ export default ({ navigation }) => {
   const [contact, setContact] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  const [location, setLocation] = useState("");
-
   const [isVendor, setIsVendor] = useState(false);
-
-  //Get Location
-  const [locationRaw, setLocationRaw] = useState(null);
-  const [errorMsg, setErrorMsg] = useState(null);
-  const [addressRaw, setAddressRaw] = useState(null);
   const [latitude, setLatitude] = useState(null);
   const [longitude, setLongitude] = useState(null);
   const [address, setAddress] = useState("");
@@ -107,8 +100,7 @@ export default ({ navigation }) => {
     }
   };
 
-  const getLocation = () => {
-    (async () => {
+  const getLocation = async() => {
       let { status } = await Location.requestPermissionsAsync();
       if (status !== "granted") {
         setErrorMsg("Permission to access location was denied");
@@ -116,13 +108,8 @@ export default ({ navigation }) => {
 
       Location.setGoogleApiKey(apiKey);
 
-      console.log(status);
-
       let { coords } = await Location.getCurrentPositionAsync();
-
-      setLocation(coords);
-
-      console.log(coords);
+      
       setLatitude(coords.latitude);
       setLongitude(coords.longitude);
       console.log(latitude);
@@ -135,38 +122,16 @@ export default ({ navigation }) => {
           longitude,
           latitude,
         });
-        setAddress(regionName[0]);
-        console.log(regionName, "nothing");
-        console.log("Region Name Here");
-        console.log(regionName[0].district == null);
-
-        var NAME = "";
-        var CITY = "";
-        var District = "";
-
-        if (regionName[0].name) {
-            NAME = regionName[0].name;
-        }
-        if (regionName[0].city) {
-            CITY = regionName[0].city;
-        }
-        if (regionName[0].district) {
-            District = regionName[0].district;
-        }
 
         setAddress(      
-            regionName[0].name          + ", "  +             
-            regionName[0].city          + ", "  +                      
-            // regionName[0].district      + ", "  +
+            regionName[0].name          + ", " +             
+            regionName[0].city          + ", " +
             regionName[0].postalCode    + ", " +             
             regionName[0].region        + ", " +             
             regionName[0].country 
         );
       }
-    })();
-    
-};
-console.log(address);  
+}; 
 
   return (
     <View style={styles.container}>
@@ -232,19 +197,14 @@ console.log(address);
           <View style={styles.locationField}>
             <TextInput
               style={styles.textInput}
-              placeholder="Location"
-              onChangeText={(input) => setLocation(input.trim())}
+              placeholder="Address"
+              defaultValue={address}
+              editable={false}
             />
             <TouchableOpacity style={styles.button} onPress={getLocation}>
               <Text style={styles.buttonText}>Set Location</Text>
-
             </TouchableOpacity>
           </View>
-          {/* <TextInput
-            style={styles.textInput}
-            placeholder="Full Address"
-            onChangeText={(input) => setAddress(input.trim())}
-          /> */}
         </View>
         <TouchableOpacity style={styles.button} onPress={onSignUp}>
           <Text style={styles.buttonText}>Sign Up</Text>
