@@ -154,10 +154,18 @@ export default ({navigation})=>{
                 onChangeText={(input)=>setConfirmPassword(input.trim())}
                 secureTextEntry={true}
                 />
-                <TextInput style={styles.textInput}
-                placeholder='Location'
-                onChangeText={(input)=>setLocation(input.trim())}
-                />
+                <View style={styles.locationField}>
+                    <TextInput style={styles.textInput}
+                    placeholder='Location'
+                    onChangeText={(input)=>setLocation(input.trim())}
+                    />
+                    <TouchableOpacity style={styles.button}
+                        onPress={alert('hi')}>
+                        <Text style={styles.buttonText}>
+                        Set Location
+                        </Text>
+                    </TouchableOpacity>
+                </View>
                 <TextInput style={styles.textInput}
                 placeholder='Full Address'
                 onChangeText={(input)=>setAddress(input.trim())}
