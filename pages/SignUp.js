@@ -237,6 +237,7 @@ console.log(address);
             />
             <TouchableOpacity style={styles.button} onPress={getLocation}>
               <Text style={styles.buttonText}>Set Location</Text>
+
             </TouchableOpacity>
           </View>
           {/* <TextInput
