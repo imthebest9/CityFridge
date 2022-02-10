@@ -109,18 +109,18 @@ export const styles = StyleSheet.create({
     backgroundColor: "#f6f6f6",
     borderRadius: 5,
     padding: 10,
-    margin: 7,
+    marginVertical: 7,
     width: "100%",
     color: "#000",
     fontSize: 16,
-    fontFamily: "MerriweatherSans_400Regular"
+    fontFamily: "MerriweatherSans_400Regular",
+    flexShrink: 1
   },
   button: {
     backgroundColor: "#4EB574",
     borderRadius: 50,
     padding: 10,
-    marginVertical: 10,
-    width: "100%",
+    marginVertical: 10
   },
   buttonText: {
     color: "#fff",
@@ -132,5 +132,8 @@ export const styles = StyleSheet.create({
     margin: 20,
     height: width * 0.3,
     width: width * 0.3
+  },
+  locationField: {
+    flexDirection: "row"
   }
 });

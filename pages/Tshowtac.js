@@ -1,8 +1,23 @@
-import React from "react";
+import React, {useContext} from "react";
 import { View, Text, TouchableOpacity, StyleSheet, Button } from "react-native";
-import GenerateTac from "../components/Transaction/GenerateTac";
+// import { database } from "../../firebase";
+// import { collection, getDocs } from "firebase/firestore";
+// import { useIsFocused } from "@react-navigation/native";
 
 export default function Tshowtac({navigation}) {
+
+  // const [foodData, setfoodData] = useState([]);
+
+  // useEffect(async () => {
+  //   const querySnapshot = await getDocs(collection(database, "reservations"));
+  //   const saveFirebaseItems = [];
+  //   querySnapshot.forEach((doc) => {
+
+  //     saveFirebaseItems.push(doc.data());
+  //   });
+  //   setfoodData(saveFirebaseItems);
+  // }, [useIsFocused()]);
+
   return (
     <View style={styles.item}>
       <View style={styles.square}>
@@ -13,6 +28,8 @@ export default function Tshowtac({navigation}) {
         </Text>
         <View style={styles.smallSquare}>
           <Text style={styles.text}>
+            
+            {/* {Tac}; */}
             {/* <GenerateTac /> */}
           </Text>
         </View>

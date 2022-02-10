@@ -49,11 +49,8 @@ import Tviewcart from "./pages/Tviewcart";
 import BottomTabsCustomer from "./components/BottomTabsCustomer";
 import Tshowtac from "./pages/Tshowtac";
 import VreserveButton from "./components/Transaction/VreserveButton";
-// youtube ubereats
-// import { Provider as ReduxProvider } from "react-redux";
-// import configureStore from "./redux/store";
-
-// const store = configureStore();
+import GenerateTac from "./components/Transaction/GenerateTac";
+import Stores from "./components/Search/Stores";
 
 const Stack = createStackNavigator();
 
@@ -197,6 +194,11 @@ export default function Navigation() {
            <Stack.Screen
             name="Reserve Button"
             component={VreserveButton}
+          />
+
+           <Stack.Screen
+            name="get tac"
+            component={GenerateTac}
           />
            <Stack.Screen
             name="BottomTab"
