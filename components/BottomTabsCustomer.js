@@ -11,9 +11,9 @@ export default function BottomTabsCustomer({navigation}) {
     <View
       style={{
         flexDirection: "row",
-        margin: 10,
-        marginHorizontal: 50,
-        justifyContent: "space-between",
+        marginVertical: 10,
+        justifyContent: "space-around",
+        width: "100%"
       }}
     >
       <Icon icon="home" text="Home" />
