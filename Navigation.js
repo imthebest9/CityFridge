@@ -84,7 +84,7 @@ export default function Navigation() {
             headerTitleStyle: { fontSize: 18, fontFamily:"Merriweather_700Bold" }
           }}
 
-          initialRouteName="Sign In"
+          initialRouteName="Home Page"
 
         >
           <Stack.Screen

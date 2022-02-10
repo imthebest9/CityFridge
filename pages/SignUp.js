@@ -14,6 +14,7 @@ import { createUserWithEmailAndPassword, sendEmailVerification } from "firebase/
 import { doc, setDoc } from "firebase/firestore";
 import { getDownloadURL, ref } from 'firebase/storage'
 
+
 export default ({navigation})=>{
     const [name, setName] = useState('');
     const [description, setDescription] = useState('');

@@ -7,10 +7,11 @@ import Foods from "../components/Search/Foods";
 import StoreHeaderTab from "../components/Search/StoreHeaderTab";
 import BottomTabsCustomer from "../components/BottomTabsCustomer";
 import { ScrollView } from "react-native-gesture-handler";
+import location from '../pages/TestMapPage';
 
 export default function SearchStorePage({ navigation }) {
   const [activeTab, setActiveTab] = useState("Store");
-
+  console.log(location);
   return (
     <View style={{ flex: 1, marginTop: 30, flex: 1 }}>
       {/* <View style={{ alignItems: "center", justifyContent: "center" }}>
@@ -32,7 +33,7 @@ export default function SearchStorePage({ navigation }) {
           <Foods />
         </View>
       )} */}
-
+      
       <ScrollView vertical>
         <TouchableOpacity onPress={() => navigation.navigate("Taddcart")}>
           <Stores navigation={navigation} />
