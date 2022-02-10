@@ -4,6 +4,7 @@ import { Tcontext } from "../../pages/Tcontext";
 import { database } from "../../firebase";
 import { doc, setDoc, updateDoc,  increment, Timestamp } from "firebase/firestore";
 
+
 var count = 1;
 // Generate 6 random digit
 const get6digit = () => {
@@ -15,6 +16,10 @@ const get6digit = () => {
 
 export default function VreserveButton({navigation}) {
   const [cart, setCart] = useContext(Tcontext);
+  
+
+  var temp =get6digit();
+
 
   // submit to firebase
   const onSave = async () => {
@@ -23,7 +28,8 @@ export default function VreserveButton({navigation}) {
     var foodsObj = {};
     var foodsPrice = 0;
     var naming = "";
-  
+    
+
     for (let x in cart) {
       foodsObj[cart[x].name] = 1;
       foodsPrice += cart[x].price;
@@ -31,7 +37,7 @@ export default function VreserveButton({navigation}) {
 
     await setDoc(doc(database, "reservations", reserve), {
       
-      ConfirmationCode: get6digit(),
+      ConfirmationCode: temp,
       customerID: "001",
       customerName:"Tiger",
       date: Timestamp.now(),
