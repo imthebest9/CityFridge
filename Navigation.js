@@ -8,7 +8,7 @@ import { auth } from "./firebase";
 
 import SignIn from "./pages/SignIn";
 import SignUp from "./pages/SignUp";
-import Taddcart from  "./pages/Taddcart";
+import Taddcart from "./pages/Taddcart";
 import UserSetting from "./pages/UserSetting";
 import UserProfile from "./pages/UserProfile";
 import UserHistory from "./pages/UserHistory";
@@ -44,6 +44,13 @@ import {
 } from "@expo-google-fonts/merriweather-sans";
 import AppLoading from "expo-app-loading";
 import StorePage from "./pages/StorePage";
+import { TProvider } from "./pages/Tcontext";
+import Tviewcart from "./pages/Tviewcart";
+import BottomTabsCustomer from "./components/BottomTabsCustomer";
+import Tshowtac from "./pages/Tshowtac";
+import VreserveButton from "./components/Transaction/VreserveButton";
+import GenerateTac from "./components/Transaction/GenerateTac";
+import Stores from "./components/Search/Stores";
 
 const Stack = createStackNavigator();
 
@@ -74,69 +81,84 @@ export default function Navigation() {
     return <AppLoading />;
   } else {
     return (
-      <NavigationContainer>
-        <Stack.Navigator
-          screenOptions={{
-            headerTitleAlign: "center",
-            headerTintColor: "#fff",
-            headerStyle: { backgroundColor: "#116530", elevation: 0 },
-            headerTitleStyle: { fontSize: 18, fontFamily:"Merriweather_700Bold" }
-          }}
-
-          initialRouteName="Sign In"
-
-        >
-          <Stack.Screen
-            name="Sign In"
-            component={SignIn}
-            options={({ navigation }) => ({
-              headerLeft: null,
-              headerRight: () => (
-                <TouchableOpacity
-                  onPress={() => navigation.navigate("Sign Up")}
-                >
-                  <Text style={[styles.headerText, { margin: 10 }]}>
-                    Sign Up
-                  </Text>
-                </TouchableOpacity>
-              )
-            })}
-          />
-          <Stack.Screen
-            name="Sign Up"
-            component={SignUp}
-          />
-          <Stack.Screen
-            name='Profile'
-            component={UserProfile}
-            options={({navigation}) => ({
-              headerLeft: () => (
-                <TouchableOpacity onPress={()=>navigation.navigate('Setting')}>
-                  <Text style={[styles.headerText, {margin:10}]}>Settings</Text>
-                </TouchableOpacity>),
-              headerRight: () => (
-                <TouchableOpacity onPress={()=>{
-                  signOut(auth).then(() => {
-                    navigation.dispatch(StackActions.replace('Sign In'))
-                  }).catch((error) => {
-                    alert(error.message)
-                  });
-                  }}>
-                  <Text style={[styles.headerText, {margin:10}]}>Sign Out</Text>
-                </TouchableOpacity>)
-              })
-            }
+      // <Provider store={store}>
+        // <ReduxProvider store={store}>
+        <TProvider>
+        <NavigationContainer>
+          <Stack.Navigator
+            screenOptions={{
+              headerTitleAlign: "center",
+              headerTintColor: "#fff",
+              headerStyle: { backgroundColor: "#116530", elevation: 0 },
+              headerTitleStyle: {
+                fontSize: 18,
+                fontFamily: "Merriweather_700Bold",
+              },
+            }}
+            initialRouteName="Sign In" // testing
+            // initialRouteName="Your Store"
+            
+          >
+            <Stack.Screen
+              name="Sign In"
+              component={SignIn}
+              options={({ navigation }) => ({
+                headerLeft: null,
+                headerRight: () => (
+                  <TouchableOpacity
+                    onPress={() => navigation.navigate("Sign Up")}
+                  >
+                    <Text style={[styles.headerText, { margin: 10 }]}>
+                      Sign Up
+                    </Text>
+                  </TouchableOpacity>
+                ),
+              })}
+            />
+            <Stack.Screen name="Sign Up" component={SignUp} />
+            <Stack.Screen
+              name="Profile"
+              component={UserProfile}
+              options={({ navigation }) => ({
+                headerLeft: () => (
+                  <TouchableOpacity
+                    onPress={() => navigation.navigate("Setting")}
+                  >
+                    <Text style={[styles.headerText, { margin: 10 }]}>
+                      Settings
+                    </Text>
+                  </TouchableOpacity>
+                ),
+                headerRight: () => (
+                  <TouchableOpacity
+                    onPress={() => {
+                      signOut(auth)
+                        .then(() => {
+                          navigation.navigate("Sign In");
+                        })
+                        .catch((error) => {
+                          alert(error.message);
+                        });
+                    }}
+                  >
+                    <Text style={[styles.headerText, { margin: 10 }]}>
+                      Sign Out
+                    </Text>
+                  </TouchableOpacity>
+                )
+              })}
             />
             <Stack.Screen
-            name='History'
-            component={UserHistory}
-            options={
-            {
-              headerTintColor: "black",
-              headerStyle: { backgroundColor: "white", elevation: 0 },
-              headerTitleStyle: { fontSize: 24, fontFamily:"Merriweather_700Bold" }
-            }
-            }
+              name="History"
+              component={UserHistory}
+              options={{
+                headerTintColor: "black",
+                headerStyle: { backgroundColor: "white", elevation: 0 },
+                headerTitleStyle: {
+                  fontSize: 24,
+                  fontFamily: "Merriweather_700Bold",
+                },
+              }}
             />
             <Stack.Screen
             name='Setting'
@@ -155,7 +177,7 @@ export default function Navigation() {
           <Stack.Screen
             name="Kingsbay Hypermarket"
             component={StorePage}
-          />
+          /> 
           <Stack.Screen
             name="Home Page"
             component={SearchStorePage}
@@ -164,8 +186,31 @@ export default function Navigation() {
             name="Taddcart"
             component={Taddcart}
           />
+           <Stack.Screen
+            name="ViewCart"
+            component={Tviewcart}
+          />
+           <Stack.Screen
+            name="Last Page"
+            component={Tshowtac}
+          />
+           <Stack.Screen
+            name="Reserve Button"
+            component={VreserveButton}
+          />
+
+           <Stack.Screen
+            name="get tac"
+            component={GenerateTac}
+          />
+           <Stack.Screen
+            name="BottomTab"
+            component={BottomTabsCustomer}
+          />
+          
         </Stack.Navigator>
       </NavigationContainer>
+      </TProvider>
     );
   }
 }
@@ -175,7 +220,6 @@ const styles = StyleSheet.create({
     color: "#fff",
     fontSize: 16,
     textAlign: "center",
-    fontFamily: "Merriweather_400Regular"
-
-  }
+    fontFamily: "Merriweather_400Regular",
+  },
 });
