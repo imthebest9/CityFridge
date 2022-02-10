@@ -105,9 +105,6 @@ export default ({navigation})=>{
                 <Text style={styles.nameFont}>
                     {data['name']}
                 </Text>
-                <Text style={styles.locationFont}>
-                    {data['location']}
-                </Text>
                 <View>
                     <Text style={styles.descriptionFont}>
                         {data['description']}
@@ -248,8 +245,8 @@ export const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
         backgroundColor: 'white',
-        height: 120,
-        width: 120,
+        height: 150,
+        width: 150,
         margin: 10,
         borderWidth: 2,
         borderColor: 'white',
@@ -260,8 +257,8 @@ export const styles = StyleSheet.create({
         flex: 1,
         resizeMode: 'cover',
         borderRadius: 80,
-        height: 120,
-        width: 120,
+        height: 150,
+        width: 150,
     },
     profileContainer:{
         flex: 1,
@@ -273,21 +270,15 @@ export const styles = StyleSheet.create({
         color: '#116530',
         fontSize: 20,
         fontFamily: "Merriweather_700Bold",
-        textAlign: 'center'
-    },
-    locationFont:{
-        color: '#000',
-        fontSize: 18,
-        fontFamily: "Merriweather_400Regular",
-        marginBottom: 10
+        textAlign: 'center',
+        marginTop: 10
     },
     descriptionFont:{
         color: '#000',
         fontSize: 15,
         fontFamily: "Merriweather_300Light",
         textAlign: 'center',
-        marginTop: 5,
-        marginBottom: 10
+        marginVertical: 10
     },
     infoContainer:{
         backgroundColor: '#f6f6f6',
