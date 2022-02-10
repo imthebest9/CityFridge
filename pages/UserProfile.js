@@ -138,7 +138,7 @@ export default ({navigation})=>{
                 {historyList.length==0 ?
                 <View>
                     <Text style={styles.nameFont}>
-                        Loading
+                        No transaction
                     </Text>
                 </View>:
                 <FlatList
