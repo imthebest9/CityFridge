@@ -44,7 +44,7 @@ import {
 } from "@expo-google-fonts/merriweather-sans";
 import AppLoading from "expo-app-loading";
 import StorePage from "./pages/StorePage";
-import Stores from "./components/Stores";
+import Stores from "./components/Search/Stores";
 
 const Stack = createStackNavigator();
 
@@ -84,7 +84,7 @@ export default function Navigation() {
             headerTitleStyle: { fontSize: 18, fontFamily:"Merriweather_700Bold" }
           }}
 
-          initialRouteName="Sign In"
+          initialRouteName="Home Page"
 
         >
           <Stack.Screen

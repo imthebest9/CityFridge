@@ -8,12 +8,12 @@ import {
   StyleSheet,
 } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
-import { getDownloadURL, ref } from 'firebase/storage'
-import { database } from "../firebase";
+import { getDownloadURL, ref } from "firebase/storage";
+import { database } from "../../firebase";
 import { collection, getDocs } from "firebase/firestore";
 import { useState, useEffect } from "react";
 import { useIsFocused } from "@react-navigation/native";
-import Navigation from "../Navigation";
+import Navigation from "../../Navigation";
 
 const StoreData = [
   {
@@ -68,13 +68,15 @@ const StoreData = [
 
 export default function Stores({ navigation }) {
   const [storeData, setStoreData] = useState([]);
+  const [storeCategory, setStoreCategory] = useState('All');
+  const [filteredCategory, setfilterCategory] = useState([]);
   const [filteredData, setfilterData] = useState([]);
   const [search, setsearch] = useState("");
 
   useEffect(async () => {
     const querySnapshot = await getDocs(collection(database, "vendors"));
     const saveFirebaseItems = [];
-    querySnapshot.forEach(async(doc) => {
+    querySnapshot.forEach(async (doc) => {
       saveFirebaseItems.push(doc.data());
     });
     setStoreData(saveFirebaseItems);
@@ -87,27 +89,52 @@ export default function Stores({ navigation }) {
   }, []);
 
   const fetchPosts = () => {
-    // const apiURL = 'https://jsonplaceholder.typicode.com/posts';
-    // fetch(apiURL)
-    // .then((response) => response.json())
-    // .then((responseJson) => {
-    //     setfilterData(responseJson);
-    //     setmasterData(responseJson);
-    // }).catch((error) => {
-    //     console.error(error);
-    // })
     setfilterData(storeData);
     setStoreData(storeData);
   };
 
-  const searchFilter = (text) => {
-    if (text) {
+  const categoryFilter = (text) =>{
+    if(text!=='All') {
       const newData = storeData.filter((item) => {
-        const itemData = item.name
-          ? item.name.toUpperCase()
-          : "".toUpperCase();
+        const itemData = item.name ? item.name.toUpperCase() : "".toUpperCase();
         const textData = text.toUpperCase();
         return itemData.indexOf(textData) > -1;
+      });
+      setfilterCategory(newData);
+    } else if (text==='All') {
+      setfilterCategory(storeData);
+    }
+  }
+
+  // const searchFilter = (text) => {
+  //   if (text) {
+  //     const newData = filteredCategory.filter((item) => {
+  //       const itemData = item.name ? item.name.toUpperCase() : "".toUpperCase();
+  //       const textData = text.toUpperCase();
+  //       return itemData.indexOf(textData) > -1;
+  //     });
+  //     setfilterData(newData);
+  //     setsearch(text);
+  //   } else {
+  //     setfilterData(storeData);
+  //     setsearch(text);
+  //   }
+  // };
+
+  const searchFilter = (text) => {
+    if (text) {
+      const newData = filteredCategory.filter((item) => {
+        const itemData = item.name
+          ? item.name.toUpperCase() 
+          : "".toUpperCase();
+        
+        const itemData2 = item.description
+          ? item.description.toUpperCase() 
+          : "".toUpperCase();
+        
+        const textData = text.toUpperCase();
+
+        return itemData.indexOf(textData) > -1 || itemData2.indexOf(textData) > -1 ;
       });
       setfilterData(newData);
       setsearch(text);
@@ -121,11 +148,25 @@ export default function Stores({ navigation }) {
 
   return (
     <View>
+      <TouchableOpacity onPress={() => categoryFilter('All')}>
+        <View
+          style={{
+            height: 100,
+            backgroundColor: "teal",
+            justifyContent: "center",
+            alignItems: "center",
+            borderRadius: 10,
+            marginTop: 20,
+          }}
+        >
+          <Text style={styles.btnText}> Filter </Text>
+        </View>
+      </TouchableOpacity>
+
       <View>
         <TextInput
           style={styles.textInputStyle}
-          // defaultValue = ''
-          placeholder="Search Here"
+          placeholder="Search Store"
           underlineColorAndroid="transparent"
           onChangeText={(text) => searchFilter(text)}
         />
@@ -145,7 +186,6 @@ export default function Stores({ navigation }) {
               key={index}
               style={{
                 flexDirection: "row",
-                //marginTop: 10,
                 paddingBottom: 10,
                 paddingTop: 10,
 
@@ -185,7 +225,6 @@ const StoreImage = (props) => (
 );
 
 const StoreInfo = (props) => (
-  
   <View
     style={{
       // marginTop: 10,
@@ -212,7 +251,7 @@ const StoreInfo = (props) => (
       }}
     >
       <ScrollView vertical>
-      {/* <View> */}
+        
         <View
           style={{
             flex: 1,
@@ -228,7 +267,7 @@ const StoreInfo = (props) => (
           </Text>
         </View>
       </ScrollView>
-      {/* <View/> */}
+      
     </View>
   </View>
 );
