@@ -50,7 +50,7 @@ export default function FoodQuantityUpdate() {
       await setDoc(
         doc(database, "foods", items[x].name),
         {
-          quantity: items[x].quantity,
+          quantity: parseInt(items[x].quantity),
         },
         { merge: true }
       );

@@ -1,36 +1,76 @@
-import React from "react";
-import { StackActions } from "@react-navigation/native";
-import { View, Text, TouchableOpacity, Dimensions } from "react-native";
+import React, { useContext } from "react";
+
+import { View, Text, TouchableOpacity } from "react-native";
 import FontAwesome5 from "react-native-vector-icons/FontAwesome5";
 
+import { Tcontext } from "../pages/Tcontext";
+
 export default function BottomTabsCustomer({navigation}) {
-  const Icon = (props) => (
-    <TouchableOpacity onPress={()=>navigation.dispatch(StackActions.replace(props.screen))}>
-      <View>
-        <FontAwesome5
-          name={props.icon}
-          size={25}
-          style={{
-            marginBottom: 3,
-            alignSelf: "center",
-          }}
-        />
-        <Text>{props.text}</Text>
-      </View>
-    </TouchableOpacity>
-  );
+  const [cart, setCart] = useContext(Tcontext);
   return (
     <View
       style={{
         flexDirection: "row",
         marginVertical: 10,
         justifyContent: "space-around",
-        width: Dimensions.get("screen").width
+        width: "100%"
       }}
     >
-      <Icon icon="home" text="Home" screen="Home Page"/>
-      <Icon icon="shopping-cart" text="Cart" screen="Taddcart"/>
-      <Icon icon="user-alt" text="Profile" screen="Profile"/>
+      <Icon icon="home" text="Home" />
+      <View>
+        <View
+          style={{
+            position: "absolute",
+            height: 30,
+            width: 30,
+            borderRadius: 15,
+            backgroundColor: "#116530",
+            left: 15,
+            bottom: 30,
+            alignItems: "center",
+            justifyContent: "center",
+            zIndex: 2000,
+          }}
+        >
+          <Text style={{ color: "white", fontWeight: "bold" }}>{cart.length}</Text>
+        </View>
+        <TouchableOpacity onPress={() => navigation.navigate("ViewCart")}>
+          <Icon2 icon="shopping-cart" text="Cart" />
+        </TouchableOpacity>
+      </View>
+      <TouchableOpacity onPress={() => navigation.navigate("Profile")}>
+      <Icon2 icon="user-alt" text="Profile" /> 
+      </TouchableOpacity>
     </View>
   );
 }
+
+const Icon = (props) => (
+  <TouchableOpacity>
+    <View>
+      <FontAwesome5
+        name={props.icon}
+        size={25}
+        style={{
+          marginBottom: 3,
+          alignSelf: "center",
+        }}
+      />
+      <Text>{props.text}</Text>
+    </View>
+  </TouchableOpacity>
+);
+
+const Icon2 = (props) => (
+  <View>
+    <FontAwesome5
+      name={props.icon}
+      size={25}
+      style={{
+        marginBottom: 3,
+        alignSelf: "center",
+      }}
+    />
+    <Text>{props.text}</Text>
+  </View>
+);

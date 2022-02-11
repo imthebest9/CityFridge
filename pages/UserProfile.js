@@ -84,7 +84,8 @@ export default ({navigation})=>{
             time: time,
             isVendor: data["isVendor"],
             name: name,
-            foodList: foodList.trimEnd()
+            foodList: foodList.trimEnd(),
+            code: reservationData["ConfirmationCode"]
         }
     }
 
@@ -149,7 +150,8 @@ export default ({navigation})=>{
                         day: item.day,
                         time: item.time,
                         isVendor: item.isVendor,
-                        name: item.name
+                        name: item.name,
+                        code: item.code
                         })}}>
                         <View style={[styles.historyDateContainer, {backgroundColor: item.isComplete ? '#f6f6f6' : '#4EB574'}]}>
                             <Text style={styles.historyTitleFont}>
@@ -182,7 +184,7 @@ export default ({navigation})=>{
                     optionRight={'History'}
                     onSelectSwitch={option=>{
                         setSelectedOption(option)
-                        if(option==2)
+                        if(option==2){}
                         pushHistory()
                         }
                     }/>

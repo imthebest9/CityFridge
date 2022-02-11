@@ -1,8 +1,27 @@
-import React from "react";
-import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
-import GenerateTac from "../components/Transaction/GenerateTac";
+import React, { useState, useEffect } from "react";
+import { View, Text, TouchableOpacity, StyleSheet, Button } from "react-native";
 
-export default function Tshowtac() {
+import { database } from "../firebase";
+import { collection, getDocs } from "firebase/firestore";
+import { useIsFocused } from "@react-navigation/native";
+
+export default function Tshowtac({ navigation }) {
+  const [reserve, setReservation] = useState(null);
+
+  useEffect(async () => {
+    const querySnapshot = await getDocs(collection(database, "reservations"));
+    const saveFirebaseItems = [];
+    querySnapshot.forEach((doc) => {
+      saveFirebaseItems.push(doc.data());
+    });
+    setReservation(saveFirebaseItems);
+  }, []);
+
+  const reply = () => {
+    if (reserve) return (reserve[reserve.length - 1].ConfirmationCode);
+    else return ("...");
+  };
+
   return (
     <View style={styles.item}>
       <View style={styles.square}>
@@ -11,12 +30,17 @@ export default function Tshowtac() {
         <Text style={styles.msg}>
           {"Show this code to cashier to reedem food"}
         </Text>
-        <GenerateTac />
-
         <View style={styles.smallSquare}>
-          <Text  style={styles.text}>123wwe</Text>
+          <Text style={styles.text}>
+            {reply()}
+          </Text>
         </View>
-        <TouchableOpacity></TouchableOpacity>
+        <View style={{ flex: 1, marginTop: 20, width: 100 }}>
+          <Button
+            title="Done"
+            onPress={() => navigation.navigate("Home Page")}
+          />
+        </View>
       </View>
     </View>
   );
