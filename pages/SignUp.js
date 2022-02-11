@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   View,
   ScrollView,
@@ -8,7 +8,7 @@ import {
 } from "react-native";
 import SwitchSelector from "../components/SwitchSelector";
 import { styles } from "./SignIn";
-import { StackActions } from "@react-navigation/native";
+import { StackActions, useIsFocused } from '@react-navigation/native'
 import { auth, database, storage } from "../firebase";
 import {
   createUserWithEmailAndPassword,
@@ -31,6 +31,10 @@ export default ({ navigation }) => {
   const [latitude, setLatitude] = useState(null);
   const [longitude, setLongitude] = useState(null);
   const [address, setAddress] = useState("");
+
+  useEffect(()=>{
+    getLocation()
+  }, [useIsFocused()])
 
   const onValidatie = () => {
     if (!name) alert("Please enter your name");
@@ -197,12 +201,13 @@ export default ({ navigation }) => {
           <View style={styles.locationField}>
             <TextInput
               style={styles.textInput}
+              multiline={true}
+              maxHeight={80}
               placeholder="Address"
               defaultValue={address}
-              editable={false}
             />
             <TouchableOpacity style={styles.button} onPress={getLocation}>
-              <Text style={styles.buttonText}>Set Location</Text>
+              <Text style={styles.buttonText}>Get Location</Text>
             </TouchableOpacity>
           </View>
         </View>

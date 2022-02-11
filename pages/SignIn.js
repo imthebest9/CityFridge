@@ -7,7 +7,8 @@ import {
     TextInput,
     StyleSheet,
     Dimensions,
-    Keyboard
+    Keyboard,
+    ScrollView
     } from 'react-native'
 import { StackActions } from '@react-navigation/native'
 import { auth, database, storage } from "../firebase";
@@ -51,14 +52,17 @@ export default ({navigation}) => {
         getDoc(doc(database, "customers", id)).then((docSnap)=>{
             if(docSnap.exists()){
                 AsyncStorage.setItem("profile", "customers")
+                navigation.dispatch(
+                    StackActions.replace('Home Page')
+                );
             }
             else{
                 AsyncStorage.setItem("profile", "vendors")
+                navigation.dispatch(
+                    StackActions.replace('Your Store')
+                );
             }
         });
-        navigation.dispatch(
-            StackActions.replace('Profile')
-        );
     }
 
     return (
@@ -101,7 +105,7 @@ export const styles = StyleSheet.create({
     alignItems: 'center'
   },
   form: {
-    flex: 1,
+    flexGrow: 1,
     alignItems: "center",
     width: componentWidth,
   },
@@ -134,6 +138,7 @@ export const styles = StyleSheet.create({
     width: width * 0.3
   },
   locationField: {
-    flexDirection: "row"
+    flexDirection: "row",
+    alignItems: "flex-start"
   }
 });

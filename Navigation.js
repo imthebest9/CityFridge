@@ -95,7 +95,7 @@ export default function Navigation() {
                 fontFamily: "Merriweather_700Bold",
               },
             }}
-            initialRouteName="Home Page" // testing
+            initialRouteName="Sign In" // testing
             // initialRouteName="Your Store"
             
           >
