@@ -51,6 +51,7 @@ import Tshowtac from "./pages/Tshowtac";
 import VreserveButton from "./components/Transaction/VreserveButton";
 import GenerateTac from "./components/Transaction/GenerateTac";
 import Stores from "./components/Search/Stores";
+import DDMenu from "./pages/TestDropDownMenu";
 
 const Stack = createStackNavigator();
 
