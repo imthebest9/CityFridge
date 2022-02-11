@@ -1,4 +1,4 @@
-import { collection, doc, getDocs, updateDoc } from "@firebase/firestore";
+import { collection, doc, getDoc, getDocs, updateDoc } from "@firebase/firestore";
 import { useIsFocused } from "@react-navigation/native";
 import React, { useEffect, useState } from "react";
 import { View, Text, TextInput, TouchableOpacity, Alert } from "react-native";
@@ -13,39 +13,41 @@ export default function VendorConfirmOrder() {
     const querySnapshot = await getDocs(collection(database, "reservations"));
     const saveFirebaseItems = [];
     querySnapshot.forEach((doc) => {
-      saveFirebaseItems.push(doc.data());
+      saveFirebaseItems.push(doc);
     });
     setRes(saveFirebaseItems);
   }, [useIsFocused()]);
 
-  console.log(code);
-
   const onConfirm = async () => {
     let alertFlag = false;
     for (let r in res) {
-      if (res[r].ConfirmationCode === code) {
+      if (res[r].data().ConfirmationCode == code) {
         let str = "";
-
-        for ( key in res[r].foods) {
-          str += key + " x" + res[r].foods[key] + "\n";
+        let contribution = (await getDoc(doc(database, "history", res[r].data().vendorID))).data().contribution
+        for ( key in res[r].data().foods) {
+          str += key + " x" + res[r].data().foods[key] + "\n";
+          const food = (await getDoc(doc(database, "foods", key))).data()
+          contribution += food.weight * food.quantity
         }
-
         str = str.trimEnd();
 
         Alert.alert("Order has been confirmed", `${str}`);
         alertFlag = true;
         try {
           await updateDoc(doc(database, "reservations", res[r].id), {
-            isComplete: "True",
+            isComplete: true,
+          });
+          await updateDoc(doc(database, "history", res[r].data().vendorID), {
+            contribution: contribution
           });
         } catch (e) {
           console.log(e);
         }
       }
     }
-    if (!alertFlag) {
+    /*if (!alertFlag) {
       Alert.alert("Error", "Invalid code");
-    }
+    }*/
   };
 
   return (
