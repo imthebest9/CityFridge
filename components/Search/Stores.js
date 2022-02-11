@@ -14,64 +14,25 @@ import { collection, getDocs } from "firebase/firestore";
 import { useState, useEffect } from "react";
 import { useIsFocused } from "@react-navigation/native";
 import Navigation from "../../Navigation";
+import DropdownMenu from "react-native-dropdown-menu";
+let apiKey = "AIzaSyBOEnN1am9vWvDCIcCF2YurPo8OGwHQDKo";
 
-const StoreData = [
-  {
-    name: "Happy Mart",
-    image_url: "https://www.penang-traveltips.com/pics/happy-mart.jpg",
-    description: "Family mart give you family.",
-    price: "RM",
-    review: 4.5,
-  },
-  {
-    name: "Family Mart",
-    image_url:
-      "https://3.bp.blogspot.com/-fwmjIUG7h1k/WLkXBO4HEUI/AAAAAAAAUF0/RRk5Qo2ioyUlSO7XZDy8AN2lMWq2CA27wCLcB/s1600/01.jpg",
-    description:
-      "FamilyMart is Japan's second largest convenience store chain, behind 7-Eleven. There are now 24,574 stores worldwide in Japan, Taiwan, China, Philippines, Thailand, Vietnam, Indonesia, and Malaysia.[4] Its headquarters is on the 17th floor of the Sunshine 60 building in Ikebukuro, Toshima, Tokyo.[5] There are some stores in Japan with the name Circle K Sunkus under the operation of FamilyMart. FamilyMart was, until 2020, a subsidiary of the FamilyMart UNY Holdings Co., Ltd. (UFHD), which also owned supermarket chain Uny. UFHD was dissolved when Uny was acquired by the parent company of Don Quijote in 2020. FamilyMart Co.'s parent company is Itochu, a Japanese trading company, with a stake of 50.1%.[3] On July 8, 2020, Itochu announced it will spend approximately ¥580 billion (approx $5.5 billion) to purchase 100% of FamilyMart, with the intent to sell 4.9% of the shares to Zen-Noh and Norinchukin Bank.[6] FamilyMart shareholders approved the takeover on October 26, with the stock scheduled to be delisted on November 12.[7] All of the usual Japanese convenience store goods such as basic grocery items, magazines, manga, soft drinks, alcoholic drinks like sake, nikuman, fried chicken, onigiri, and bento are available. FamilyMart is known for its distinctive doorbell melody, which is played upon entering the store.[8] The doorbells are exclusively made by Panasonic, and the melody these doorbells play is referred to as Melody Chime No.1 – Daiseikyou, and was originally developed for Panasonic by Yasuhi Inada in 1978.[9",
-    price: "RM",
-    review: 4.5,
-  },
-  {
-    name: "Lotus Super Market",
-    image_url: "https://www.penang-traveltips.com/pics/happy-mart.jpg",
-    description:
-      "Stop Calling us Tesco !! WE ARE LOTUSSSSS. We are green, not blue. Want blue go look for Monday lalalalalallalalalaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
-    price: "RM",
-    review: 4.5,
-  },
-  {
-    name: "KK Mart",
-    image_url: "https://www.penang-traveltips.com/pics/happy-mart.jpg",
-    description:
-      "Stop Calling us Tesco !! WE ARE LOTUSSSSS. We are green, not blue. Want blue go look for Monday lalalalalallalalala",
-    price: "RM",
-    review: 4.5,
-  },
-  {
-    name: "KK Mart",
-    image_url: "https://www.penang-traveltips.com/pics/happy-mart.jpg",
-    description:
-      "Stop Calling us Tesco !! WE ARE LOTUSSSSS. We are green, not blue. Want blue go look for Monday lalalalalallalalala",
-    price: "RM",
-    review: 4.5,
-  },
-  {
-    name: "KK Mart",
-    image_url: "https://www.penang-traveltips.com/pics/happy-mart.jpg",
-    description:
-      "Stop Calling us Tesco !! WE ARE LOTUSSSSS. We are green, not blue. Want blue go look for Monday",
-    price: "RM",
-    review: 4.5,
-  },
-];
+import * as Location from "expo-location";
 
 export default function Stores({ navigation }) {
   const [storeData, setStoreData] = useState([]);
-  const [storeCategory, setStoreCategory] = useState('All');
+  const [storeCategory, setStoreCategory] = useState("All");
   const [filteredCategory, setfilterCategory] = useState([]);
   const [filteredData, setfilterData] = useState([]);
   const [search, setsearch] = useState("");
+  const [category, setCategory] = useState();
+  const data = [["All", "Japan", "JavaScript", "PHP"]];
+  const [location, setLocation] = useState(null);
+  const [errorMsg, setErrorMsg] = useState(null);
+  const [centerLat, setCenterLat] = useState();
+  const [centerLong, setCenterLong] = useState();
+  const [address, setAddress] = useState(null);
+  var centerPt = { lat: 2.2021996431185085, lng: 102.25251482831439 }; // Center Pt
 
   useEffect(async () => {
     const querySnapshot = await getDocs(collection(database, "vendors"));
@@ -85,60 +46,103 @@ export default function Stores({ navigation }) {
   ////////////////////////////////////////
   useEffect(() => {
     fetchPosts();
+    getLocation();
     return () => {};
   }, []);
 
+  const getLocation = () => {
+    (async () => {
+      let { status } = await Location.requestPermissionsAsync();
+      if (status !== "granted") {
+        setErrorMsg("Permission to access location was denied");
+      }
+
+      Location.setGoogleApiKey(apiKey);
+
+      console.log(status);
+
+      let { coords } = await Location.getCurrentPositionAsync();
+
+      setLocation(coords);
+      setCenterLat(coords.latitude);
+      setCenterLong(coords.longitude);
+      console.log(coords);
+
+      if (coords) {
+        let { longitude, latitude } = coords;
+
+        let regionName = await Location.reverseGeocodeAsync({
+          longitude,
+          latitude,
+        });
+        setAddress(regionName[0]);
+        console.log(regionName, "nothing");
+        console.log("Region Name Here", regionName);
+      }
+
+      // console.log();
+    })();
+  };
+
+  const getDistance = (checkPtLat, checkPtLong, centerPtLat, centerPtLong) => {
+    var ky = 40000 / 360; // Some formula
+    var kx = Math.cos((Math.PI * centerPtLat) / 180.0) * ky;
+    var dx = Math.abs(centerPtLong - checkPtLong) * kx;
+    var dy = Math.abs(centerPtLat - checkPtLat) * ky;
+    var distance = Math.sqrt(dx * dx + dy * dy);
+    distance = distance.toFixed(2);
+    return distance;
+  }
+
   const fetchPosts = () => {
+    //setCategory(data[0][0]);
+    //setCategory({ text: data[0][0] });
+    //console.log("Line97",category.text)
     setfilterData(storeData);
     setStoreData(storeData);
   };
 
-  const categoryFilter = (text) =>{
-    if(text!=='All') {
+  const categoryFilter = (text) => {
+    if (text === "Japan") {
       const newData = storeData.filter((item) => {
         const itemData = item.name ? item.name.toUpperCase() : "".toUpperCase();
+
+        const itemData2 = item.description
+          ? item.description.toUpperCase()
+          : "".toUpperCase();
+
         const textData = text.toUpperCase();
-        return itemData.indexOf(textData) > -1;
+
+        return (
+          itemData.indexOf(textData) > -1 || itemData2.indexOf(textData) > -1
+        );
       });
       setfilterCategory(newData);
-    } else if (text==='All') {
+    } else if (text === "All") {
       setfilterCategory(storeData);
     }
-  }
-
-  // const searchFilter = (text) => {
-  //   if (text) {
-  //     const newData = filteredCategory.filter((item) => {
-  //       const itemData = item.name ? item.name.toUpperCase() : "".toUpperCase();
-  //       const textData = text.toUpperCase();
-  //       return itemData.indexOf(textData) > -1;
-  //     });
-  //     setfilterData(newData);
-  //     setsearch(text);
-  //   } else {
-  //     setfilterData(storeData);
-  //     setsearch(text);
-  //   }
-  // };
+  };
 
   const searchFilter = (text) => {
     if (text) {
-      const newData = filteredCategory.filter((item) => {
-        const itemData = item.name
-          ? item.name.toUpperCase() 
-          : "".toUpperCase();
-        
+      const newData = storeData.filter((item) => {
+        // const newData = filteredCategory.filter((item) => {
+        const itemData = item.name ? item.name.toUpperCase() : "".toUpperCase();
+
         const itemData2 = item.description
-          ? item.description.toUpperCase() 
+          ? item.description.toUpperCase()
           : "".toUpperCase();
-        
+
         const textData = text.toUpperCase();
 
-        return itemData.indexOf(textData) > -1 || itemData2.indexOf(textData) > -1 ;
+        return (
+          itemData.indexOf(textData) > -1 || itemData2.indexOf(textData) > -1
+        );
       });
       setfilterData(newData);
       setsearch(text);
     } else {
+      // setfilterData(storeData);
       setfilterData(storeData);
       setsearch(text);
     }
@@ -148,7 +152,12 @@ export default function Stores({ navigation }) {
 
   return (
     <View>
-      <TouchableOpacity onPress={() => categoryFilter('All')}>
+      {/* <TouchableOpacity
+        onPress={() => {
+          categoryFilter("Japan");
+          searchFilter("");
+        }}
+      >
         <View
           style={{
             height: 100,
@@ -161,7 +170,7 @@ export default function Stores({ navigation }) {
         >
           <Text style={styles.btnText}> Filter </Text>
         </View>
-      </TouchableOpacity>
+      </TouchableOpacity> */}
 
       <View>
         <TextInput
@@ -196,8 +205,8 @@ export default function Stores({ navigation }) {
               <TouchableOpacity onPress={() => navigation.navigate("Taddcart")}>
                 <StoreImage image={Store.image_url} />
               </TouchableOpacity>
-
-              <StoreInfo name={Store.name} description={Store.description} />
+              {console.log(Store.latitude, Store.longitude, centerLat, centerLong )}
+              <StoreInfo name={Store.name} description={Store.description} distance={getDistance(Store.latitude, Store.longitude, centerLat, centerLong ) }/>
               {/* <Text>{Store.name}</Text> */}
             </View>
           ))}
@@ -236,13 +245,26 @@ const StoreInfo = (props) => (
       flex: 1,
     }}
   >
-    <Text
-      style={{
-        fontFamily: "MerriweatherSans_700Bold",
-      }}
-    >
-      {props.name}
-    </Text>
+    <View style={{ justifyContent: "space-between", flexDirection: "row" }}>
+      <Text
+        style={{
+          fontFamily: "MerriweatherSans_700Bold",
+        }}
+      >
+        {props.name}
+      </Text>
+      <Text
+        style={{
+          fontFamily: "MerriweatherSans_300Light",
+        }}
+      >
+        {props.distance}
+        {/* {getDistance(props.latitude, props.longitude, centerLat, centerLong)} */}
+        
+        km
+      </Text>
+    </View>
+
     <View
       style={{
         marginTop: 5,
@@ -251,7 +273,6 @@ const StoreInfo = (props) => (
       }}
     >
       <ScrollView vertical>
-        
         <View
           style={{
             flex: 1,
@@ -267,7 +288,6 @@ const StoreInfo = (props) => (
           </Text>
         </View>
       </ScrollView>
-      
     </View>
   </View>
 );
@@ -289,3 +309,18 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
   },
 });
+
+// const searchFilter = (text) => {
+//   if (text) {
+//     const newData = filteredCategory.filter((item) => {
+//       const itemData = item.name ? item.name.toUpperCase() : "".toUpperCase();
+//       const textData = text.toUpperCase();
+//       return itemData.indexOf(textData) > -1;
+//     });
+//     setfilterData(newData);
+//     setsearch(text);
+//   } else {
+//     setfilterData(storeData);
+//     setsearch(text);
+//   }
+// };

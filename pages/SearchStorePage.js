@@ -1,13 +1,14 @@
 import React, { useState } from "react";
 import { View, Text, Image, TouchableOpacity } from "react-native";
 //import { SearchBar } from 'react-native-elements';
-import SearchBar from "../components/SearchBar";
+//import SearchBar from "../components/SearchBar";
 import Stores from "../components/Search/Stores";
 import Foods from "../components/Search/Foods";
 import StoreHeaderTab from "../components/Search/StoreHeaderTab";
 import BottomTabsCustomer from "../components/BottomTabsCustomer";
 import { ScrollView } from "react-native-gesture-handler";
 import location from '../pages/TestMapPage';
+
 
 export default function SearchStorePage({ navigation }) {
   const [activeTab, setActiveTab] = useState("Store");

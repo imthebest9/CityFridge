@@ -45,6 +45,7 @@ import {
 import AppLoading from "expo-app-loading";
 import StorePage from "./pages/StorePage";
 import Stores from "./components/Search/Stores";
+import DDMenu from "./pages/TestDropDownMenu";
 
 const Stack = createStackNavigator();
 
@@ -164,6 +165,10 @@ export default function Navigation() {
           <Stack.Screen
             name="Taddcart"
             component={Taddcart}
+          />
+          <Stack.Screen
+            name="TestMenu"
+            component={DDMenu}
           />
         </Stack.Navigator>
       </NavigationContainer>
