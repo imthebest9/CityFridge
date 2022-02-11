@@ -6,7 +6,7 @@ import { doc, getDoc } from 'firebase/firestore';
 
 
 export default ({route})=>{
-    const {data, date, day, time, isVendor, name} = route.params
+    const {data, date, day, time, isVendor, name, code} = route.params
     const weekdays = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Firday", "Saturday"]
     const [weight, setWeight] = useState(0)
     const [price, setPrice] = useState(0)
@@ -125,7 +125,7 @@ export default ({route})=>{
                 {
                 (data['isComplete']) ?
                 "Completed" : 
-                (isVendor)? "Waiting for the customer" : "Code: 214"
+                (isVendor)? code : code
                 }
             </Text>
         </View>

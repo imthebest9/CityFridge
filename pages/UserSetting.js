@@ -23,6 +23,7 @@ export default ()=>{
     const [description, setDescription] = useState('')
     const [email, setEmail] = useState('')
     const [contact, setContact] = useState('')
+    const [address, setAddress] = useState('')
     const [password, setPassword] = useState('')
     const [newPassword, setNewPassword] = useState('')
     const [confirmPassword, setConfirmPassword] = useState('')
@@ -58,6 +59,8 @@ export default ()=>{
         alert('Please enter your mobile number')
         else if(isVendor && !description)
         alert('Please add a description for your store')
+        else if(!address)
+        alert('Please write your address')
         else return true
         return false
     }
@@ -68,10 +71,12 @@ export default ()=>{
             {
                 name: name,
                 contact: contact,
-                description: description
+                description: description,
+                address: address
             } :{
                 name: name,
                 contact: contact,
+                address: address
             }, { merge: true });
         }
         alert('Saved!')
@@ -188,18 +193,18 @@ export default ()=>{
                         <View style={styles.infoRowContainer}>
                             <Text style={styles.infoTitleFont}>Name</Text>
                             <TextInput style={styles.settingTextInput}
-                            defaultValue={data["name"]}
-                            onChangeText={(input)=>setName(input.trim())}
-                            />
+                                defaultValue={data["name"]}
+                                onChangeText={(input)=>setName(input.trim())}
+                                />
                         </View>
                         {data['isVendor'] && <View style={styles.infoRowContainer}>
                             <Text style={styles.infoTitleFont}>Description</Text>
                             <TextInput style={styles.settingTextInput}
-                            multiline = {true}
-                            maxHeight = {80}
-                            defaultValue={data["description"]}
-                            onChangeText={(input)=>setDescription(input.trim())}
-                            />
+                                multiline = {true}
+                                maxHeight = {80}
+                                defaultValue={data["description"]}
+                                onChangeText={(input)=>setDescription(input.trim())}
+                                />
                         </View>}
                         <View style={styles.infoRowContainer}>
                             <Text style={styles.infoTitleFont}>Contact Number</Text> 
@@ -207,6 +212,15 @@ export default ()=>{
                                 defaultValue={data["contact"]}
                                 onChangeText={(input)=>setContact(input.trim())}
                                 keyboardType='numeric'
+                                />
+                        </View>
+                        <View style={styles.infoRowContainer}>
+                            <Text style={styles.infoTitleFont}>Address</Text> 
+                            <TextInput style={styles.settingTextInput}
+                                multiline = {true}
+                                maxHeight = {80}
+                                defaultValue={data["address"]}
+                                onChangeText={(input)=>setAddress(input.trim())}
                                 />
                         </View>
                         <TouchableOpacity style={styles.button}
