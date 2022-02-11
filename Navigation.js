@@ -95,7 +95,7 @@ export default function Navigation() {
                 fontFamily: "Merriweather_700Bold",
               },
             }}
-            initialRouteName="Your Store" // testing
+            initialRouteName="Home Page" // testing
             // initialRouteName="Your Store"
             
           >
@@ -196,10 +196,10 @@ export default function Navigation() {
             component={VreserveButton}
           />
 
-           <Stack.Screen
+           {/* <Stack.Screen
             name="get tac"
             component={GenerateTac}
-          />
+          /> */}
            <Stack.Screen
             name="BottomTab"
             component={BottomTabsCustomer}
