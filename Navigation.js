@@ -95,7 +95,7 @@ export default function Navigation() {
                 fontFamily: "Merriweather_700Bold",
               },
             }}
-            initialRouteName="Home Page" // testing
+            initialRouteName="Sign In" // testing
             // initialRouteName="Your Store"
             
           >
@@ -119,7 +119,7 @@ export default function Navigation() {
             <Stack.Screen
               name="Profile"
               component={UserProfile}
-              options={({ navigation, route }) => ({
+              options={({ navigation }) => ({
                 headerLeft: () => (
                   <TouchableOpacity
                     onPress={() => navigation.navigate("Setting")}
@@ -145,8 +145,7 @@ export default function Navigation() {
                       Sign Out
                     </Text>
                   </TouchableOpacity>
-                ),
-                title: route.params.username,
+                )
               })}
             />
             <Stack.Screen
@@ -160,6 +159,10 @@ export default function Navigation() {
                   fontFamily: "Merriweather_700Bold",
                 },
               }}
+            />
+            <Stack.Screen
+            name='Setting'
+            component={UserSetting}
             />
           <Stack.Screen name="Your Store" component={VendorMain} />
           <Stack.Screen name="Confirm Order" component={VendorConfirmOrder} />

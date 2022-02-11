@@ -26,8 +26,6 @@ export default ()=>{
     const [password, setPassword] = useState('')
     const [newPassword, setNewPassword] = useState('')
     const [confirmPassword, setConfirmPassword] = useState('')
-    const [location, setLocation] = useState('')
-    const [address, setAddress] = useState('')
     const [selectedOption, setSelectedOption] = useState(1)
     const [user, setUser] = useState()
     const [profile, setProfile] = useState('')
@@ -60,8 +58,6 @@ export default ()=>{
         alert('Please enter your mobile number')
         else if(isVendor && !description)
         alert('Please add a description for your store')
-        else if(!address)
-        alert('Please enter your full address')
         else return true
         return false
     }
@@ -72,14 +68,10 @@ export default ()=>{
             {
                 name: name,
                 contact: contact,
-                location: location,
-                address: address,
                 description: description
             } :{
                 name: name,
                 contact: contact,
-                location: location,
-                address: address
             }, { merge: true });
         }
         alert('Saved!')
@@ -200,13 +192,6 @@ export default ()=>{
                             onChangeText={(input)=>setName(input.trim())}
                             />
                         </View>
-                        <View style={styles.infoRowContainer}>
-                            <Text style={styles.infoTitleFont}>Location</Text>
-                            <TextInput style={styles.settingTextInput}
-                                defaultValue={data["location"]}
-                                onChangeText={(input)=>setLocation(input.trim())}
-                                />
-                        </View>
                         {data['isVendor'] && <View style={styles.infoRowContainer}>
                             <Text style={styles.infoTitleFont}>Description</Text>
                             <TextInput style={styles.settingTextInput}
@@ -222,13 +207,6 @@ export default ()=>{
                                 defaultValue={data["contact"]}
                                 onChangeText={(input)=>setContact(input.trim())}
                                 keyboardType='numeric'
-                                />
-                        </View>
-                        <View style={styles.infoRowContainer}>
-                            <Text style={styles.infoTitleFont}>Address</Text>
-                            <TextInput style={styles.settingTextInput}
-                                defaultValue={data["address"]}
-                                onChangeText={(input)=>setAddress(input.trim())}
                                 />
                         </View>
                         <TouchableOpacity style={styles.button}
