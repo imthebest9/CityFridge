@@ -125,7 +125,7 @@ export default ({route})=>{
                 {
                 (data['isComplete']) ?
                 "Completed" : 
-                (isVendor)? code : code
+                (isVendor)? "Waiting for the customer" : code
                 }
             </Text>
         </View>
