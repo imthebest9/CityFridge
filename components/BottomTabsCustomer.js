@@ -38,7 +38,9 @@ export default function BottomTabsCustomer({navigation}) {
           <Icon2 icon="shopping-cart" text="Cart" />
         </TouchableOpacity>
       </View>
-      <Icon icon="user-alt" text="Profile" />
+      <TouchableOpacity onPress={() => navigation.navigate("Profile")}>
+      <Icon2 icon="user-alt" text="Profile" /> 
+      </TouchableOpacity>
     </View>
   );
 }
