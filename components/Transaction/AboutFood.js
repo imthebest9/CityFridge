@@ -25,6 +25,8 @@ export default function AboutFood({ navigation }, props) {
   const addToCart = async (food)=>{ 
   const obj = { id: food.name, name: food.name, price: food.price, image: food.image_url};
   await setCart(currentCart => [...currentCart,obj]);
+
+  
     
   }
 

@@ -199,10 +199,10 @@ export default function Navigation() {
             component={VreserveButton}
           />
 
-           <Stack.Screen
+           {/* <Stack.Screen
             name="get tac"
             component={GenerateTac}
-          />
+          /> */}
            <Stack.Screen
             name="BottomTab"
             component={BottomTabsCustomer}

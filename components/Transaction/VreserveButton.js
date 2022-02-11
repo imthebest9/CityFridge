@@ -5,6 +5,7 @@ import { database } from "../../firebase";
 import { doc, setDoc, updateDoc,  increment, Timestamp } from "firebase/firestore";
 
 
+
 var count = 1;
 // Generate 6 random digit
 const get6digit = () => {
@@ -14,12 +15,13 @@ const get6digit = () => {
   return code;
 };
 
+
 export default function VreserveButton({navigation}) {
   const [cart, setCart] = useContext(Tcontext);
   
 
   var temp =get6digit();
-
+  
 
   // submit to firebase
   const onSave = async () => {
@@ -59,6 +61,7 @@ export default function VreserveButton({navigation}) {
       });
       
     } //  end for
+    setCart(cart => []);
     navigation.navigate("Last Page");
     
   };
