@@ -51,9 +51,9 @@ export default function VreserveButton({navigation}) {
     // Update the quantity in foods
     //   Initial >> Kuih:1, Apple:5, Sushi:3
     for (let x in cart) {
-      if ([cart[x].name] == "Kuih") naming = "Food1";
-      else if ([cart[x].name] == "Apple") naming = "Food2";
-      else if ([cart[x].name] == "Sushi") naming = "Food3";
+      if ([cart[x].name] == "Kuih") naming = "Kuih";
+      else if ([cart[x].name] == "Apple") naming = "Apple";
+      else if ([cart[x].name] == "Sushi") naming = "Sushi";
       
       const foodDocRef = doc(database, "foods", naming);
       await updateDoc(foodDocRef, {

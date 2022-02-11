@@ -19,7 +19,7 @@ export default function Tshowtac({ navigation }) {
 
   const reply = () => {
     if (reserve) return (reserve[reserve.length - 1].ConfirmationCode);
-    else return ("No yet");
+    else return ("...");
   };
 
   return (
