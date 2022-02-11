@@ -1,22 +1,26 @@
-import React, {useContext} from "react";
+import React, { useState, useEffect } from "react";
 import { View, Text, TouchableOpacity, StyleSheet, Button } from "react-native";
-// import { database } from "../../firebase";
-// import { collection, getDocs } from "firebase/firestore";
-// import { useIsFocused } from "@react-navigation/native";
 
-export default function Tshowtac({navigation}) {
+import { database } from "../firebase";
+import { collection, getDocs } from "firebase/firestore";
+import { useIsFocused } from "@react-navigation/native";
 
-  // const [foodData, setfoodData] = useState([]);
+export default function Tshowtac({ navigation }) {
+  const [reserve, setReservation] = useState(null);
 
-  // useEffect(async () => {
-  //   const querySnapshot = await getDocs(collection(database, "reservations"));
-  //   const saveFirebaseItems = [];
-  //   querySnapshot.forEach((doc) => {
+  useEffect(async () => {
+    const querySnapshot = await getDocs(collection(database, "reservations"));
+    const saveFirebaseItems = [];
+    querySnapshot.forEach((doc) => {
+      saveFirebaseItems.push(doc.data());
+    });
+    setReservation(saveFirebaseItems);
+  }, []);
 
-  //     saveFirebaseItems.push(doc.data());
-  //   });
-  //   setfoodData(saveFirebaseItems);
-  // }, [useIsFocused()]);
+  const reply = () => {
+    if (reserve) return (reserve[reserve.length - 1].ConfirmationCode);
+    else return ("No yet");
+  };
 
   return (
     <View style={styles.item}>
@@ -28,15 +32,15 @@ export default function Tshowtac({navigation}) {
         </Text>
         <View style={styles.smallSquare}>
           <Text style={styles.text}>
-            
-            {/* {Tac}; */}
-            {/* <GenerateTac /> */}
+            {reply()}
           </Text>
         </View>
-        <View style={{flex:1, marginTop: 20, width:100}}>
-        <Button title="Done" onPress={() => navigation.navigate('Home Page')} />
+        <View style={{ flex: 1, marginTop: 20, width: 100 }}>
+          <Button
+            title="Done"
+            onPress={() => navigation.navigate("Home Page")}
+          />
         </View>
-        
       </View>
     </View>
   );
